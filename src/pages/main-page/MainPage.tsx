@@ -19,6 +19,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Divider from '@mui/material/Divider';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -37,6 +40,12 @@ export default function MainPage({ path, title }: RouteInfomation) {
 
   const handleListView = () => {
     setIsGridView(() => false)
+  }
+
+  const [viewValue, setviewValue] = useState<string>("list")
+
+  const handleView=(e:React.SyntheticEvent,newVal:string)=>{
+    setviewValue(newVal)
   }
 
   return (
@@ -58,12 +67,11 @@ export default function MainPage({ path, title }: RouteInfomation) {
                 <MenuItem >金額低-高</MenuItem>
               </Select>
             </FormControl>
-            <IconButton onClick={handleGridView}>
-              <GridViewOutlinedIcon />
-            </IconButton>
-            <IconButton onClick={handleListView}>
-              <ListAltOutlinedIcon />
-            </IconButton>
+            <Tabs value={viewValue} onChange={handleView}  >
+              <Tab value="grid" icon={<GridViewOutlinedIcon />} sx={{minWidth:"50%",width:"40px"}}></Tab>
+              <Tab value="list"  icon={<ListAltOutlinedIcon />} sx={{minWidth:"50%",width:"40px"}}></Tab>
+            </Tabs>
+            
           </Stack>
 
 
@@ -71,7 +79,7 @@ export default function MainPage({ path, title }: RouteInfomation) {
         </Grid>
         {/*主要商品內容 */}
         <Grid item xs={8} >
-          {isGridView?<GridView />:<ListView/>}
+          {viewValue==="grid"?<GridView />:<ListView/>}
           
         </Grid>
 
@@ -153,7 +161,7 @@ const ListView = () => {
   return (
     <List >
       <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
-        <Card sx={{ display: "flex", width: "100%" }}>
+        <Card sx={{ display: "flex", width: "100%",boxShadow:"none" }}>
           <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
           <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
             <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
@@ -168,8 +176,9 @@ const ListView = () => {
 
         </Card>
       </ListItem>
+      <Divider/>
       <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
-        <Card sx={{ display: "flex", width: "100%" }}>
+        <Card sx={{ display: "flex", width: "100%",boxShadow:"none"  }}>
           <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
           <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
             <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
@@ -185,8 +194,27 @@ const ListView = () => {
 
         </Card>
       </ListItem>
+      <Divider/>
       <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
-        <Card sx={{ display: "flex", width: "100%", borderRight: "0px" }}>
+        <Card sx={{ display: "flex", width: "100%", borderRight: "0px",boxShadow:"none" }}>
+          <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
+          <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+            <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between", borderRight: "0px" }}>
+              <Typography>好男人需要時我都在衛生紙(10入)</Typography>
+              <Typography>NT.100</Typography>
+            </CardContent>
+            <CardActions sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>
+              <IconButton><FavoriteBorderIcon /></IconButton>
+              <Button variant="contained">加入購物車</Button>
+            </CardActions>
+          </Box>
+
+        </Card>
+        
+      </ListItem>
+      <Divider/>
+      <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
+        <Card sx={{ display: "flex", width: "100%", borderRight: "0px",boxShadow:"none" }}>
           <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
           <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
             <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between", borderRight: "0px" }}>
@@ -201,6 +229,7 @@ const ListView = () => {
 
         </Card>
       </ListItem>
+      <Divider/>
     </List>
   )
 }
