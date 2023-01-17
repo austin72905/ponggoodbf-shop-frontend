@@ -38,7 +38,7 @@ function App() {
         <Container sx={{ marginTop: "28px",border:"0px solid" }}>
           <Stack direction="row" spacing={3} divider={<Divider orientation="vertical" flexItem />}>
             <SideBar routeList={routeList} routeAccountList={routeAccountList}/>
-            <Box>
+            <Box sx={{width:"100%"}}>
               <RoutesRegister routeList={routeList} routeAccountList={routeAccountList}/>
             </Box>
           </Stack>
