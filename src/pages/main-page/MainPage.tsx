@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { RouteInfomation } from '../../routes/routes'
 import Container from '@mui/material/Container';
@@ -29,6 +29,16 @@ import ProductImage from '../../assets/朋朋衛生紙商品圖.jpg'
 
 export default function MainPage({ path, title }: RouteInfomation) {
 
+  const [isGridView, setIsGridView] = useState<boolean>(false)
+
+  const handleGridView = () => {
+    setIsGridView(() => true)
+  }
+
+  const handleListView = () => {
+    setIsGridView(() => false)
+  }
+
   return (
     <Container maxWidth='xl'>
       <Grid container columns={8} sx={{ border: "0px solid" }} spacing={3}>
@@ -48,10 +58,10 @@ export default function MainPage({ path, title }: RouteInfomation) {
                 <MenuItem >金額低-高</MenuItem>
               </Select>
             </FormControl>
-            <IconButton>
+            <IconButton onClick={handleGridView}>
               <GridViewOutlinedIcon />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={handleListView}>
               <ListAltOutlinedIcon />
             </IconButton>
           </Stack>
@@ -59,58 +69,10 @@ export default function MainPage({ path, title }: RouteInfomation) {
 
 
         </Grid>
-        <Grid item xs={8}>
-          <List >
-            <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
-              <Card sx={{ display: "flex", width: "100%" }}>
-                <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
-                <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                  <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                    <Typography>好男人需要時我都在衛生紙(10入)</Typography>
-                    <Typography>NT$100</Typography>
-                  </CardContent>
-                  <CardActions sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>
-                    <IconButton><FavoriteIcon sx={{ color: "red" }} /></IconButton>
-                    <Button variant="contained">加入購物車</Button>
-                  </CardActions>
-                </Box>
-
-              </Card>
-            </ListItem>
-            <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
-              <Card sx={{ display: "flex", width: "100%" }}>
-                <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
-                <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                  <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                    <Typography>好男人需要時我都在衛生紙(10入)</Typography>
-                    <Typography>NT.100</Typography>
-                  </CardContent>
-                  <CardActions sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>
-                    <IconButton><FavoriteBorderIcon /></IconButton>
-                    <Button variant="contained">加入購物車</Button>
-
-                  </CardActions>
-                </Box>
-
-              </Card>
-            </ListItem>
-            <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
-              <Card sx={{ display: "flex", width: "100%", borderRight: "0px" }}>
-                <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
-                <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                  <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between", borderRight: "0px" }}>
-                    <Typography>好男人需要時我都在衛生紙(10入)</Typography>
-                    <Typography>NT.100</Typography>
-                  </CardContent>
-                  <CardActions sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>
-                    <IconButton><FavoriteBorderIcon /></IconButton>
-                    <Button variant="contained">加入購物車</Button>
-                  </CardActions>
-                </Box>
-
-              </Card>
-            </ListItem>
-          </List>
+        {/*主要商品內容 */}
+        <Grid item xs={8} >
+          {isGridView?<GridView />:<ListView/>}
+          
         </Grid>
 
       </Grid>
@@ -119,3 +81,126 @@ export default function MainPage({ path, title }: RouteInfomation) {
   )
 }
 
+const CardWrapper = styled(Card)({
+  boxShadow: "none"
+})
+
+
+const GridView = () => {
+  return (
+    <Grid container sx={{ border: "0px solid" }} columnSpacing={3} rowSpacing={3}>
+
+      <Grid item xs={4} >
+        <CardWrapper>
+          <CardMedia component="img" sx={{ width: "100%", height: "280px" }} image={ProductImage} alt="product infomation" />
+          <CardContent>
+            <Typography sx={{ marginBottom: 2, fontWeight: "bold" }}>好男人需要時我都在衛生紙(10入)</Typography>
+            <Typography sx={{ marginTop: 2 }}>NT$100</Typography>
+          </CardContent>
+        </CardWrapper>
+      </Grid>
+      <Grid item xs={4}>
+        <Card sx={{ boxShadow: "none" }}>
+          <CardMedia component="img" sx={{ width: "100%", height: "280px" }} image={ProductImage} alt="product infomation" />
+          <CardContent>
+            <Typography sx={{ marginBottom: 2, fontWeight: "bold" }}>好男人需要時我都在衛生紙(10入)</Typography>
+            <Typography sx={{ marginTop: 2 }}>NT$100</Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={4}>
+        <Card sx={{ boxShadow: "none" }}>
+          <CardMedia component="img" sx={{ width: "100%", height: "280px" }} image={ProductImage} alt="product infomation" />
+          <CardContent>
+            <Typography sx={{ marginBottom: 2, fontWeight: "bold" }}>好男人需要時我都在衛生紙(10入)</Typography>
+            <Typography sx={{ marginTop: 2 }}>NT$100</Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={4}>
+        <Card sx={{ boxShadow: "none" }}>
+          <CardMedia component="img" sx={{ width: "100%", height: "280px" }} image={ProductImage} alt="product infomation" />
+          <CardContent>
+            <Typography sx={{ marginBottom: 2, fontWeight: "bold" }}>好男人需要時我都在衛生紙(10入)</Typography>
+            <Typography sx={{ marginTop: 2 }}>NT$100</Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={4}>
+        <Card sx={{ boxShadow: "none" }}>
+          <CardMedia component="img" sx={{ width: "100%", height: "280px" }} image={ProductImage} alt="product infomation" />
+          <CardContent>
+            <Typography sx={{ marginBottom: 2, fontWeight: "bold" }}>好男人需要時我都在衛生紙(10入)</Typography>
+            <Typography sx={{ marginTop: 2 }}>NT$100</Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={4}>
+        <Card sx={{ boxShadow: "none" }}>
+          <CardMedia component="img" sx={{ width: "100%", height: "280px" }} image={ProductImage} alt="product infomation" />
+          <CardContent>
+            <Typography sx={{ marginBottom: 2, fontWeight: "bold" }}>好男人需要時我都在衛生紙(10入)</Typography>
+            <Typography sx={{ marginTop: 2 }}>NT$100</Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+    </Grid>
+  )
+}
+
+const ListView = () => {
+  return (
+    <List >
+      <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
+        <Card sx={{ display: "flex", width: "100%" }}>
+          <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
+          <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+            <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <Typography>好男人需要時我都在衛生紙(10入)</Typography>
+              <Typography>NT$100</Typography>
+            </CardContent>
+            <CardActions sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>
+              <IconButton><FavoriteIcon sx={{ color: "red" }} /></IconButton>
+              <Button variant="contained">加入購物車</Button>
+            </CardActions>
+          </Box>
+
+        </Card>
+      </ListItem>
+      <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
+        <Card sx={{ display: "flex", width: "100%" }}>
+          <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
+          <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+            <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <Typography>好男人需要時我都在衛生紙(10入)</Typography>
+              <Typography>NT.100</Typography>
+            </CardContent>
+            <CardActions sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>
+              <IconButton><FavoriteBorderIcon /></IconButton>
+              <Button variant="contained">加入購物車</Button>
+
+            </CardActions>
+          </Box>
+
+        </Card>
+      </ListItem>
+      <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
+        <Card sx={{ display: "flex", width: "100%", borderRight: "0px" }}>
+          <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
+          <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+            <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between", borderRight: "0px" }}>
+              <Typography>好男人需要時我都在衛生紙(10入)</Typography>
+              <Typography>NT.100</Typography>
+            </CardContent>
+            <CardActions sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>
+              <IconButton><FavoriteBorderIcon /></IconButton>
+              <Button variant="contained">加入購物車</Button>
+            </CardActions>
+          </Box>
+
+        </Card>
+      </ListItem>
+    </List>
+  )
+}
