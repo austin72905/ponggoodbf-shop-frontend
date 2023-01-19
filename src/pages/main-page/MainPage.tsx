@@ -30,7 +30,18 @@ import Commercial from '../../components/Commercial'
 
 import ProductImage from '../../assets/朋朋衛生紙商品圖.jpg'
 
+import Product, { ProductInfomation } from '../product/Product'
+
+interface MainPageProps {
+  title: string,
+  viewValue: string,
+  handleView: (e: React.SyntheticEvent, newVal: string) => void
+}
+
 export default function MainPage({ path, title }: RouteInfomation) {
+
+
+  const { pathname } = useLocation();
 
   const [isGridView, setIsGridView] = useState<boolean>(false)
 
@@ -44,46 +55,17 @@ export default function MainPage({ path, title }: RouteInfomation) {
 
   const [viewValue, setviewValue] = useState<string>("list")
 
-  const handleView=(e:React.SyntheticEvent,newVal:string)=>{
+  const handleView = (e: React.SyntheticEvent, newVal: string) => {
     setviewValue(newVal)
   }
 
+
+
   return (
-    <Container maxWidth='xl'>
-      <Grid container columns={8} sx={{ border: "0px solid" }} spacing={3}>
-        <Grid item xs={8} lg={8} md={8}>
-          <Commercial />
-        </Grid>
-        <Grid item xs={2}>
-          <Typography variant='h6' sx={{ fontWeight: "bold" }}>{title}</Typography>
+    <Container sx={{ border: "1px solid" }} maxWidth='xl'>
 
-        </Grid>
-        <Grid item xs={6} >
-          <Stack direction='row' sx={{ justifyContent: "flex-end", display: "flex", alignItems: "center" }}>
-            <FormControl sx={{ minWidth: "120px" }} size="small">
-              <InputLabel id="select-sort-id" sx={{ letterSpacing: "5px" }}>排序</InputLabel>
-              <Select labelId="select-sort-id" label="排序" sx={{ maxHeight: "35px" }}>
-                <MenuItem >金額高-低</MenuItem>
-                <MenuItem >金額低-高</MenuItem>
-              </Select>
-            </FormControl>
-            <Tabs value={viewValue} onChange={handleView}  >
-              <Tab value="grid" icon={<GridViewOutlinedIcon />} sx={{minWidth:"50%",width:"40px"}}></Tab>
-              <Tab value="list"  icon={<ListAltOutlinedIcon />} sx={{minWidth:"50%",width:"40px"}}></Tab>
-            </Tabs>
-            
-          </Stack>
+      <ProductListPage title={title} viewValue={viewValue} handleView={handleView} />
 
-
-
-        </Grid>
-        {/*主要商品內容 */}
-        <Grid item xs={8} >
-          {viewValue==="grid"?<GridView />:<ListView/>}
-          
-        </Grid>
-
-      </Grid>
     </Container>
 
   )
@@ -92,6 +74,53 @@ export default function MainPage({ path, title }: RouteInfomation) {
 const CardWrapper = styled(Card)({
   boxShadow: "none"
 })
+
+const fakeProductInfomation: ProductInfomation =
+{
+  title: "好男人需要時我都在衛生紙(10入)",
+  stock: 60,
+  price: 100,
+  image: ProductImage
+}
+
+const ProductListPage = ({ title, viewValue, handleView }: MainPageProps) => {
+  return (
+    <Grid container columns={8} sx={{ border: "0px solid" }} spacing={3}>
+      <Grid item xs={8} lg={8} md={8}>
+        <Commercial />
+      </Grid>
+      <Grid item xs={2}>
+        <Typography variant='h6' sx={{ fontWeight: "bold" }}>{title}</Typography>
+
+      </Grid>
+      <Grid item xs={6} >
+        <Stack direction='row' sx={{ justifyContent: "flex-end", display: "flex", alignItems: "center" }}>
+          <FormControl sx={{ minWidth: "120px" }} size="small">
+            <InputLabel id="select-sort-id" sx={{ letterSpacing: "5px" }}>排序</InputLabel>
+            <Select labelId="select-sort-id" label="排序" sx={{ maxHeight: "35px" }}>
+              <MenuItem >金額高-低</MenuItem>
+              <MenuItem >金額低-高</MenuItem>
+            </Select>
+          </FormControl>
+          <Tabs value={viewValue} onChange={handleView}  >
+            <Tab value="grid" icon={<GridViewOutlinedIcon />} sx={{ minWidth: "50%", width: "40px" }}></Tab>
+            <Tab value="list" icon={<ListAltOutlinedIcon />} sx={{ minWidth: "50%", width: "40px" }}></Tab>
+          </Tabs>
+
+        </Stack>
+
+
+
+      </Grid>
+      {/*主要商品內容 */}
+      <Grid item xs={8} >
+        {viewValue === "grid" ? <GridView /> : <ListView />}
+
+      </Grid>
+
+    </Grid>
+  )
+}
 
 
 const GridView = () => {
@@ -161,7 +190,7 @@ const ListView = () => {
   return (
     <List >
       <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
-        <Card sx={{ display: "flex", width: "100%",boxShadow:"none" }}>
+        <Card sx={{ display: "flex", width: "100%", boxShadow: "none" }}>
           <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
           <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
             <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
@@ -176,9 +205,9 @@ const ListView = () => {
 
         </Card>
       </ListItem>
-      <Divider/>
+      <Divider />
       <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
-        <Card sx={{ display: "flex", width: "100%",boxShadow:"none"  }}>
+        <Card sx={{ display: "flex", width: "100%", boxShadow: "none" }}>
           <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
           <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
             <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
@@ -194,9 +223,9 @@ const ListView = () => {
 
         </Card>
       </ListItem>
-      <Divider/>
+      <Divider />
       <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
-        <Card sx={{ display: "flex", width: "100%", borderRight: "0px",boxShadow:"none" }}>
+        <Card sx={{ display: "flex", width: "100%", borderRight: "0px", boxShadow: "none" }}>
           <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
           <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
             <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between", borderRight: "0px" }}>
@@ -210,11 +239,11 @@ const ListView = () => {
           </Box>
 
         </Card>
-        
+
       </ListItem>
-      <Divider/>
+      <Divider />
       <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
-        <Card sx={{ display: "flex", width: "100%", borderRight: "0px",boxShadow:"none" }}>
+        <Card sx={{ display: "flex", width: "100%", borderRight: "0px", boxShadow: "none" }}>
           <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
           <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
             <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between", borderRight: "0px" }}>
@@ -229,7 +258,7 @@ const ListView = () => {
 
         </Card>
       </ListItem>
-      <Divider/>
+      <Divider />
     </List>
   )
 }

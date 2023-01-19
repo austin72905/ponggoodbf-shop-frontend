@@ -2,6 +2,10 @@ import { Route, Routes } from 'react-router-dom'
 
 import { RouteInfomation } from '../routes/routes'
 import MainPage from '../pages/main-page/MainPage'
+import Product from '../pages/product/Product'
+
+import {ProductInfomation} from '../pages/product/Product'
+
 interface RouteProps {
     routeList: RouteInfomation[];
     routeAccountList: RouteInfomation[];
@@ -22,7 +26,7 @@ export default function RoutesRegister({ routeList,routeAccountList }: RouteProp
                 ))
             }
 
-        {
+            {
                 routeAccountList.map(route =>
                 (
                     <Route
@@ -32,6 +36,8 @@ export default function RoutesRegister({ routeList,routeAccountList }: RouteProp
                     />
                 ))
             }
+
+            <Route key="product" path='/product/*' element={<Product/>}/>
         </Routes>
     )
 }
