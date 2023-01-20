@@ -36,12 +36,19 @@ interface MainPageProps {
   title: string,
   viewValue: string,
   handleView: (e: React.SyntheticEvent, newVal: string) => void
+  viewProduct:() => void
+}
+
+
+interface ViewProps{
+  viewProduct:() => void
 }
 
 export default function MainPage({ path, title }: RouteInfomation) {
 
 
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const [isGridView, setIsGridView] = useState<boolean>(false)
 
@@ -59,12 +66,16 @@ export default function MainPage({ path, title }: RouteInfomation) {
     setviewValue(newVal)
   }
 
+  
+  const viewProduct=()=>{
+    navigate("/product")
+  }
 
 
   return (
     <Container sx={{ border: "1px solid" }} maxWidth='xl'>
 
-      <ProductListPage title={title} viewValue={viewValue} handleView={handleView} />
+      <ProductListPage title={title} viewValue={viewValue} handleView={handleView} viewProduct={viewProduct}/>
 
     </Container>
 
@@ -83,7 +94,7 @@ const fakeProductInfomation: ProductInfomation =
   image: ProductImage
 }
 
-const ProductListPage = ({ title, viewValue, handleView }: MainPageProps) => {
+const ProductListPage = ({ title, viewValue, handleView,viewProduct }: MainPageProps) => {
   return (
     <Grid container columns={8} sx={{ border: "0px solid" }} spacing={3}>
       <Grid item xs={8} lg={8} md={8}>
@@ -114,7 +125,7 @@ const ProductListPage = ({ title, viewValue, handleView }: MainPageProps) => {
       </Grid>
       {/*主要商品內容 */}
       <Grid item xs={8} >
-        {viewValue === "grid" ? <GridView /> : <ListView />}
+        {viewValue === "grid" ? <GridView viewProduct={viewProduct}/> : <ListView viewProduct={viewProduct}/>}
 
       </Grid>
 
@@ -123,7 +134,7 @@ const ProductListPage = ({ title, viewValue, handleView }: MainPageProps) => {
 }
 
 
-const GridView = () => {
+const GridView = ({viewProduct}:ViewProps) => {
   return (
     <Grid container sx={{ border: "0px solid" }} columnSpacing={3} rowSpacing={3}>
 
@@ -131,7 +142,7 @@ const GridView = () => {
         <CardWrapper>
           <CardMedia component="img" sx={{ width: "100%", height: "280px" }} image={ProductImage} alt="product infomation" />
           <CardContent>
-            <Typography sx={{ marginBottom: 2, fontWeight: "bold" }}>好男人需要時我都在衛生紙(10入)</Typography>
+            <Typography sx={{ marginBottom: 2, fontWeight: "bold",'&:hover':{cursor:"pointer"} }} onClick={viewProduct}>好男人需要時我都在衛生紙(10入)</Typography>
             <Typography sx={{ marginTop: 2 }}>NT$100</Typography>
           </CardContent>
         </CardWrapper>
@@ -186,7 +197,7 @@ const GridView = () => {
   )
 }
 
-const ListView = () => {
+const ListView = ({viewProduct}:ViewProps) => {
   return (
     <List >
       <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
@@ -194,7 +205,7 @@ const ListView = () => {
           <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
           <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
             <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-              <Typography>好男人需要時我都在衛生紙(10入)</Typography>
+              <Typography onClick={viewProduct} sx={{'&:hover':{cursor:"pointer"}}}>好男人需要時我都在衛生紙(10入)</Typography>
               <Typography>NT$100</Typography>
             </CardContent>
             <CardActions sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>
