@@ -50,28 +50,33 @@ export default function Product() {
         let s:CSSStyleDeclaration|undefined =ref.current?.style
         //console.log("ref",ref.current?.style)
         if(s){
-            console.log("currentIndex",currentIndex)
+            console.log("currentRef",currentRef.current)
 
 
-            if(currentIndex+1<imgList.length+2){
-                const distance =(currentIndex+1)*16.66
-                s.transform =`translateX(-${distance}%)`
-                s.transition="0.5s"
+            
+            const distance =(currentRef.current+1)*16.66
+            s.transform =`translateX(-${distance}%)`
+            s.transition="0.5s"
+
+            currentRef.current++
+            if(currentRef.current===imgList.length+2){
+                currentRef.current=1
             }
+            
             
                        
         }
         
-        setCurrentIndex(i => {
-            i = i + 1
-            console.log("+完1的i=",i)
-            if (i === imgList.length+2) {
-                i = 1
-                console.log("+完1的i=",i)
-            }
+        // setCurrentIndex(i => {
+        //     i = i + 1
+        //     console.log("+完1的i=",i)
+        //     if (i === imgList.length+2) {
+        //         i = 1
+        //         console.log("+完1的i=",i)
+        //     }
             
-            return i
-        })
+        //     return i
+        // })
         
         setShowImgIndex(i => {
             i = i + 1
@@ -89,31 +94,29 @@ export default function Product() {
         let s:CSSStyleDeclaration|undefined =ref.current?.style
         //console.log("ref",ref.current?.style)
         if(s){
-            console.log("currentIndex",currentIndex)
+            console.log("currentRef",currentRef.current)
 
 
 
-            const distance =(currentIndex-1)*16.66
-            s.transform =`translateX(${distance}%)`
+            const distance =(currentRef.current-1)*16.66
+            s.transform =`translateX(-${distance}%)`
             s.transition="0.5s"
-
-            //到頭部了，無痕跡的快速回到最後一張
-
-            if (currentIndex-1 === 0){
-                s.transform =`translateX(-100%)`
-                s.transition="none"
-                console.log("currentIndex跑回最後面囉",currentIndex)
+            currentRef.current--
+            if(currentRef.current<0){
+                currentRef.current=imgList.length
             }
+
+           
         }
 
         //他只是個紀錄其實不太重要
-        setCurrentIndex(i => {
-            i = i - 1
-            if (i < 0) {
-                i = imgList.length +1
-            }
-            return i
-        })
+        // setCurrentIndex(i => {
+        //     i = i - 1
+        //     if (i < 0) {
+        //         i = imgList.length +1
+        //     }
+        //     return i
+        // })
 
 
         setShowImgIndex(i => {
@@ -132,12 +135,22 @@ export default function Product() {
         if(s){
             
             //到尾部了，無痕跡的快速回到第一張
-            if (currentIndex+1 === imgList.length+2){
+            if (currentRef.current+1 === imgList.length+2){
                 s.transitionDelay="250ms"
                 s.transition="0s"
                 s.transform =`translateX(-16.66%)`
                 
-                console.log("currentIndex跑回原點囉",currentIndex)
+                console.log("currentRef跑回原點囉",currentRef.current)
+                currentRef.current=1
+            }else if(currentRef.current-1<0){
+                s.transitionDelay="250ms"
+                s.transition="0s"
+                const distance = (imgList.length)*1.66
+                console.log("distance",distance)
+                s.transform =`translateX(-66.68%)`
+                
+                console.log("currentRef跑回最後面囉",currentRef.current)
+                currentRef.current=imgList.length
             }
             
             //console.log("s",s.transform)
@@ -148,6 +161,8 @@ export default function Product() {
     const [currentIndex,setCurrentIndex]=useState(1)
 
     const ref=useRef<HTMLInputElement>()
+
+    const currentRef =useRef(1)
 
 
     return (
