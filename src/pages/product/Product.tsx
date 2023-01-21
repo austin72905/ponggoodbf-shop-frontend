@@ -22,12 +22,13 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
-import React, { useState,useRef,useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import ProductImage from '../../assets/朋朋衛生紙商品圖.jpg'
 import ProductImage1 from '../../assets/輪播圖1.jpg'
 import ProductImage2 from '../../assets/輪播圖2.jpg'
 import ProductImage3 from '../../assets/輪播圖3.jpg'
+import { type } from 'os';
 export default function Product() {
 
     //console.log(fakeProductInfomation)
@@ -45,39 +46,21 @@ export default function Product() {
 
     const handleImageIndexPlus = () => {
 
-        
-
-        let s:CSSStyleDeclaration|undefined =ref.current?.style
-        //console.log("ref",ref.current?.style)
-        if(s){
-            console.log("currentRef",currentRef.current)
-
-
-            
-            const distance =(currentRef.current+1)*16.66
-            s.transform =`translateX(-${distance}%)`
-            s.transition="0.5s"
+        let s: CSSStyleDeclaration | undefined = ref.current?.style
+        if (s) {
+            const distance = (currentRef.current + 1) * transformDistance
+            s.transform = `translateX(-${distance}%)`
+            s.transition = "0.5s" //應該是這個跑完就會去backToFirst這個涵式了
 
             currentRef.current++
-            if(currentRef.current===imgList.length+2){
-                currentRef.current=1
+            if (currentRef.current > imgList.length + 1) {
+
+                //回到index = 1 的位置
+                currentRef.current = 1
             }
-            
-            
-                       
+
         }
-        
-        // setCurrentIndex(i => {
-        //     i = i + 1
-        //     console.log("+完1的i=",i)
-        //     if (i === imgList.length+2) {
-        //         i = 1
-        //         console.log("+完1的i=",i)
-        //     }
-            
-        //     return i
-        // })
-        
+
         setShowImgIndex(i => {
             i = i + 1
             if (i === imgList.length) {
@@ -90,34 +73,21 @@ export default function Product() {
     const handleImageIndexMinus = () => {
 
 
-        
-        let s:CSSStyleDeclaration|undefined =ref.current?.style
-        //console.log("ref",ref.current?.style)
-        if(s){
-            console.log("currentRef",currentRef.current)
 
+        let s: CSSStyleDeclaration | undefined = ref.current?.style
 
-
-            const distance =(currentRef.current-1)*16.66
-            s.transform =`translateX(-${distance}%)`
-            s.transition="0.5s"
+        if (s) {
+            const distance = (currentRef.current - 1) * transformDistance
+            s.transform = `translateX(-${distance}%)`
+            s.transition = "0.5s"
             currentRef.current--
-            if(currentRef.current<0){
-                currentRef.current=imgList.length
+            if (currentRef.current < 0) {
+                //回到index = 4 的位置
+                currentRef.current = imgList.length
             }
 
-           
+
         }
-
-        //他只是個紀錄其實不太重要
-        // setCurrentIndex(i => {
-        //     i = i - 1
-        //     if (i < 0) {
-        //         i = imgList.length +1
-        //     }
-        //     return i
-        // })
-
 
         setShowImgIndex(i => {
             i = i - 1
@@ -130,40 +100,61 @@ export default function Product() {
 
     }
 
-    const backToFirst=()=>{
-        let s:CSSStyleDeclaration|undefined =ref.current?.style
-        if(s){
-            
+    //確認是否要回到頭部 or 尾部
+    const backToFirst = () => {
+        let s: CSSStyleDeclaration | undefined = ref.current?.style
+        if (s) {
+
             //到尾部了，無痕跡的快速回到第一張
-            if (currentRef.current+1 === imgList.length+2){
-                s.transitionDelay="250ms"
-                s.transition="0s"
-                s.transform =`translateX(-16.66%)`
-                
-                console.log("currentRef跑回原點囉",currentRef.current)
-                currentRef.current=1
-            }else if(currentRef.current-1<0){
-                s.transitionDelay="250ms"
-                s.transition="0s"
-                const distance = (imgList.length)*1.66
-                console.log("distance",distance)
-                s.transform =`translateX(-66.68%)`
-                
-                console.log("currentRef跑回最後面囉",currentRef.current)
-                currentRef.current=imgList.length
+            if (currentRef.current + 1 > imgList.length + 1) {
+
+                currentRef.current = 1
+                const distance = currentRef.current * transformDistance
+                s.transitionDelay = "10ms"
+                s.transition = "0s"
+                s.transform = `translateX(-${distance}%)`
+                console.log("distance", distance)
+                console.log("currentRef跑回原點囉", currentRef.current)
+
+            } else if (currentRef.current - 1 < 0) {
+
+                currentRef.current = imgList.length
+                const distance = currentRef.current * transformDistance
+                s.transitionDelay = "10ms"
+                s.transition = "0s"
+                s.transform = `translateX(-${distance}%)`
+
+                console.log("currentRef跑回最後面囉", currentRef.current)
+
             }
-            
-            //console.log("s",s.transform)
+
         }
     }
 
     //判斷是否到最後一張
-    const [currentIndex,setCurrentIndex]=useState(1)
+    const ref = useRef<HTMLHtmlElement>()
 
-    const ref=useRef<HTMLInputElement>()
+    //紀錄當前在imgList的索引
+    const currentRef = useRef(1)
 
-    const currentRef =useRef(1)
+    //輪播時位移的距離
+    const transformDistance = 100 / (imgList.length + 2)
+    //console.log("transformDistance",transformDistance)
+    //用 ref 紀錄 ，不用用到 useState，因為數值的改變不牽扯到重新渲染
+    // 而是直接透過 transition 做動畫
 
+    // margin 設定為負，可以讓原物重疊 (MVP 這個是想最久的...)
+
+    //onTransitionEnd 事件，可以當作到最後一張時，返回到頭部 
+
+    //transitionDelay ，回到頭部時，比較不會卡卡的
+
+    //倫波圖原理
+
+    //  1. imgList的最後一張 2. 原本的imgList 3. imgList的第一張
+    //  imgList[-1],imgList[0],imgList[1],imgList[2],imgList[3],imgList[0]
+    //  index    0          1          2          3          4          5
+    //                    初始
 
     return (
 
@@ -178,14 +169,14 @@ export default function Product() {
 
                         </Grid>
                         <Grid item sx={{ border: "0px solid", minHeight: "300px", display: "flex", flexDirection: "row", alignItems: "center",/*超出隱藏*/overflow: "hidden" }} xs={12}>
-                            <Box onTransitionEnd={backToFirst} ref={ref} sx={{ marginRight:-200,display: "flex", flexDirection: "row", justifyContent: "start", border: "1px solid",transform:"translateX(-16.66%)" }} >
+                            <Box onTransitionEnd={backToFirst} ref={ref} sx={{ marginRight: imgMargin.get(imgList.length), display: "flex", flexDirection: "row", justifyContent: "start", border: "1px solid", transform: `translateX(-${transformDistance}%)` }} >
 
-                                <img  src={imgList[imgList.length-1]} style={{ width: "320px", height: "320px", padding: 0, margin: 0 }} />
-                                {imgList.map((item,index)=>
-                                    (
-                                        <img  src={item} style={{ width: "320px", height: "320px", padding: 0, margin: 0 }} />
-                                    ))}
-                                <img  src={imgList[0]} style={{ width: "320px", height: "320px", padding: 0, margin: 0 }} />
+                                <img src={imgList[imgList.length - 1]} style={{ width: "320px", height: "320px", padding: 0, margin: 0 }} />
+                                {imgList.map((item, index) =>
+                                (
+                                    <img key={item} src={item} style={{ width: "320px", height: "320px", padding: 0, margin: 0 }} />
+                                ))}
+                                <img src={imgList[0]} style={{ width: "320px", height: "320px", padding: 0, margin: 0 }} />
                             </Box>
 
                         </Grid>
@@ -294,6 +285,18 @@ export interface ProductInfomation {
     image: string;
 }
 
+
+
+const imgMargin = new Map<number, number>(
+    [
+        [0, 0],
+        [1, -100],
+        [2, -100],
+        [3, -100],
+        [4, -200],
+    ])
+
+
 const imgList: string[] = [
     ProductImage,
     ProductImage1,
@@ -302,7 +305,11 @@ const imgList: string[] = [
 
 ]
 
-
+/*
+        ProductImage1,
+        ProductImage2,
+        ProductImage3,
+*/
 const fakeProductInfomation: ProductInfomation =
 {
     title: "好男人需要時我都在衛生紙(10入)",
