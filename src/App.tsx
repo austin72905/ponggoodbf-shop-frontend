@@ -22,7 +22,8 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 const customTheme = createTheme({
   palette: {
     primary: {
-      main: "#61D1BD"
+      main: "#61D1BD",
+      contrastText:"white"
     },
     secondary: {
       main: orange[500]

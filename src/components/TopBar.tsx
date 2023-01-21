@@ -66,7 +66,7 @@ export default function TopBar() {
               <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
                 <AvatarButton sx={{ width: 56, height: 56 }} alt='LOGO' src={LogoImage} onClick={toHome} />
                 <Box>
-                  <Typography variant='body2' sx={{ fontWeight: "bold" }}>IG:</Typography>
+                  <Typography variant='body2' sx={{ color:"black",fontWeight: "bold" }}>IG:</Typography>
                   <Link href='#'  rel='noopener noreferrer' variant='body2' sx={{ fontWeight: "bold", color: "black" }}>ponggoodbf</Link>
                 </Box>
 
