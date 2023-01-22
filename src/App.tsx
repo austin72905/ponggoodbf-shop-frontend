@@ -34,10 +34,10 @@ const customTheme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={customTheme}>
-      <div>
+      <Box sx={{border:"0px solid",backgroundColor:"#fefefe"}}>
         <TopBar />
         <Container sx={{ marginTop: "28px",border:"0px solid" }}>
-          <Stack direction="row" spacing={3} divider={<Divider orientation="vertical" flexItem />}>
+          <Stack  direction="row" spacing={3} divider={<Divider orientation="vertical" flexItem />}>
             <SideBar routeList={routeList} routeAccountList={routeAccountList}/>
             <Box sx={{width:"100%"}}>
               <RoutesRegister routeList={routeList} routeAccountList={routeAccountList}/>
@@ -45,7 +45,7 @@ function App() {
           </Stack>
 
         </Container>
-      </div>
+      </Box>
     </ThemeProvider>
   );
 }

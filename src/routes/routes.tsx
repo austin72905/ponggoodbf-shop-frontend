@@ -61,7 +61,7 @@ const routeAccountList: RouteInfomation[] = [
     },
     {
         title:"訂單查詢",
-        path:"/user/purchase",
+        path:"/user/purchase/*",
         element:<Purchase/>
     },
 ]
