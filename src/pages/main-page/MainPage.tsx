@@ -73,7 +73,7 @@ export default function MainPage({ path, title }: RouteInfomation) {
 
 
   return (
-    <Container sx={{ border: "1px solid" }} maxWidth='xl'>
+    <Container sx={{ border: "0px solid" }} maxWidth='xl'>
 
       <ProductListPage title={title} viewValue={viewValue} handleView={handleView} viewProduct={viewProduct}/>
 

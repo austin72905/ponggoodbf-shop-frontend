@@ -16,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 export default function MyAccount() {
   return (
     <Container sx={{ border: "0px solid" }} maxWidth='xl'>
-      <Stack spacing={"10px"} sx={{ minHeight: "700px", marginLeft: "10px", marginRight: "10px", marginTop: "20px", border: "1px solid #D9D9D9", borderRadius: "4px" }}>
+      <Stack spacing={"10px"} sx={{ minHeight: "700px", marginLeft: "10px", marginRight: "10px", marginTop: "20px", border: "1px solid #D9D9D9", borderRadius: "4px",backgroundColor:"white" }}>
 
         <ItemWrapper sx={{ marginTop: "30px" }}>
           <Typography variant='h6' sx={{ fontWeight: "bold" }}>我的帳戶</Typography>
@@ -25,16 +25,16 @@ export default function MyAccount() {
 
         <ItemWrapper >
           <Typography variant='caption' >姓名</Typography>
-          <TextField inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
+          <TextField placeholder='不得包含特殊符號 / $ . @ & # @...' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
         </ItemWrapper>
 
         <ItemWrapper>
           <Typography variant='caption' >電話</Typography>
-          <TextField inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
+          <TextField placeholder='ex: 09xxxxxxxx' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
         </ItemWrapper>
         <ItemWrapper>
           <Typography variant='caption' >信箱</Typography>
-          <TextField inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
+          <TextField placeholder='ex: asbc@gmail.com' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
         </ItemWrapper>
 
         <ItemWrapper>
