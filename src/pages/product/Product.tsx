@@ -30,6 +30,44 @@ import ProductImage2 from '../../assets/輪播圖2.jpg'
 import ProductImage3 from '../../assets/輪播圖3.jpg'
 import { type } from 'os';
 export default function Product() {
+    
+    //定時器，目的是離開組件時清除
+    const timerRef=useRef<NodeJS.Timeout[]>()
+    
+    useEffect(()=>{
+        return ()=>{
+
+            timerRef.current?.forEach(ele=>{
+                clearTimeout(ele)
+            })
+            
+        }
+    },[])
+
+    //節流器試做
+    // 幾秒內不管呼叫幾次，只會執行一次涵式
+    const throttle=(func:(...args:any[])=>void,wait=600)=>{
+
+        let isWait=false;
+        
+        return (...args:any[])=>{
+            //console.log("isWait",isWait)
+            //只有當 不是等待狀態時
+            if (!isWait){
+                //才執行含式
+                func(...args);
+                isWait=true;
+                const timer=setTimeout(() => {
+                    isWait=false
+                }, wait);
+                timerRef.current?.push(timer)
+            }
+        }
+        
+    }
+
+    const throttleHandleImageIndexPlus=useRef(throttle(()=>handleImageIndexPlus()))
+    const throttleHandleImageIndexMinus=useRef(throttle(()=>handleImageIndexMinus()))
 
     //console.log(fakeProductInfomation)
     const { pathname } = useLocation()
@@ -163,7 +201,7 @@ export default function Product() {
                 <Grid item xs={4} sx={{ border: "0px solid" }}>
                     <Grid container columns={16} sx={{ border: "0px solid", minHeight: "400px" }}>
                         <Grid item sx={{ border: "0px solid", display: "flex", justifyContent: "center", alignItems: "center" }} xs={2}>
-                            <IconButton onClick={handleImageIndexMinus}>
+                            <IconButton onClick={throttleHandleImageIndexMinus.current}>
                                 <KeyboardArrowLeftIcon />
                             </IconButton>
 
@@ -181,7 +219,7 @@ export default function Product() {
 
                         </Grid>
                         <Grid item sx={{ border: "0px solid", display: "flex", justifyContent: "center", alignItems: "center" }} xs={2}>
-                            <IconButton onClick={handleImageIndexPlus}>
+                            <IconButton onClick={throttleHandleImageIndexPlus.current}>
                                 <KeyboardArrowRightIcon />
                             </IconButton>
                         </Grid>
