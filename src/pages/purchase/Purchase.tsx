@@ -175,9 +175,9 @@ const OrderDetail = () => {
   }
 
   return (
-    <Grid columnSpacing={"20px"} container columns={8} sx={{ border: "0px solid", marginRight: "10px" }}>
-      <Grid item xs={8} sx={{ border: "0px solid" }}>
-        <Paper>
+    <Grid rowSpacing={"20px"} columnSpacing={"20px"} container columns={8} sx={{ border: "0px solid", marginRight: "10px" }}>
+      <Grid item xs={8}  sx={{ border: "0px solid" }}>
+        <Paper sx={{boxShadow:"none",border:"1px solid #d9d9d9"}}>
           <Stack>
             <Stack onClick={goBackToPurchaseOrder} direction={"row"} sx={{ border: "0px solid", '&:hover': { cursor: "pointer" }, width: 100, height: 30, mt: "10px", ml: "10px", mb: 0 }}>
               <KeyboardArrowLeftIcon />
@@ -215,8 +215,8 @@ const OrderDetail = () => {
       </Grid>
       <Grid item xs={4} sx={{ border: "0px solid" }}>
 
-        <Paper sx={{ height: "250px" }}>
-          <Stack spacing={"30px"} sx={{ ml: "20px", mt: "20px", pt: "20px", pb: "20px" }}>
+        <Paper sx={{ height: "250px",boxShadow:"none",border:"1px solid #d9d9d9" }}>
+          <Stack spacing={"30px"} sx={{ ml: "20px", mt: "20px", pb: "20px" }}>
             <Typography sx={{ fontWeight: "bold" }}>收件地址</Typography>
             <Stack spacing={"10px"}>
               <Typography variant='caption'>林駿朋</Typography>
@@ -230,10 +230,10 @@ const OrderDetail = () => {
         </Paper>
       </Grid>
       <Grid item xs={4} sx={{ border: "0px solid" }}>
-        <Paper sx={{ height: "250px" }}>
-          <Stack spacing={"30px"} sx={{ ml: "20px", mt: "20px", pt: "20px", pb: "20px" }}>
+        <Paper sx={{ height: "250px",boxShadow:"none",border:"1px solid #d9d9d9" }}>
+          <Stack spacing={"30px"} sx={{ ml: "20px", mt: "20px", pb: "20px" }}>
             <Typography sx={{ fontWeight: "bold" }}>物流詳細情況</Typography>
-            <Box sx={{ border: "0px solid", mt: "10px", ml: "10px", py: "0px", px: "30px" }}>
+            <Box sx={{ display:"flex",justifyContent:"center",border: "0px solid", mt: "10px", ml: "10px", py: "0px", px: "30px" }}>
               <Stepper activeStep={cargoStep} orientation='vertical' >
                 {cargoInfomation.map((step, index) => (
                   <Step key={step.description}>
@@ -259,8 +259,8 @@ const OrderDetail = () => {
         </Paper>
       </Grid>
       <Grid item xs={8} sx={{ border: "0px solid" }}>
-        <Paper >
-          <Stack spacing={"20px"} sx={{ ml: "20px", mt: "20px", pt: "20px", pb: "20px" }}>
+        <Paper sx={{boxShadow:"none",border:"1px solid #d9d9d9"}}>
+          <Stack spacing={"20px"} sx={{ ml: "20px", mt: "20px", pb: "20px" }}>
             <Typography sx={{ fontWeight: "bold" }}>訂單資訊</Typography>
             <Card sx={{ width: "100%", boxShadow: "none", border: "solid 0px #D9D9D9" }}>
               <Grid container columns={12} sx={{ border: "0px solid purple" }}>
