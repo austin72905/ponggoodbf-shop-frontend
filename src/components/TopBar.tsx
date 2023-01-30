@@ -39,6 +39,10 @@ export default function TopBar() {
     navigate("/new-arrival")
   }
 
+  const toCart = () => {
+    navigate("/cart")
+  }
+
   //anchor 錨 不使用這個方式，整個nav 會跑掉
   //這邊不給型別 e.currentTarget 會抱錯
   const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null)
@@ -83,7 +87,7 @@ export default function TopBar() {
               <TopNavButton onClick={handleClick}>
                 <AccountCircleOutlinedIcon />
               </TopNavButton>
-              <TopNavButton >
+              <TopNavButton onClick={toCart}>
                 <ShoppingCartOutlinedIcon />
               </TopNavButton>
               <TopNavButton >
