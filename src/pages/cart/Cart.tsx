@@ -1,4 +1,5 @@
 import React from 'react'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -24,7 +25,11 @@ import ProductImage from '../../assets/朋朋衛生紙商品圖.jpg'
 
 export default function Cart() {
 
+    const navigate = useNavigate();
 
+    const toCheckout=()=>{
+        navigate("/checkout")
+    }
 
     return (
         <Container sx={{ border: "0px solid" }} maxWidth='xl'>
@@ -254,7 +259,7 @@ export default function Cart() {
                                     </Stack>
 
 
-                                    <Button variant='contained' sx={{ marginRight: "30px", my: "5px" }}>
+                                    <Button onClick={toCheckout} variant='contained' sx={{ marginRight: "30px", my: "5px" }}>
                                         前往結帳
                                     </Button>
                                 </Stack>
