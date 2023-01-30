@@ -2,6 +2,7 @@
 import MainPage from '../pages/main-page/MainPage'
 import MyAccount from '../pages/my-account/MyAccount'
 import Purchase from '../pages/purchase/Purchase'
+import CollectionList from '../pages/collection-list/CollectionList'
 export interface RouteInfomation {
     title: string;
     path: string;
@@ -63,6 +64,11 @@ const routeAccountList: RouteInfomation[] = [
         title:"訂單查詢",
         path:"/user/purchase/*",
         element:<Purchase/>
+    },
+    {
+        title:"願望清單",
+        path:"/user/collection-list",
+        element:<CollectionList/>
     },
 ]
 

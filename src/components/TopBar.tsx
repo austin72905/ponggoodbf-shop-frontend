@@ -20,6 +20,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import Avatar from '@mui/material/Avatar';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
@@ -108,6 +109,10 @@ export default function TopBar() {
         <MenuItem component={RouterLink} to="/user/purchase">
           <ReceiptLongIcon />
           <Typography sx={{ marginLeft: 1 }} variant='body2'>訂單查詢</Typography>
+        </MenuItem>
+        <MenuItem component={RouterLink} to="/user/collection-list">
+          <FavoriteIcon />
+          <Typography sx={{ marginLeft: 1 }} variant='body2'>願望清單</Typography>
         </MenuItem>
       </Menu>
     </Box>
