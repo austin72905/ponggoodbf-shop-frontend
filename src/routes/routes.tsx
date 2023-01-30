@@ -4,6 +4,7 @@ import MyAccount from '../pages/my-account/MyAccount'
 import Purchase from '../pages/purchase/Purchase'
 import CollectionList from '../pages/collection-list/CollectionList'
 import ModifyPassword from '../pages/modify-password/ModifyPassword'
+import Address from '../pages/address/Address'
 
 export interface RouteInfomation {
     title: string;
@@ -76,6 +77,11 @@ const routeAccountList: RouteInfomation[] = [
         title:"更改密碼",
         path:"/user/modify-password",
         element:<ModifyPassword/>
+    },
+    {
+        title:"常用地址",
+        path:"/user/addressed",
+        element:<Address/>
     },
 ]
 
