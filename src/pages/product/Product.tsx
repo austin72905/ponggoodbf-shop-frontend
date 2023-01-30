@@ -46,7 +46,7 @@ export default function Product() {
 
     //節流器試做
     // 幾秒內不管呼叫幾次，只會執行一次涵式
-    const throttle=(func:(...args:any[])=>void,wait=600)=>{
+    const throttle=(func:(...args:any[])=>void,wait=500)=>{
 
         let isWait=false;
         
@@ -148,7 +148,7 @@ export default function Product() {
 
                 currentRef.current = 1
                 const distance = currentRef.current * transformDistance
-                s.transitionDelay = "10ms"
+                s.transitionDelay = ""
                 s.transition = "0s"
                 s.transform = `translateX(-${distance}%)`
                 console.log("distance", distance)
@@ -158,7 +158,7 @@ export default function Product() {
 
                 currentRef.current = imgList.length
                 const distance = currentRef.current * transformDistance
-                s.transitionDelay = "10ms"
+                s.transitionDelay = ""
                 s.transition = "0s"
                 s.transform = `translateX(-${distance}%)`
 
