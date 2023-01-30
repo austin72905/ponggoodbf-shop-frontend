@@ -58,9 +58,9 @@ export default function Cart() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {fakeDataList().map(item =>
+                                {fakeDataList().map((item,index) =>
                                 (
-                                    <TableRow >
+                                    <TableRow key={index}>
                                         <TableCell style={{ width: "50%" }} >
                                             <Stack spacing={"20px"} direction={"row"} alignItems="center">
                                                 <Box sx={{ my: "5px" }}>
