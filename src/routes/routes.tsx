@@ -3,6 +3,8 @@ import MainPage from '../pages/main-page/MainPage'
 import MyAccount from '../pages/my-account/MyAccount'
 import Purchase from '../pages/purchase/Purchase'
 import CollectionList from '../pages/collection-list/CollectionList'
+import ModifyPassword from '../pages/modify-password/ModifyPassword'
+
 export interface RouteInfomation {
     title: string;
     path: string;
@@ -69,6 +71,11 @@ const routeAccountList: RouteInfomation[] = [
         title:"願望清單",
         path:"/user/collection-list",
         element:<CollectionList/>
+    },
+    {
+        title:"更改密碼",
+        path:"/user/modify-password",
+        element:<ModifyPassword/>
     },
 ]
 
