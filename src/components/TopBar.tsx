@@ -64,7 +64,7 @@ export default function TopBar() {
 
   return (
     <Box>
-      <AppBar position='static'>
+      <AppBar position="fixed">
         <Container>
           <Toolbar sx={{ display: "flow", justifyContent: "space-between" }}>
             <Box>
