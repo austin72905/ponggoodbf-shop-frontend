@@ -71,7 +71,7 @@ export default function Address() {
                             <Grid item xs={3} sx={{ border: "0px solid #d9d9d9" }}>
                                 <Stack spacing={"5px"} alignItems={"end"} justifyContent={"space-between"} sx={{ border: "0px solid", height: "100%", width: "100%" }}>
                                     <Stack spacing={"5px"} sx={{ border: "0px solid" }} direction={"row"}>
-                                        <Button variant='outlined' sx={{ border: "1px solid #d9d9d9", color: "#AFAFAF" }}>編輯地址</Button>
+                                        <Button onClick={handleOpen} variant='outlined' sx={{ border: "1px solid #d9d9d9", color: "#AFAFAF" }}>編輯地址</Button>
                                         <IconButton>
                                             <DeleteIcon />
                                         </IconButton>
@@ -230,13 +230,13 @@ export default function Address() {
                                 <ClearOutlinedIcon />
                             </IconButton>
                         </Stack>
-                        <ItemWrapper sx={{ pl: "20px", pt: "0px" }}>
+                        <ItemWrapper sx={{ pl: "10px", pt: "0px" }}>
                             <Typography variant='h6' >新增常用地址</Typography>
 
                         </ItemWrapper>
 
 
-                        <Stack spacing={"10px"} sx={{ minHeight: "450px", marginLeft: "10px", marginRight: "10px", marginTop: "10px", border: "1px solid #D9D9D9", borderRadius: "4px", backgroundColor: "white" }}>
+                        <Stack spacing={"10px"} sx={{ minHeight: "450px", marginLeft: "10px", marginRight: "10px", my: "10px", border: "1px solid #D9D9D9", borderRadius: "4px", backgroundColor: "white" }}>
 
 
                             <ItemWrapper sx={{ pt: "20px" }}>
