@@ -16,6 +16,7 @@ import { styled, Stack } from '@mui/system';
 import IconButton from '@mui/material/IconButton';
 
 import RoutesRegister from './routesRegister/RoutesRegister'
+import ScrollToTop from "./components/ScrollToTop";
 import { routeList, routeAccountList } from './routes/routes'
 
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -51,7 +52,7 @@ function App() {
       <Box sx={{ minHeight: "100vh", border: "0px solid", backgroundColor: "#fefefe" }}>
         <TopBar />
         <Toolbar />
-
+        <ScrollToTop/>
         <Container sx={{ marginTop: "28px", border: "0px solid" }}>
           <Stack direction="row" spacing={3} divider={(pathname.includes("/login") ||pathname.includes("/signup"))?null: <Divider orientation="vertical" flexItem />}>
             <SideBar routeList={routeList} routeAccountList={routeAccountList} />
