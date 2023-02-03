@@ -23,6 +23,8 @@ import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Avatar from '@mui/material/Avatar';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import LogoImage from '../assets/朋朋大頭貼.jpg'
@@ -63,12 +65,18 @@ export default function TopBar() {
     window.open("https://www.instagram.com/ponggoodbf/", "_blank")
   }
 
-  const toLogin=()=>{
+  const toLogin = () => {
     navigate("/login")
   }
 
-  const toSignUp=()=>{
+  const toSignUp = () => {
     navigate("/signup")
+  }
+
+  const [searchBarOpen, setSearchBarOpen] = useState(false);
+
+  const handlesearchBar = () => {
+    setSearchBarOpen(s => !s)
   }
 
   return (
@@ -80,20 +88,45 @@ export default function TopBar() {
               <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
                 <AvatarButton sx={{ width: 56, height: 56 }} alt='LOGO' src={LogoImage} onClick={toHome} />
                 <Box>
-                  <Typography variant='body2' sx={{ color:"black",fontWeight: "bold" }}>IG:</Typography>
-                  <Link href='#'  rel='noopener noreferrer' variant='body2' sx={{ fontWeight: "bold", color: "black" }}>ponggoodbf</Link>
+                  <Typography variant='body2' sx={{ color: "black", fontWeight: "bold" }}>IG:</Typography>
+                  <Link href='#' rel='noopener noreferrer' variant='body2' sx={{ fontWeight: "bold", color: "black" }}>ponggoodbf</Link>
                 </Box>
 
               </Stack>
             </Box>
 
 
+            <Stack direction={"row"}>
+              <Box sx={{ display: "flex", alignItems: "end", cursor: "pointer" }} onClick={toHome}>
+                <Typography variant="h5" sx={{ letterSpacing: 10, fontWeight: 900, color: "#755F4B" }}>好男友</Typography>
+                <Typography sx={{ letterSpacing: 10, fontWeight: 900, color: "#355C5A" }}>線上商店</Typography>
 
-            <Box sx={{ display: "flex", alignItems: "end", cursor: "pointer" }} onClick={toHome}>
-              <Typography variant="h5" sx={{ letterSpacing: 10, fontWeight: 900, color: "#755F4B" }}>好男友</Typography>
-              <Typography sx={{ letterSpacing: 10, fontWeight: 900, color: "#355C5A" }}>線上商店</Typography>
-            </Box>
-            <Box sx={{ display: "flex",flexDirection:"row",alignItems:"center" }}>
+              </Box>
+
+
+
+            </Stack>
+
+            <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+              {searchBarOpen ? (
+                <Stack direction={"row"} sx={{ justifyContent: "end" }}>
+                  <Paper sx={{ border: "1px solid #d9d9d9", boxShadow: "none", display: 'flex', alignItems: 'center', width: 250, height: 35 }}>
+                    <IconButton onClick={handlesearchBar} type="button" sx={{ p: '10px', width: 35, height: 35, borderRadius: "0px", '&:hover': { background: "white" } }} aria-label="search">
+                      <SearchIcon />
+                    </IconButton>
+                    <InputBase
+                      sx={{ ml: 1, flex: 1 }}
+                      placeholder="搜尋商品"
+                      inputProps={{ 'aria-label': '搜尋商品' }}
+                    />
+                  </Paper>
+                </Stack>)
+                :
+                <IconButton onClick={handlesearchBar}>
+                  <SearchIcon />
+                </IconButton>
+              }
+
               <TopNavButton onClick={handleClick}>
                 <AccountCircleOutlinedIcon />
               </TopNavButton>
@@ -103,9 +136,9 @@ export default function TopBar() {
               <TopNavButton >
                 <NotificationsActiveOutlinedIcon />
               </TopNavButton>
-              <Stack sx={{ml:"10px"}} spacing={"10px"}  direction={"row"} divider={<Divider orientation="vertical" flexItem />}>
-                  <Typography variant='subtitle2' sx={{color:"black",cursor: "pointer"}} onClick={toLogin}>登入</Typography>
-                  <Typography variant='subtitle2' sx={{color:"black",cursor: "pointer"}} onClick={toSignUp} >註冊</Typography>
+              <Stack sx={{ ml: "10px" }} spacing={"10px"} direction={"row"} divider={<Divider orientation="vertical" flexItem />}>
+                <Typography variant='subtitle2' sx={{ color: "black", cursor: "pointer" }} onClick={toLogin}>登入</Typography>
+                <Typography variant='subtitle2' sx={{ color: "black", cursor: "pointer" }} onClick={toSignUp} >註冊</Typography>
               </Stack>
             </Box>
           </Toolbar>
