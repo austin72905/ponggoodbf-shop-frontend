@@ -96,6 +96,8 @@ export default function SideBar({ routeList,routeAccountList }: RouteProps) {
                
             </List>
         )
+    }else if(pathname.includes("/login") ||pathname.includes("/signup")){
+        return (null)
     }
 
 

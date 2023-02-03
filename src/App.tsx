@@ -18,12 +18,13 @@ import IconButton from '@mui/material/IconButton';
 import RoutesRegister from './routesRegister/RoutesRegister'
 import { routeList, routeAccountList } from './routes/routes'
 
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import InstagramImageBlack from './assets/iconmonstr-instagram-11.svg'
 import InstagramImage from './assets/Instagram_logo_2016.svg'
 import SvgIcon from '@mui/material/SvgIcon';
 import Icon from '@mui/material/Icon';
+
 
 
 const customTheme = createTheme({
@@ -42,6 +43,9 @@ function App() {
 
   const [instgramIsHover, setInstgramIsHover] = useState(InstagramImageBlack)
 
+  const {pathname}=useLocation()
+
+
   return (
     <ThemeProvider theme={customTheme}>
       <Box sx={{ minHeight: "100vh", border: "0px solid", backgroundColor: "#fefefe" }}>
@@ -49,7 +53,7 @@ function App() {
         <Toolbar />
 
         <Container sx={{ marginTop: "28px", border: "0px solid" }}>
-          <Stack direction="row" spacing={3} divider={<Divider orientation="vertical" flexItem />}>
+          <Stack direction="row" spacing={3} divider={(pathname.includes("/login") ||pathname.includes("/signup"))?null: <Divider orientation="vertical" flexItem />}>
             <SideBar routeList={routeList} routeAccountList={routeAccountList} />
             <Box sx={{ width: "100%" }}>
               <RoutesRegister routeList={routeList} routeAccountList={routeAccountList} />

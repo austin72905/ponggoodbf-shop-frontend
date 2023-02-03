@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import Input from '@mui/material/Input';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
+import Divider from '@mui/material/Divider';
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -62,6 +63,14 @@ export default function TopBar() {
     window.open("https://www.instagram.com/ponggoodbf/", "_blank")
   }
 
+  const toLogin=()=>{
+    navigate("/login")
+  }
+
+  const toSignUp=()=>{
+    navigate("/signup")
+  }
+
   return (
     <Box>
       <AppBar position="fixed">
@@ -84,7 +93,7 @@ export default function TopBar() {
               <Typography variant="h5" sx={{ letterSpacing: 10, fontWeight: 900, color: "#755F4B" }}>好男友</Typography>
               <Typography sx={{ letterSpacing: 10, fontWeight: 900, color: "#355C5A" }}>線上商店</Typography>
             </Box>
-            <Box>
+            <Box sx={{ display: "flex",flexDirection:"row",alignItems:"center" }}>
               <TopNavButton onClick={handleClick}>
                 <AccountCircleOutlinedIcon />
               </TopNavButton>
@@ -94,6 +103,10 @@ export default function TopBar() {
               <TopNavButton >
                 <NotificationsActiveOutlinedIcon />
               </TopNavButton>
+              <Stack sx={{ml:"10px"}} spacing={"10px"}  direction={"row"} divider={<Divider orientation="vertical" flexItem />}>
+                  <Typography variant='subtitle2' sx={{color:"black",cursor: "pointer"}} onClick={toLogin}>登入</Typography>
+                  <Typography variant='subtitle2' sx={{color:"black",cursor: "pointer"}} onClick={toSignUp} >註冊</Typography>
+              </Stack>
             </Box>
           </Toolbar>
         </Container>
