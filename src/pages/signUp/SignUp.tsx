@@ -34,11 +34,7 @@ export default function SignUp() {
             <Typography variant='body1' >姓名</Typography>
             <TextField placeholder='不得包含特殊符號 / $ . @ & # @...'  sx={{ marginTop: "10px" }}  fullWidth />
           </ItemWrapper>
-
-          <ItemWrapper>
-            <Typography variant='body1' >電話</Typography>
-            <TextField placeholder='ex: 09xxxxxxxx'  sx={{ marginTop: "10px" }}  fullWidth />
-          </ItemWrapper>
+         
           <ItemWrapper>
             <Typography variant='body1' >信箱</Typography>
             <TextField placeholder='ex: asbc@gmail.com'  sx={{ marginTop: "10px" }}  fullWidth />
