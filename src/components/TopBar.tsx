@@ -21,9 +21,12 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import AddLocationAltOutlinedIcon from '@mui/icons-material/AddLocationAltOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import Avatar from '@mui/material/Avatar';
 import Paper from '@mui/material/Paper';
+
 import InputBase from '@mui/material/InputBase';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
@@ -132,10 +135,17 @@ export default function TopBar() {
                   <SearchIcon />
                 </IconButton>
               }
-              
-              <TopNavButton onClick={handleClick}>
-                <AccountCircleOutlinedIcon />
-              </TopNavButton>
+              {
+                fakeIsLogin
+                  ?
+                  <TopNavButton onClick={handleClick}>
+                    <AccountCircleOutlinedIcon />
+                  </TopNavButton>
+                  
+                  :
+                  null
+              }
+
               <TopNavButton onClick={toCart}>
                 <ShoppingCartOutlinedIcon />
               </TopNavButton>
@@ -154,24 +164,38 @@ export default function TopBar() {
             </Box>
           </Toolbar>
         </Container>
+        
 
       </AppBar>
 
       {/*他是黏著 帳戶icon 鈕的 */}
-      <Menu anchorEl={anchorElement} open={open} onClick={handleClose} onClose={handleClose}>
+      
+      <Menu disableScrollLock sx={{border:"0px solid"}} anchorEl={anchorElement} open={open} onClick={handleClose} onClose={handleClose}>
         <MenuItem component={RouterLink} to="/user/account">
-          <PersonOutlineIcon />
+          <PersonOutlineIcon sx={{ color: "orange" }} />
           <Typography sx={{ marginLeft: 1 }} variant='body2'>我的帳戶</Typography>
         </MenuItem>
         <MenuItem component={RouterLink} to="/user/purchase">
-          <ReceiptLongIcon />
+          <ReceiptLongIcon sx={{ color: "green" }} />
           <Typography sx={{ marginLeft: 1 }} variant='body2'>訂單查詢</Typography>
         </MenuItem>
         <MenuItem component={RouterLink} to="/user/collection-list">
-          <FavoriteIcon />
+          <FavoriteIcon sx={{ color: "red" }} />
           <Typography sx={{ marginLeft: 1 }} variant='body2'>願望清單</Typography>
         </MenuItem>
+        <MenuItem component={RouterLink} to="/user/modify-password">
+          <KeyOutlinedIcon sx={{ color: "brown" }} />
+          <Typography sx={{ marginLeft: 1 }} variant='body2'>修改密碼</Typography>
+        </MenuItem>
+        <MenuItem component={RouterLink} to="/user/addressed">
+          <AddLocationAltOutlinedIcon sx={{ color: "#9f9f9f" }} />
+          <Typography sx={{ marginLeft: 1 }} variant='body2'>常用地址</Typography>
+        </MenuItem>
       </Menu>
+      
+      
+
+      
     </Box>
   )
 }

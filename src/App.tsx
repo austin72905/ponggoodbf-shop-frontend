@@ -113,7 +113,7 @@ function App() {
 
       </Box>
       {/*聊天室 */}
-      <Box sx={{ bottom: "0px", right: "10px", border: "0px solid #9c9c9c", position: "fixed", zIndex: 9999 }} >
+      <Box sx={{ bottom: "0px", right: "30px", border: "0px solid #9c9c9c", position: "fixed", zIndex: 9999 }} >
         <Paper >
           {/*聊天室top */}
           <Stack onClick={() => { setChatOpen(s => !s) }} justifyContent={"space-between"} direction={"row"} sx={{ background: "#61D1BD", border: "0px solid #9c9c9c", width: "280px", height: "35px", alignItems: "center" }} >

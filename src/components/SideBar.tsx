@@ -84,7 +84,7 @@ export default function SideBar({ routeList,routeAccountList }: RouteProps) {
                         <ListItem key={route.title} sx={{paddingTop:0,paddingBottom:1}}>
                             <ListItemButton 
                                 component={RouterLink}
-                                to={route.path}
+                                to={route.path.replace("/*","")}
     
                                 >
     
