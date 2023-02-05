@@ -40,6 +40,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
+import Badge from '@mui/material/Badge';
 
 import LogoImage from './assets/朋朋大頭貼.jpg'
 
@@ -111,12 +112,17 @@ function App() {
         </Container>
 
       </Box>
-      <Box sx={{ bottom: "0px", right: "10px", border: "1px solid #9c9c9c", position: "fixed", zIndex: 9999 }} >
+      {/*聊天室 */}
+      <Box sx={{ bottom: "0px", right: "10px", border: "0px solid #9c9c9c", position: "fixed", zIndex: 9999 }} >
         <Paper >
-          <Stack onClick={() => { setChatOpen(s => !s) }} justifyContent={"space-between"} direction={"row"} sx={{ background: "#61D1BD", border: "1px solid #9c9c9c", width: "300px", height: "40px", alignItems: "center" }} >
-            <Stack sx={{ border: "0px solid #9c9c9c" }} direction={"row"} >
-              <ChatOutlinedIcon style={{ color: 'white' }} sx={{ width: "30px", height: "30px", pl: "15px" }} />
-              <Typography variant='h5' sx={{ pl: "15px", letterSpacing: "5px", color: "white" }}>聯絡賣家</Typography>
+          {/*聊天室top */}
+          <Stack onClick={() => { setChatOpen(s => !s) }} justifyContent={"space-between"} direction={"row"} sx={{ background: "#61D1BD", border: "0px solid #9c9c9c", width: "280px", height: "35px", alignItems: "center" }} >
+            <Stack alignItems={"center"} sx={{ border: "0px solid #9c9c9c" }} direction={"row"} >
+              <Badge badgeContent={chatRecord.length} max={99} color='error' >
+                <ChatOutlinedIcon style={{ color: 'white' }} sx={{ width: "25px", height: "25px", pl: "15px" }} />
+              </Badge>
+
+              <Typography variant='body1' sx={{ pl: "15px", letterSpacing: "5px", color: "white" }}>聯絡賣家</Typography>
             </Stack>
 
             <Box sx={{ mr: "10px" }} >
@@ -135,83 +141,56 @@ function App() {
           <Stack justifyContent={"space-between"} sx={{ height: "400px", display: chatOpen ? "flex" : "none" }}>
             {/*聊天紀錄 */}
             <Box sx={{ height: "350px" }}>
-              <List sx={{ maxWidth: "300px", maxHeight: "350px", overflow: 'auto' }}>
-                <ListItem  sx={{py: "1px",px:"10px",border: "0px solid #d9d9d9"}}>
-                  
-                  <ListItemText sx={{border: "0px solid #d9d9d9"}} primary={<Stack direction={"row"} justifyContent={"center"}><Typography variant='caption'>2023/2/5 下午06:29</Typography></Stack>}/>
-                 
-                  
-                </ListItem>
-                <ListItem alignItems="flex-start" sx={{ border: "0px solid #d9d9d9", py: "1px",px:"10px" }}>
-                  <ListItemAvatar sx={{ '&.MuiListItemAvatar-root': { minWidth: "40px" }, border: "0px solid #d9d9d9", mr: "5px" }}>
-                    <Avatar alt="LogoImage" src={LogoImage} />
-                  </ListItemAvatar>
-                  <Stack spacing={"2px"} direction={"row"} sx={{ border: "0px solid #d9d9d9" }}>
 
-                    <ListItemText sx={{ py: "6px", px: "10px", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?</Typography>} />
-                   
-                  </Stack>
+              <List sx={{ maxWidth: "280px", maxHeight: "347px", overflow: 'auto' }}>
+                {
+                  chatRecord.map((chat, index) =>
+                  (
 
+                    <React.Fragment key={index}>
 
+                      {/*是否寫是時間 */}
+                      {
+                        chat.isTodayFirstMsg
+                          ?
+                          <ListItem sx={{ py: "1px", px: "10px", border: "0px solid #d9d9d9" }}>
+                            <ListItemText sx={{ border: "0px solid #d9d9d9" }} primary={<Stack direction={"row"} justifyContent={"center"}><Typography variant='caption'>{chat.date}</Typography></Stack>} />
+                          </ListItem>
+                          :
+                          null
+                      }
+                      {
+                        chat.isAdmin
+                        ?
+                        <ListItem alignItems="flex-start" sx={{ border: "0px solid #d9d9d9", py: "1px", px: "10px" }}>
+                          <ListItemAvatar sx={{ '&.MuiListItemAvatar-root': { minWidth: "40px" }, border: "0px solid #d9d9d9", mr: "5px" }}>
+                            <Avatar alt="LogoImage" src={LogoImage} />
+                          </ListItemAvatar>
+                          <Stack spacing={"2px"} direction={"row"} sx={{ border: "0px solid #d9d9d9" }}>
 
-                </ListItem>
+                            <ListItemText sx={{ py: "6px", px: "10px", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >{chat.msg}</Typography>} />
 
-                <ListItem sx={{ border: "0px solid #d9d9d9", display: "flex", flexDirection: "row", justifyContent: "end", py: "1px",px:"10px" }}>
-                  <Box sx={{ border: "0px solid #d9d9d9" }}>
-                    <ListItemText sx={{ py: "6px", px: "10px", backgroundColor: "#96DB8B", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >是的，請問何時出貨?</Typography>} />
-                  </Box>
+                          </Stack>
+                        </ListItem>
+                        :
+                        <ListItem sx={{ border: "0px solid #d9d9d9", display: "flex", flexDirection: "row", justifyContent: "end", py: "1px", px: "10px" }}>
+                          <Box sx={{ border: "0px solid #d9d9d9" }}>
+                            <ListItemText sx={{ py: "6px", px: "10px", backgroundColor: "#96DB8B", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >{chat.msg}</Typography>} />
+                          </Box>
 
-                </ListItem>
-                <ListItem sx={{ border: "0px solid #d9d9d9", display: "flex", flexDirection: "row", justifyContent: "end", py: "1px",px:"10px" }}>
-                  <Box sx={{ border: "0px solid #d9d9d9" }}>
-                    <ListItemText sx={{ py: "6px", px: "10px", backgroundColor: "#96DB8B", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >是的，請問何時出貨?</Typography>} />
-                  </Box>
+                        </ListItem>
+                      }
 
-                </ListItem>
-                <ListItem sx={{ border: "0px solid #d9d9d9", display: "flex", flexDirection: "row", justifyContent: "end", py: "1px",px:"10px" }}>
-                  <Box sx={{ border: "0px solid #d9d9d9" }}>
-                    <ListItemText sx={{ py: "6px", px: "10px", backgroundColor: "#96DB8B", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >是的，請問何時出貨?</Typography>} />
-                  </Box>
+                    </React.Fragment>
 
-                </ListItem>
-                <ListItem sx={{ border: "0px solid #d9d9d9", display: "flex", flexDirection: "row", justifyContent: "end", py: "1px",px:"10px" }}>
-                  <Box sx={{ border: "0px solid #d9d9d9" }}>
-                    <ListItemText sx={{ py: "6px", px: "10px", backgroundColor: "#96DB8B", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >是的，請問何時出貨?</Typography>} />
-                  </Box>
-
-                </ListItem>
-
-                <ListItem  sx={{py: "1px",px:"10px",border: "0px solid #d9d9d9"}}>
-                  
-                  <ListItemText sx={{border: "0px solid #d9d9d9"}} primary={<Stack direction={"row"} justifyContent={"center"}><Typography variant='caption'>2023/2/8 下午01:13</Typography></Stack>}/>
-                 
-                  
-                </ListItem>
-
-                <ListItem alignItems="flex-start" sx={{ border: "0px solid #d9d9d9", py: "1px",px:"10px" }}>
-                  <ListItemAvatar sx={{ '&.MuiListItemAvatar-root': { minWidth: "40px" }, border: "0px solid #d9d9d9", mr: "5px" }}>
-                    <Avatar alt="LogoImage" src={LogoImage} />
-                  </ListItemAvatar>
-                  <Stack spacing={"2px"} direction={"row"} sx={{ border: "0px solid #d9d9d9" }}>
-
-                    <ListItemText sx={{ py: "6px", px: "10px", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >付款完就會出貨</Typography>} />
-                   
-                  </Stack>
-
-                </ListItem>
-
-                <ListItem sx={{ border: "0px solid #d9d9d9", display: "flex", flexDirection: "row", justifyContent: "end", py: "1px",px:"10px" }}>
-                  <Box sx={{ border: "0px solid #d9d9d9" }}>
-                    <ListItemText sx={{ py: "6px", px: "10px", backgroundColor: "#96DB8B", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >那麼晚才回是不想做生意了?</Typography>} />
-                  </Box>
-
-                </ListItem>
-
+                  ))
+                }
+                
               </List>
             </Box>
-
+            {/*訊息輸入框 */}
             <Stack direction={"row"} sx={{ justifyContent: "end" }}>
-              <Paper sx={{ border: "1px solid #d9d9d9", boxShadow: "none", display: 'flex', alignItems: 'center', width: "300px", height: 35 }}>
+              <Paper sx={{ border: "1px solid #d9d9d9", boxShadow: "none", display: 'flex', alignItems: 'center', width: "280px", height: 35 }}>
 
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
@@ -233,5 +212,55 @@ function App() {
     </ThemeProvider>
   );
 }
+
+
+interface Chat {
+  isAdmin: boolean;
+  msg: string;
+  date: string;
+  isTodayFirstMsg:boolean;
+}
+
+const chatRecord: Chat[] = [
+  {
+    isAdmin: true,
+    msg: "請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?",
+    date: "2023/2/5 下午06:29",
+    isTodayFirstMsg:true
+  },
+  {
+    isAdmin: false,
+    msg: "是的，請問何時出貨?",
+    date: "2023/2/5 下午07:29",
+    isTodayFirstMsg:false
+  },
+  {
+    isAdmin: false,
+    msg: "一次買10個可以免運嗎?",
+    date: "2023/2/5 下午07:30",
+    isTodayFirstMsg:false
+  },
+  {
+    isAdmin: false,
+    msg: "??",
+    date: "2023/2/6 下午13:30",
+    isTodayFirstMsg:true
+  },
+  {
+    isAdmin: true,
+    msg: "付款完就會出貨",
+    date: "2023/2/8 下午01:13",
+    isTodayFirstMsg:true
+  },
+  {
+    isAdmin: false,
+    msg: "那麼晚才回是不想做生意了?",
+    date: "2023/2/8 下午01:30",
+    isTodayFirstMsg:false
+  }
+
+
+
+]
 
 export default App;

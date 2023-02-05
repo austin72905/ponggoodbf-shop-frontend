@@ -21,13 +21,14 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
+
 import ProductImage from '../../assets/朋朋衛生紙商品圖.jpg'
 
 export default function Cart() {
 
     const navigate = useNavigate();
 
-    const toCheckout=()=>{
+    const toCheckout = () => {
         navigate("/checkout")
     }
 
@@ -63,156 +64,52 @@ export default function Cart() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {fakeDataList().map((item,index) =>
-                                (
-                                    <TableRow key={index}>
-                                        <TableCell style={{ width: "50%" }} >
-                                            <Stack spacing={"20px"} direction={"row"} alignItems="center">
-                                                <Box sx={{ my: "5px" }}>
-                                                    <img src={ProductImage} style={{ width: "100px", height: "100px", padding: 0, margin: 0 }} />
-                                                </Box>
-                                                <Stack spacing={"2px"}>
-                                                    <Typography >
-                                                        {item.name}
-                                                    </Typography>
-                                                    <Typography variant='caption'>
-                                                        規格 : 標準
-                                                    </Typography>
+                                {
+                                    fakeDataList().map((item, index) =>
+                                    (
+                                        <TableRow key={index}>
+                                            <TableCell style={{ width: "50%" }} >
+                                                <Stack spacing={"20px"} direction={"row"} alignItems="center">
+                                                    <Box sx={{ my: "5px" }}>
+                                                        <img src={ProductImage} style={{ width: "100px", height: "100px", padding: 0, margin: 0 }} />
+                                                    </Box>
+                                                    <Stack spacing={"2px"}>
+                                                        <Typography >
+                                                            {item.name}
+                                                        </Typography>
+                                                        <Typography variant='caption'>
+                                                            規格 : 標準
+                                                        </Typography>
+                                                    </Stack>
+
+
                                                 </Stack>
 
+                                            </TableCell>
+                                            <TableCell align='center'>${item.price}</TableCell>
+                                            <TableCell align='center'>
+                                                <Box sx={{ display: "flex", marginLeft: "30px", border: "0px solid" }}>
+                                                    <RemoveIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
+                                                    <TextFieldWrapper size='small' inputProps={{ style: { textAlign: "center", height: "15px" } }} ></TextFieldWrapper>
+                                                    <AddIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
+                                                </Box>
+                                            </TableCell>
+                                            <TableCell align='center'>$100</TableCell>
+                                            <TableCell sx={{ border: "0px solid" }} align='center'>
+                                                <Stack sx={{ border: "0px solid" }} alignItems="center">
+                                                    <IconButton>
+                                                        <FavoriteBorderIcon />
+                                                    </IconButton>
+                                                    <IconButton>
+                                                        <DeleteOutlineOutlinedIcon />
+                                                    </IconButton>
+                                                </Stack>
+                                            </TableCell>
+                                        </TableRow>
 
-                                            </Stack>
+                                    ))
+                                }
 
-                                        </TableCell>
-                                        <TableCell align='center'>${item.price}</TableCell>
-                                        <TableCell align='center'>
-                                            <Box sx={{ display: "flex", marginLeft: "30px", border: "0px solid" }}>
-                                                <RemoveIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
-                                                <TextFieldWrapper size='small' inputProps={{ style: { textAlign: "center", height: "15px" } }} ></TextFieldWrapper>
-                                                <AddIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
-                                            </Box>
-                                        </TableCell>
-                                        <TableCell align='center'>$100</TableCell>
-                                        <TableCell sx={{ border: "0px solid" }} align='center'>
-                                            <Stack sx={{ border: "0px solid" }} alignItems="center">
-                                                <IconButton>
-                                                    <FavoriteBorderIcon />
-                                                </IconButton>
-                                                <IconButton>
-                                                    <DeleteOutlineOutlinedIcon />
-                                                </IconButton>
-                                            </Stack>
-                                        </TableCell>
-                                    </TableRow>
-
-                                ))}
-                                <TableRow >
-                                    <TableCell style={{ width: "50%" }} >
-                                        <Stack spacing={"20px"} direction={"row"} alignItems="center">
-                                            <Box sx={{ my: "5px" }}>
-                                                <img src={ProductImage} style={{ width: "100px", height: "100px", padding: 0, margin: 0 }} />
-                                            </Box>
-                                            <Stack spacing={"2px"}>
-                                                <Typography >
-                                                    好男人需要時我都在衛生紙(10入)
-                                                </Typography>
-                                                <Typography variant='caption'>
-                                                    規格 : 標準
-                                                </Typography>
-                                            </Stack>
-
-
-                                        </Stack>
-
-                                    </TableCell>
-                                    <TableCell align='center'>$100</TableCell>
-                                    <TableCell align='center'>
-                                        <Box sx={{ display: "flex", marginLeft: "30px", border: "0px solid" }}>
-                                            <RemoveIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
-                                            <TextFieldWrapper size='small' inputProps={{ style: { textAlign: "center", height: "15px" } }} ></TextFieldWrapper>
-                                            <AddIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
-                                        </Box>
-                                    </TableCell>
-                                    <TableCell align='center'>$100</TableCell>
-                                    <TableCell sx={{ border: "0px solid" }} align='center'>
-                                        <Stack sx={{ border: "0px solid" }} alignItems="center">
-                                            <IconButton>
-                                                <FavoriteBorderIcon />
-                                            </IconButton>
-                                            <IconButton>
-                                                <DeleteOutlineOutlinedIcon />
-                                            </IconButton>
-                                        </Stack>
-                                    </TableCell>
-                                </TableRow>
-
-                                <TableRow >
-                                    <TableCell style={{ width: "50%" }} >
-                                        <Stack spacing={"20px"} direction={"row"} alignItems="center">
-                                            <Box>
-                                                <img src={ProductImage} style={{ width: "100px", height: "100px", padding: 0, margin: 0 }} />
-                                            </Box>
-                                            <Typography >
-                                                好男人需要時我都在衛生紙(10入)
-                                            </Typography>
-
-                                        </Stack>
-
-                                    </TableCell>
-                                    <TableCell align='center'>$100</TableCell>
-                                    <TableCell align='center'>
-                                        <Box sx={{ display: "flex", marginLeft: "30px", border: "0px solid" }}>
-                                            <RemoveIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
-                                            <TextFieldWrapper size='small' inputProps={{ style: { textAlign: "center", height: "15px" } }} ></TextFieldWrapper>
-                                            <AddIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
-                                        </Box>
-                                    </TableCell>
-                                    <TableCell align='center'>$100</TableCell>
-                                    <TableCell sx={{ border: "0px solid" }} align='center'>
-                                        <Stack sx={{ border: "0px solid" }} alignItems="center">
-                                            <IconButton>
-                                                <FavoriteBorderIcon />
-                                            </IconButton>
-                                            <IconButton>
-                                                <DeleteOutlineOutlinedIcon />
-                                            </IconButton>
-                                        </Stack>
-                                    </TableCell>
-                                </TableRow>
-
-                                <TableRow >
-                                    <TableCell style={{ width: "50%" }} >
-                                        <Stack spacing={"20px"} direction={"row"} alignItems="center">
-                                            <Box>
-                                                <img src={ProductImage} style={{ width: "100px", height: "100px", padding: 0, margin: 0 }} />
-                                            </Box>
-                                            <Typography >
-                                                好男人需要時我都在衛生紙(10入)
-                                            </Typography>
-
-                                        </Stack>
-
-                                    </TableCell>
-                                    <TableCell align='center'>$100</TableCell>
-                                    <TableCell align='center'>
-                                        <Box sx={{ display: "flex", marginLeft: "30px", border: "0px solid" }}>
-                                            <RemoveIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
-                                            <TextFieldWrapper size='small' inputProps={{ style: { textAlign: "center", height: "15px" } }} ></TextFieldWrapper>
-                                            <AddIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
-                                        </Box>
-                                    </TableCell>
-                                    <TableCell align='center'>$100</TableCell>
-                                    <TableCell align='center'>
-                                        <Stack sx={{ border: "0px solid" }} alignItems="center">
-                                            <IconButton>
-                                                <FavoriteBorderIcon />
-                                            </IconButton>
-                                            <IconButton>
-                                                <DeleteOutlineOutlinedIcon />
-                                            </IconButton>
-                                        </Stack>
-                                    </TableCell>
-                                </TableRow>
                             </TableBody>
                         </Table>
                     </TableContainer >
