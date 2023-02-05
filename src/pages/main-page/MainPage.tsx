@@ -22,6 +22,7 @@ import CardActions from '@mui/material/CardActions';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Divider from '@mui/material/Divider';
+import Checkbox from '@mui/material/Checkbox';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -185,7 +186,8 @@ const ListView = ({viewProduct}:ViewProps) => {
                     <Typography>NT${info.price}</Typography>
                   </CardContent>
                   <CardActions sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>
-                    <IconButton><FavoriteIcon sx={{ color: "red" }} /></IconButton>
+                    
+                    <Checkbox icon={<FavoriteBorderIcon/>} checkedIcon={<FavoriteIcon sx={{ color: "red" }} />}/>
                     <Button variant="contained">加入購物車</Button>
                   </CardActions>
                 </Box>

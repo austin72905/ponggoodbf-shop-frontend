@@ -28,7 +28,7 @@ import { routeList, routeAccountList } from './routes/routes'
 
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import InstagramImageBlack from './assets/iconmonstr-instagram-11.svg'
+import InstagramImageBlack from './assets/instagram-gray.svg'
 import InstagramImage from './assets/Instagram_logo_2016.svg'
 import SvgIcon from '@mui/material/SvgIcon';
 import Icon from '@mui/material/Icon';

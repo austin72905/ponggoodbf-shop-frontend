@@ -9,6 +9,7 @@ import styled from '@mui/system/styled';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
+import Checkbox from '@mui/material/Checkbox';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
@@ -17,6 +18,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import IconButton from '@mui/material/IconButton';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -97,9 +99,7 @@ export default function Cart() {
                                             <TableCell align='center'>$100</TableCell>
                                             <TableCell sx={{ border: "0px solid" }} align='center'>
                                                 <Stack sx={{ border: "0px solid" }} alignItems="center">
-                                                    <IconButton>
-                                                        <FavoriteBorderIcon />
-                                                    </IconButton>
+                                                    <Checkbox icon={<FavoriteBorderIcon/>} checkedIcon={<FavoriteIcon sx={{ color: "red" }} />}/>
                                                     <IconButton>
                                                         <DeleteOutlineOutlinedIcon />
                                                     </IconButton>
