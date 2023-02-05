@@ -79,6 +79,12 @@ export default function TopBar() {
     setSearchBarOpen(s => !s)
   }
 
+  const [fakeIsLogin, setFakeIsLogin] = useState(false);
+
+  const handleIsLogin = () => {
+    setFakeIsLogin(s => !s)
+  }
+
   return (
     <Box>
       <AppBar position="fixed">
@@ -126,20 +132,25 @@ export default function TopBar() {
                   <SearchIcon />
                 </IconButton>
               }
-
+              
               <TopNavButton onClick={handleClick}>
                 <AccountCircleOutlinedIcon />
               </TopNavButton>
               <TopNavButton onClick={toCart}>
                 <ShoppingCartOutlinedIcon />
               </TopNavButton>
-              <TopNavButton >
+              <TopNavButton onClick={handleIsLogin} >
                 <NotificationsActiveOutlinedIcon />
               </TopNavButton>
-              <Stack sx={{ ml: "10px" }} spacing={"10px"} direction={"row"} divider={<Divider orientation="vertical" flexItem />}>
-                <Typography variant='subtitle2' sx={{ color: "black", cursor: "pointer" }} onClick={toLogin}>登入</Typography>
-                <Typography variant='subtitle2' sx={{ color: "black", cursor: "pointer" }} onClick={toSignUp} >註冊</Typography>
-              </Stack>
+              {fakeIsLogin ?
+                (null)
+                :
+                <Stack sx={{ ml: "10px" }} spacing={"10px"} direction={"row"} divider={<Divider orientation="vertical" flexItem />}>
+                  <Typography variant='subtitle2' sx={{ color: "black", cursor: "pointer" }} onClick={toLogin}>登入</Typography>
+                  <Typography variant='subtitle2' sx={{ color: "black", cursor: "pointer" }} onClick={toSignUp} >註冊</Typography>
+                </Stack>
+              }
+
             </Box>
           </Toolbar>
         </Container>
