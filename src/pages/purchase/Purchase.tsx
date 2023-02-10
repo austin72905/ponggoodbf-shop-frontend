@@ -42,11 +42,13 @@ export default function Purchase() {
   const lastPath = pathname.split('/')
   //console.log("lastPath",lastPath)
 
+  const [orderInfoDetail, setOrderInfoDetail] = useState<OrderInfomation>(orderInfo)
+
 
   //{lastPath.includes("TX")?}
   return (
     <Container maxWidth='xl' sx={{ border: "0px solid" }}>
-      {lastPath[lastPath.length-1].includes("TX")?<OrderDetail/>:<PurchaseRecord/>}
+      {lastPath[lastPath.length - 1].includes("TX") ? <OrderDetail orderInfo={orderInfoDetail} /> : <PurchaseRecord setOrderInfoDetail={setOrderInfoDetail} />}
 
     </Container>
   )
@@ -162,34 +164,37 @@ const cargoInfomation: CargoInfomation[] = [
   },
 ]
 
-const OrderDetail = () => {
+//訂單細節
+const OrderDetail = ({ orderInfo }: OrderDetailProps) => {
 
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
   const [achieveStep, setAchieveStep] = useState<number>(2)
 
   const [cargoStep, setCargoStep] = useState<number>(1)
 
-  const goBackToPurchaseOrder=()=>{
+  const goBackToPurchaseOrder = () => {
     navigate("/user/purchase")
   }
 
   return (
     <Grid rowSpacing={"20px"} columnSpacing={"20px"} container columns={8} sx={{ border: "0px solid", marginRight: "10px" }}>
-      <Grid item xs={8}  sx={{ border: "0px solid" }}>
-        <Paper sx={{boxShadow:"none",border:"1px solid #d9d9d9"}}>
+
+      <Grid item xs={8} sx={{ border: "0px solid" }}>
+
+        <Paper sx={{ boxShadow: "none", border: "1px solid #d9d9d9" }}>
           <Stack>
-            <Stack onClick={goBackToPurchaseOrder} direction={"row"} sx={{ border: "0px solid", '&:hover': { cursor: "pointer" }, width: 100, height: 30, mt: "10px", ml: "10px", mb: 0 }}>
+            <Stack onClick={goBackToPurchaseOrder} direction={"row"} sx={{ border: "0px solid", '&:hover': { cursor: "pointer" }, width: 100, height: 30, mt: 1, ml: 1, mb: 0 }}>
               <KeyboardArrowLeftIcon />
               <Typography>上一頁</Typography>
             </Stack>
             <Divider />
-            <Stack direction={"row"} spacing="20px" sx={{ justifyContent: "end", mr: "20px", mt: "20px" }}>
-              <Typography>訂單編號 : TX20230122063253</Typography>
-              <Typography sx={{ color: "#ef6060" }}>已完成訂單</Typography>
+            <Stack direction={"row"} spacing={3} justifyContent={"end"} sx={{ mr: 3, mt: 3 }}>
+              <Typography>訂單編號 : {orderInfo.recordCode}</Typography>
+              <Typography sx={{ color: orderStatusColor.get(orderInfo.status) }}>{orderStatus.get(orderInfo.status)}訂單</Typography>{/**#96DB8B #ef6060 */}
             </Stack>
-
-            <Box sx={{ border: "0px solid", mt: "10px", ml: "10px", py: "30px", px: "30px" }}>
+            {/*訂單流程圖 */}
+            <Box sx={{ border: "0px solid", mt: 1, ml: 1, py: 4, px: 4 }}>
               <Stepper activeStep={achieveStep} alternativeLabel>
                 {orderStepInfomationList.map((step, index) => (
                   <Step key={step.unachieveDescription}>
@@ -215,14 +220,14 @@ const OrderDetail = () => {
       </Grid>
       <Grid item xs={4} sx={{ border: "0px solid" }}>
 
-        <Paper sx={{ height: "250px",boxShadow:"none",border:"1px solid #d9d9d9" }}>
-          <Stack spacing={"30px"} sx={{ ml: "20px", mt: "20px", pb: "20px" }}>
+        <Paper sx={{ height: "250px", boxShadow: "none", border: "1px solid #d9d9d9" }}>
+          <Stack spacing={4} sx={{ ml: 3, mt: 3, pb: 3 }}>
             <Typography sx={{ fontWeight: "bold" }}>收件地址</Typography>
-            <Stack spacing={"10px"}>
-              <Typography variant='caption'>林駿朋</Typography>
-              <Typography variant='caption'>(+886)970588457</Typography>
+            <Stack spacing={1}>
+              <Typography variant='caption'>{orderInfo.address.receiver}</Typography>
+              <Typography variant='caption'>{orderInfo.address.phoneNumber}</Typography>
               <Typography variant='caption'>
-                7-11 雅典門市 台中市南區三民西路377號西川一路1號 店號950963
+                {orderInfo.address.cargoAddress}
               </Typography>
             </Stack>
           </Stack>
@@ -230,10 +235,10 @@ const OrderDetail = () => {
         </Paper>
       </Grid>
       <Grid item xs={4} sx={{ border: "0px solid" }}>
-        <Paper sx={{ height: "250px",boxShadow:"none",border:"1px solid #d9d9d9" }}>
-          <Stack spacing={"30px"} sx={{ ml: "20px", mt: "20px", pb: "20px" }}>
+        <Paper sx={{ height: "250px", boxShadow: "none", border: "1px solid #d9d9d9" }}>
+          <Stack spacing={4} sx={{ ml: 3, mt: 3, pb: 3 }}>
             <Typography sx={{ fontWeight: "bold" }}>物流詳細情況</Typography>
-            <Box sx={{ display:"flex",justifyContent:"center",border: "0px solid", mt: "10px", ml: "10px", py: "0px", px: "30px" }}>
+            <Box sx={{ display: "flex", justifyContent: "center", border: "0px solid", mt: 1, ml: 1, py: 0, px: 0 }}>
               <Stepper activeStep={cargoStep} orientation='vertical' >
                 {cargoInfomation.map((step, index) => (
                   <Step key={step.description}>
@@ -259,8 +264,8 @@ const OrderDetail = () => {
         </Paper>
       </Grid>
       <Grid item xs={8} sx={{ border: "0px solid" }}>
-        <Paper sx={{boxShadow:"none",border:"1px solid #d9d9d9"}}>
-          <Stack spacing={"20px"} sx={{ ml: "20px", mt: "20px", pb: "20px" }}>
+        <Paper sx={{ boxShadow: "none", border: "1px solid #d9d9d9" }}>
+          <Stack spacing={4} sx={{ ml: 3, mt: 3, pb: 3 }}>
             <Typography sx={{ fontWeight: "bold" }}>訂單資訊</Typography>
             <Card sx={{ width: "100%", boxShadow: "none", border: "solid 0px #D9D9D9" }}>
               <Grid container columns={12} sx={{ border: "0px solid purple" }}>
@@ -268,20 +273,20 @@ const OrderDetail = () => {
                   <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
                 </Grid>
                 <Grid item xs={10} sx={{ border: "0px solid orange" }}>
-                  <CardContent sx={{ border: "0px solid red", paddingLeft: "30px", paddingRight: "30px", height: "80px" }}>
+                  <CardContent sx={{ border: "0px solid red", pl: 4, pr: 4, height: "80px" }}>
                     <Grid container columns={8} sx={{ border: "0px solid green", height: "100px" }}>
                       <Grid item xs={6} sx={{ border: "0px solid" }}>
                         <Box sx={{ border: "0px solid", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                          <Typography sx={{ fontWeight: "bold", '&:hover': { cursor: "pointer" } }}>好男人需要時我都在衛生紙(10入)</Typography>
-                          <Typography variant='caption'>規格 : 標準規格</Typography>
+                          <Typography sx={{ fontWeight: "bold", '&:hover': { cursor: "pointer" } }}>{orderInfo.productName}</Typography>
+                          <Typography variant='caption'>規格 : {orderInfo.size}</Typography>
                           <Typography >x 1</Typography>
                         </Box>
                       </Grid>
                       <Grid item xs={2} >
                         <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "end" }}>
-                          <Stack sx={{ alignItems: "end" }} spacing={"20px"}>
-                            <Typography variant='caption' sx={{ color: "#ef6060" }}>已完成</Typography>
-                            <Typography>NT$100</Typography>
+                          <Stack sx={{ alignItems: "end" }} spacing={3}>
+                            <Typography variant='caption' sx={{ color: orderStatusColor.get(orderInfo.status) }}>{orderStatus.get(orderInfo.status)}</Typography>
+                            <Typography>NT${orderInfo.orderPrice}</Typography>
                           </Stack>
                         </Box>
 
@@ -295,9 +300,9 @@ const OrderDetail = () => {
               <Grid container columns={12}>
                 <Grid item xs={9}></Grid>
                 <Grid item xs={3}>
-                  <Grid container columns={4} sx={{ marginTop: "30px", paddingRight: "30px" }}>
+                  <Grid container columns={4} sx={{ mt: 4, pr: 4 }}>
                     <Grid item xs={2}>
-                      <Stack spacing={"20px"} sx={{ border: "0px solid", alignItems: "start" }}>
+                      <Stack spacing={3} sx={{ border: "0px solid", alignItems: "start" }}>
                         <Typography >
                           商品金額
                         </Typography>
@@ -313,18 +318,18 @@ const OrderDetail = () => {
                       </Stack>
                     </Grid>
                     <Grid item xs={2}>
-                      <Stack spacing={"20px"} sx={{ border: "0px solid", alignItems: "end" }}>
+                      <Stack spacing={3} sx={{ border: "0px solid", alignItems: "end" }}>
                         <Typography >
-                          NT$100
+                          NT${orderInfo.prouctPrice}
                         </Typography>
                         <Typography >
-                          NT$39
+                          NT${orderInfo.cargoPrice}
                         </Typography>
                         <Typography sx={{ color: "#ef6060", fontWeight: "bold" }}>
-                          NT$139
+                          NT${orderInfo.orderPrice}
                         </Typography>
                         <Typography >
-                          LinePay
+                          {orderInfo.payWay}
                         </Typography>
                       </Stack>
                     </Grid>
@@ -342,35 +347,116 @@ const OrderDetail = () => {
   )
 }
 
+const orderAddress: OrderAddress = {
+  receiver: "林駿朋",
+  phoneNumber: "(+886)970588457",
+  cargoAddress: "7-11 雅典門市 台中市南區三民西路377號西川一路1號 店號950963"
+}
 
-const PurchaseRecord = () => {
+interface PurchaseRecordProps {
+  setOrderInfoDetail: React.Dispatch<React.SetStateAction<OrderInfomation>>;
+}
 
-  const navigate=useNavigate();
+interface OrderDetailProps {
+  orderInfo: OrderInfomation;
+
+}
+
+interface OrderInfomation {
+  recordCode: string;
+  productName: string;
+  prouctPrice: number;
+  orderPrice: number;
+  size: string;
+  count: number;
+  address: OrderAddress;
+  status: string;
+  cargoPrice: number;
+  payWay: string;
+  cargoInfomation: CargoInfomation[];
+  orderStepInfomation: OrderStepInfomation[];
+
+}
+
+const orderStatus = new Map([
+  ["1", "已完成"],
+  ["0", "待取貨"],
+  ["2", "已取消"],
+  ["3", "待付款"],
+  ["4", "待出貨"],
+  ["5", "退貨/款"]
+])
+
+const orderStatusColor = new Map([
+  ["1", "#ef6060"],
+  ["0", "#96DB8B"],
+  ["2", "#7E7E7E"],
+  ["3", "#96DB8B"],
+  ["4", "#96DB8B"],
+  ["5", "#7E7E7E"]
+])
+
+interface OrderAddress {
+  receiver: string;
+  phoneNumber: string;
+  cargoAddress: string;
+}
+
+const orderInfo: OrderInfomation = {
+  recordCode: "TX20230122063253",
+  productName: "好男人需要時我都在衛生紙(10入)",
+  prouctPrice: 100,
+  orderPrice: 139,
+  count: 1,
+  size: "標準規格",
+  address: orderAddress,
+  cargoInfomation: cargoInfomation,
+  orderStepInfomation: orderStepInfomationList,
+  status: "1",
+  cargoPrice: 39,
+  payWay: "LinePay"
+}
+
+const orderInfoList: OrderInfomation[] = [
+  orderInfo,
+  { ...orderInfo, recordCode: "TX20230122063254" },
+  { ...orderInfo, status: "4" },
+  { ...orderInfo, status: "2",recordCode: "TX20230122063256" }
+]
+
+//訂單頁面
+const PurchaseRecord = ({ setOrderInfoDetail }: PurchaseRecordProps) => {
+
+  const navigate = useNavigate();
   const [viewValue, setviewValue] = useState<string>("所有訂單")
 
   const handleView = (e: React.SyntheticEvent, newVal: string) => {
     setviewValue(newVal)
   }
 
-  const goOrderDetail=()=>{
-    navigate("/user/purchase/TX20222")
+  const goOrderDetail = (orderInfo: OrderInfomation) => {
+    setOrderInfoDetail(orderInfo)
+    navigate(`/user/purchase/${orderInfo.recordCode}`)
   }
 
 
   return (
-    <Grid container columns={8} sx={{ border: "0px solid", marginRight: "10px" }}>
+    <Grid container columns={8} sx={{ border: "0px solid", mr: 1 }}>
       <Grid item xs={8}>
         <TabContext value={viewValue}>
-          <TabList variant='fullWidth' onChange={handleView} sx={{ border: "1px solid #D9D9D9", borderRadius: "4px", marginRight: "10px", backgroundColor: "white" }}>
+          <TabList variant='fullWidth' onChange={handleView} sx={{ border: "1px solid #D9D9D9", borderRadius: "4px", mr: 1, backgroundColor: "white" }}>
             {orderStates.map(orderState => (
               <Tab key={orderState} value={orderState} label={orderState} sx={{ border: "0px solid #AFAFAF", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }}></Tab>
             ))}
           </TabList>
           {orderStates.map(orderState => (
-            <TabPanel key={orderState} value={orderState} sx={{ paddingLeft: "0px", paddingRight: "0px", marginRight: "10px" }}>
-              <Stack direction={"row"} sx={{ justifyContent: "end", my: "20px" }}>
+            <TabPanel key={orderState} value={orderState} sx={{ px: 0, mr: 1 }}>
+
+
+              <Stack direction={"row"} sx={{ justifyContent: "end", my: 3 }}>
+                {/*搜尋欄 */}
                 <Paper sx={{ border: "1px solid #d9d9d9", boxShadow: "none", display: 'flex', alignItems: 'center', width: 350, height: 35 }}>
-                  <IconButton type="button" sx={{ p: '10px', width: 35, height: 35, borderRadius: "0px", '&:hover': { background: "white" } }} aria-label="search">
+                  <IconButton type="button" sx={{ p: 1, width: 35, height: 35, borderRadius: "0px", '&:hover': { background: "white" } }} aria-label="search">
                     <SearchIcon />
                   </IconButton>
                   <InputBase
@@ -379,60 +465,76 @@ const PurchaseRecord = () => {
                     inputProps={{ 'aria-label': '輸入訂單編號或是商品名稱查詢訂單' }}
                   />
                 </Paper>
+
               </Stack>
 
+              {/*訂單們 */}
               <List>
-                <ListItem sx={{ paddingLeft: 0, paddingRight: 0 }}>
-                  <Card sx={{ width: "100%", boxShadow: "none", border: "solid 1px #D9D9D9" }}>
-                    <Grid container columns={12} sx={{ border: "0px solid purple" }}>
-                      <Grid item xs={2}>
-                        <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
-                      </Grid>
-                      <Grid item xs={10} sx={{ border: "0px solid orange" }}>
-                        <CardContent sx={{ border: "0px solid red", paddingLeft: "30px", paddingRight: "30px", height: "80px" }}>
-                          <Grid container columns={8} sx={{ border: "0px solid green", height: "100px" }}>
-                            <Grid item xs={6} sx={{ border: "0px solid" }}>
-                              <Box sx={{ border: "0px solid", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                                <Typography sx={{ fontWeight: "bold", '&:hover': { cursor: "pointer" } }} onClick={goOrderDetail}>好男人需要時我都在衛生紙(10入)</Typography>
-                                <Typography variant='caption'>規格 : 標準規格</Typography>
-                                <Typography >x 1</Typography>
-                              </Box>
-                            </Grid>
-                            <Grid item xs={2} >
-                              <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "end" }}>
-                                <Stack sx={{ alignItems: "end" }} spacing={"20px"}>
-                                  <Typography variant='caption' sx={{ color: "#ef6060" }}>已完成</Typography>
-                                  <Typography>NT$100</Typography>
-                                </Stack>
-                              </Box>
+                {
+                  orderInfoList.map((info, index) => {
 
+                    if( orderStatus.get(info.status) !=viewValue && viewValue!="所有訂單"){
+                      return null
+                    }
+                    
+                    return (
+                      <ListItem key={index} sx={{ px: 0 }}>
+                        <Card sx={{ width: "100%", boxShadow: "none", border: "solid 1px #D9D9D9" }}>
+                          <Grid container columns={12} sx={{ border: "0px solid purple" }}>
+                            <Grid item xs={2}>
+                              <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={ProductImage} alt="product infomation" />
+                            </Grid>
+                            <Grid item xs={10} sx={{ border: "0px solid orange" }}>
+                              <CardContent sx={{ border: "0px solid red", px: 4, height: "80px" }}>
+                                <Grid container columns={8} sx={{ border: "0px solid green", height: "100px" }}>
+                                  <Grid item xs={6} sx={{ border: "0px solid" }}>
+                                    <Box sx={{ border: "0px solid", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                                      <Typography sx={{ fontWeight: "bold", '&:hover': { cursor: "pointer" } }} onClick={() => { goOrderDetail(info) }}>{info.productName}</Typography>
+                                      <Typography variant='caption'>規格 : {info.size}</Typography>
+                                      <Typography >x {info.count}</Typography>
+                                    </Box>
+                                  </Grid>
+                                  <Grid item xs={2} >
+                                    <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "end" }}>
+                                      <Stack sx={{ alignItems: "end" }} spacing={3}>
+                                        <Typography variant='caption' sx={{ color: orderStatusColor.get(info.status) }}>{orderStatus.get(info.status)}</Typography>
+                                        <Typography>NT${info.prouctPrice}</Typography>
+                                      </Stack>
+                                    </Box>
+
+                                  </Grid>
+                                </Grid>
+                              </CardContent>
                             </Grid>
                           </Grid>
-                        </CardContent>
-                      </Grid>
-                    </Grid>
 
-                    <Divider />
-                    <Stack sx={{ alignItems: "end", paddingRight: "30px" }} spacing={"20px"}>
-                      <Stack direction={"row"} sx={{ marginTop: "20px" }} spacing={"5px"}>
-                        <Typography >
-                          訂單金額 :
-                        </Typography>
-                        <Typography sx={{ color: "#ef6060", fontWeight: "bold" }}>
-                          NT$100
-                        </Typography>
-                      </Stack>
+                          <Divider />
+                          <Stack sx={{ alignItems: "end", pr: 4 }} spacing={4}>
+                            <Stack direction={"row"} sx={{ mt: 3 }} spacing={0.5}>
+                              <Typography >
+                                訂單金額 :
+                              </Typography>
+                              <Typography sx={{ color: "#ef6060", fontWeight: "bold" }}>
+                                NT${info.orderPrice}
+                              </Typography>
+                            </Stack>
 
-                      <CardActions sx={{ paddingRight: 0, marginLeft: 2, paddingBottom: 3, display: "flex", flexDirection: "row", justifyContent: "end" }}>
-                        <Button variant="outlined" onClick={goOrderDetail}>訂單詳情</Button>
-                        <Button variant="contained">重新購買</Button>
-                      </CardActions>
-                    </Stack>
+                            <CardActions sx={{ pr: 0, ml: 2, pb: 3, display: "flex", flexDirection: "row", justifyContent: "end" }}>
+                              <Button variant="outlined" onClick={() => { goOrderDetail(info) }}>訂單詳情</Button>
+                              <Button variant="contained">重新購買</Button>
+                            </CardActions>
+                          </Stack>
 
 
 
-                  </Card>
-                </ListItem>
+                        </Card>
+                      </ListItem>
+                    )
+
+
+                  })
+                }
+
               </List>
             </TabPanel>
           ))}
