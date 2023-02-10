@@ -97,16 +97,19 @@ const fakeProductInfomation: ProductInfomation =
 
 const ProductListPage = ({ title, viewValue, handleView,viewProduct }: MainPageProps) => {
   return (
-    <Grid container columns={8} sx={{ border: "0px solid" }} spacing={3}>
+    <Grid container columns={8} spacing={3}>
+      {/*廣告欄 */}
       <Grid item xs={8} lg={8} md={8}>
         <Commercial />
       </Grid>
+      {/*頁面標題 */}
       <Grid item xs={2}>
         <Typography variant='h6' sx={{ fontWeight: "bold" }}>{title}</Typography>
-
       </Grid>
+      
       <Grid item xs={6} >
-        <Stack direction='row' sx={{ justifyContent: "flex-end", display: "flex", alignItems: "center" }}>
+        {/*排序 */}
+        <Stack direction='row' justifyContent={"flex-end"} alignItems={"center"}>
           <FormControl sx={{ minWidth: "120px" }} size="small">
             <InputLabel id="select-sort-id" sx={{ letterSpacing: "5px" }}>排序</InputLabel>
             <Select labelId="select-sort-id" label="排序" sx={{ maxHeight: "35px" }}>
@@ -114,13 +117,12 @@ const ProductListPage = ({ title, viewValue, handleView,viewProduct }: MainPageP
               <MenuItem >金額低-高</MenuItem>
             </Select>
           </FormControl>
+
           <Tabs value={viewValue} onChange={handleView}  >
             <Tab value="grid" icon={<GridViewOutlinedIcon />} sx={{ minWidth: "50%", width: "40px" }}></Tab>
             <Tab value="list" icon={<ListAltOutlinedIcon />} sx={{ minWidth: "50%", width: "40px" }}></Tab>
           </Tabs>
-
         </Stack>
-
 
 
       </Grid>
@@ -151,8 +153,12 @@ const GridView = ({viewProduct}:ViewProps) => {
             <CardWrapper>
               <CardMedia component="img" sx={{ width: "100%", height: "280px" }} image={info.image} alt="product infomation" />
               <CardContent>
-                <Typography sx={{ marginBottom: 2, fontWeight: "bold",'&:hover':{cursor:"pointer"} }} onClick={viewProduct}>{info.title}</Typography>
-                <Typography sx={{ marginTop: 2 }}>NT${info.price}</Typography>
+              
+                <Stack spacing={"15px"}>
+                  <Typography sx={{  fontWeight: "bold",'&:hover':{cursor:"pointer"} }} onClick={viewProduct}>{info.title}</Typography>
+                  <Typography>NT${info.price}</Typography>
+                </Stack>
+                
               </CardContent>
             </CardWrapper>
           </Grid>
@@ -177,21 +183,19 @@ const ListView = ({viewProduct}:ViewProps) => {
         showList.map((info,index)=>
         (
           <React.Fragment key={index}>
-            <ListItem   sx={{ paddingLeft: 0, paddingRight: 0 }}>
+            <ListItem   sx={{ px:0 }}>
               <Card sx={{ display: "flex", width: "100%", boxShadow: "none" }}>
                 <CardMedia component="img" sx={{ width: "120px", height: "120px" }} image={info.image} alt="product infomation" />
                 <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                  <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                  <CardContent sx={{ mx:2, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                     <Typography onClick={viewProduct} sx={{'&:hover':{cursor:"pointer"}}}>{info.title}</Typography>
                     <Typography>NT${info.price}</Typography>
                   </CardContent>
-                  <CardActions sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>
-                    
-                    <Checkbox icon={<FavoriteBorderIcon/>} checkedIcon={<FavoriteIcon sx={{ color: "red" }} />}/>
-                    <Button variant="contained">加入購物車</Button>
+                  <CardActions sx={{ mx:2, mb: 1,display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>                 
+                      <Checkbox icon={<FavoriteBorderIcon/>} checkedIcon={<FavoriteIcon sx={{ color: "red" }} />}/>
+                      <Button variant="contained">加入購物車</Button>   
                   </CardActions>
                 </Box>
-
               </Card>
             </ListItem>
             <Divider/>

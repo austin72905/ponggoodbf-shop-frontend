@@ -196,10 +196,12 @@ export default function Product() {
 
     return (
 
-        <Container maxWidth='xl' sx={{ border: "solid 0px" }}>
-            <Grid container columns={8} sx={{ border: "0px solid" }} spacing={3}>
-                <Grid item xs={4} sx={{ border: "0px solid" }}>
-                    <Grid container columns={16} sx={{ border: "0px solid", minHeight: "400px" }}>
+        <Container maxWidth='xl' >
+            <Grid container columns={8} spacing={3}>
+                <Grid item xs={4} >
+
+                    {/*產品圖片 */}
+                    <Grid container columns={16} sx={{ minHeight: "400px" }}>
                         <Grid item sx={{ border: "0px solid", display: "flex", justifyContent: "center", alignItems: "center" }} xs={2}>
                             <IconButton onClick={throttleHandleImageIndexMinus.current}>
                                 <KeyboardArrowLeftIcon />
@@ -237,7 +239,7 @@ export default function Product() {
                     </Grid>
                 </Grid>
                 <Grid item xs={4}>
-                    <Grid container columns={4} sx={{ border: "0px solid", minHeight: "400px" }}>
+                    <Grid container columns={4} sx={{ border:"1px solid #d9d9d9",minHeight: "400px",borderRadius:"4px" }}>
                         <Grid item xs={4}>
                             <Typography variant='h5' sx={{ fontWeight: "bold", margin: "30px" }}>{fakeProductInfomation.title}</Typography>
                         </Grid>
@@ -249,40 +251,47 @@ export default function Product() {
 
                         </Grid>
                         <Grid item xs={4} sx={{ display: "flex", flexDirection: "column", justifyContent: "end" }}>
-                            <Box sx={{ display: "flex", marginLeft: "30px" }}>
-                                <RemoveIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "38px", width: "38px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
+                            {/*數量欄 */}
+                            <Box sx={{ display: "flex", ml: "30px" }}>
+                                <RemoveIcon sx={{ "&:hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "38px", width: "38px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
                                 <TextFieldWrapper size='small' inputProps={{ style: { textAlign: "center" } }} ></TextFieldWrapper>
-                                <AddIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "38px", width: "38px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
+                                <AddIcon sx={{ "&::hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "38px", width: "38px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
                             </Box>
 
                         </Grid>
                         <Grid item xs={4} sx={{ display: "flex", flexDirection: "column", justifyContent: "end" }}>
-                            <Stack direction={"row"} sx={{ margin: "30px" }} spacing={"10px"}>
+                           
+                            <Stack direction={"row"} sx={{ m: "30px" }} spacing={"10px"}>
                                 <Button variant="outlined">加入購物車</Button>
                                 <Button variant="contained">直接購買</Button>
                             </Stack>
+                            
+                            
 
                         </Grid>
 
                     </Grid>
                 </Grid>
                 <Grid item xs={8}>
+                    
                     <TabContext value={viewValue}>
                         <TabList onChange={handleView} >
                             <Tab value="商品介紹" label="商品介紹" sx={{ border: "1px solid #AFAFAF", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }}></Tab>
                             <Tab value="產品規格" label="產品規格" sx={{ border: "1px solid #AFAFAF" }}></Tab>
                             <Tab value="注意事項" label="注意事項" sx={{ border: "1px solid #AFAFAF", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }}></Tab>
                         </TabList>
-                        <TabPanel value="商品介紹" sx={{ paddingLeft: "0px" }}>
-                            <Stack spacing={"20px"}>
+
+
+                        <TabPanel value="商品介紹" sx={{ pl: 0 }}>
+                            <Stack spacing={3}>
                                 <Typography variant='h6' sx={{ fontWeight: "bold" }}>商品介紹</Typography>
                                 <Typography >超質感暖男衛生紙，無論上廁所要擦屁股、感冒擤鼻涕、還是室友的鳥拉屎在地板上，只要你需要的時候，我都在。</Typography>
                             </Stack>
-
-
                         </TabPanel>
-                        <TabPanel value="產品規格" sx={{ paddingLeft: "0px" }}>
-                            <Stack spacing={"20px"}>
+
+
+                        <TabPanel value="產品規格" sx={{ pl: 0 }}>
+                            <Stack spacing={3}>
                                 <Typography variant='h6' sx={{ fontWeight: "bold" }}>產品規格</Typography>
                                 <Typography>
                                     <ListWrapper>
@@ -294,8 +303,9 @@ export default function Product() {
                                 </Typography>
                             </Stack>
                         </TabPanel>
-                        <TabPanel value="注意事項" sx={{ paddingLeft: "0px" }}>
-                            <Stack spacing={"20px"}>
+
+                        <TabPanel value="注意事項" sx={{ pl: 0 }}>
+                            <Stack spacing={3}>
                                 <Typography variant='h6' sx={{ fontWeight: "bold" }}>注意事項</Typography>
                                 <Typography >
                                     購買後5天內須要付款，未付款視為取消訂單，付款後會儘快出貨，商品物流情況詳情請在訂單查詢頁面追蹤
