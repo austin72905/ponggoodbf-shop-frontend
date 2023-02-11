@@ -23,204 +23,55 @@ export default function Address() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const [defaultAddressList,setDefaultAddressList]=useState(recieverInfoList)
+
+    const changeDefaultAddress=(e:React.MouseEvent,i:number)=>{
+        
+        setDefaultAddressList(temp=>
+            {
+                temp.forEach((ele,index)=>
+                {
+                    if (ele.id!=i){
+                        ele.isDefaultAddress=false
+                    }else{
+                        ele.isDefaultAddress=true
+                    }
+
+                    return ele
+                })
+
+                return [...temp]
+            })
+    }
+
     return (
         <Container sx={{ border: "0px solid" }} maxWidth='xl'>
-            <Paper sx={{ border: "1px solid #d9d9d9", boxShadow: "none", marginLeft: "10px", marginRight: "10px", marginTop: "20px", minHeight: "500px" }}>
-                <Stack spacing={"20px"} >
-                    <Stack sx={{ mt: "30px", px: "30px" }}>
+
+            <Paper sx={{ border: "1px solid #d9d9d9", boxShadow: "none", mx: 1, mt: 2.5, minHeight: "500px" }}>
+                <Stack spacing={3} >
+                    <Stack sx={{ mt: 4, px: "30px" }}>
                         <Typography variant='h6' sx={{ fontWeight: "bold" }}>常用地址</Typography>
                     </Stack>
-                    <Stack sx={{ mt: "30px", px: "30px" }} direction="row" justifyContent="end">
+                    <Stack sx={{ mt: 4, px: 4 }} direction="row" justifyContent="end">
                         <Button variant='outlined' onClick={handleOpen}>新增常用地址</Button>
                     </Stack>
 
-                    <Paper sx={{ mt: "15px", boxShadow: "none", border: "1px solid #61D1BD" }}>
+                    {
+                        defaultAddressList.map((c,index)=>
+                        (
+                            <RecieverInfo key={index} handleOpen={handleOpen} content={c} changeDefaultAddress={changeDefaultAddress}/>
+                        ))
+                    }
+                    
 
-                        <Grid container columns={12} sx={{ p: "30px" }} rowSpacing={"10px"}>
-                            <Grid item xs={9} >
-                                <Grid container columns={12} spacing={"10px"}>
-                                    <Grid item xs={2} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >收件人</Typography>
-                                    </Grid>
-                                    <Grid item xs={10} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2'  >王大明</Typography>
-                                    </Grid>
-
-                                    <Grid item xs={2} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2'>連絡電話</Typography>
-                                    </Grid>
-                                    <Grid item xs={10} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >0945864315</Typography>
-
-                                    </Grid>
-                                    <Grid item xs={2} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >信箱</Typography>
-                                    </Grid>
-                                    <Grid item xs={10} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2'>Laopigu@gmail.com</Typography>
-                                    </Grid>
-                                    <Grid item xs={2} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2'>取件地址</Typography>
-                                    </Grid>
-                                    <Grid item xs={10} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >台中市南區三民西路377號西川一路1號</Typography>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-
-                            <Grid item xs={3} sx={{ border: "0px solid #d9d9d9" }}>
-                                <Stack spacing={"5px"} alignItems={"end"} justifyContent={"space-between"} sx={{ border: "0px solid", height: "100%", width: "100%" }}>
-                                    <Stack spacing={"5px"} sx={{ border: "0px solid" }} direction={"row"}>
-                                        <Button onClick={handleOpen} variant='outlined' sx={{ border: "1px solid #d9d9d9", color: "#AFAFAF" }}>編輯地址</Button>
-                                        <IconButton>
-                                            <DeleteIcon />
-                                        </IconButton>
-
-                                    </Stack>
-                                    <Stack justifyContent={"center"} alignItems={"center"} sx={{ height: "40px", width: "135px", backgroundColor: "#61D1BD", borderRadius: "4px" }}>
-                                        <Typography variant='button' sx={{ color: "white" }}>預設地址</Typography>
-                                    </Stack>
-
-
-                                </Stack>
-
-
-
-                            </Grid>
-
-
-
-                        </Grid>
-
-
-
-                    </Paper>
-                    <Paper sx={{ mt: "15px", boxShadow: "none", border: "1px solid #d9d9d9" }}>
-
-                        <Grid container columns={12} sx={{ p: "30px" }} rowSpacing={"10px"}>
-                            <Grid item xs={9} >
-                                <Grid container columns={12} spacing={"10px"}>
-                                    <Grid item xs={2} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >收件人</Typography>
-                                    </Grid>
-                                    <Grid item xs={10} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2'  >王大明</Typography>
-                                    </Grid>
-
-                                    <Grid item xs={2} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2'>連絡電話</Typography>
-                                    </Grid>
-                                    <Grid item xs={10} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >0945864315</Typography>
-
-                                    </Grid>
-                                    <Grid item xs={2} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >信箱</Typography>
-                                    </Grid>
-                                    <Grid item xs={10} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2'>Laopigu@gmail.com</Typography>
-                                    </Grid>
-                                    <Grid item xs={2} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2'>取件地址</Typography>
-                                    </Grid>
-                                    <Grid item xs={10} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >台中市南區三民西路377號西川一路1號</Typography>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-
-                            <Grid item xs={3} sx={{ border: "0px solid #d9d9d9" }}>
-                                <Stack spacing={"5px"} alignItems={"end"} justifyContent={"space-between"} sx={{ border: "0px solid", height: "100%", width: "100%" }}>
-                                    <Stack spacing={"5px"} sx={{ border: "0px solid" }} direction={"row"}>
-                                        <Button variant='outlined' sx={{ border: "1px solid #d9d9d9", color: "#AFAFAF" }}>編輯地址</Button>
-                                        <IconButton>
-                                            <DeleteIcon />
-                                        </IconButton>
-
-                                    </Stack>
-
-                                    <Button variant='outlined' sx={{ width: "135px" }}>設為預設地址</Button>
-
-                                </Stack>
-
-
-
-                            </Grid>
-
-
-
-                        </Grid>
-
-
-
-                    </Paper>
-                    <Paper sx={{ mt: "15px", boxShadow: "none", border: "1px solid #d9d9d9" }}>
-
-                        <Grid container columns={12} sx={{ p: "30px" }} rowSpacing={"10px"}>
-                            <Grid item xs={9} >
-                                <Grid container columns={12} spacing={"10px"}>
-                                    <Grid item xs={2} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >收件人</Typography>
-                                    </Grid>
-                                    <Grid item xs={10} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2'  >王大明</Typography>
-                                    </Grid>
-
-                                    <Grid item xs={2} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2'>連絡電話</Typography>
-                                    </Grid>
-                                    <Grid item xs={10} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >0945864315</Typography>
-
-                                    </Grid>
-                                    <Grid item xs={2} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >信箱</Typography>
-                                    </Grid>
-                                    <Grid item xs={10} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2'>Laopigu@gmail.com</Typography>
-                                    </Grid>
-                                    <Grid item xs={2} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2'>取件地址</Typography>
-                                    </Grid>
-                                    <Grid item xs={10} >
-                                        <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >台中市南區三民西路377號西川一路1號</Typography>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-
-                            <Grid item xs={3} sx={{ border: "0px solid #d9d9d9" }}>
-                                <Stack spacing={"5px"} alignItems={"end"} justifyContent={"space-between"} sx={{ border: "0px solid", height: "100%", width: "100%" }}>
-                                    <Stack spacing={"5px"} sx={{ border: "0px solid" }} direction={"row"}>
-                                        <Button variant='outlined' sx={{ border: "1px solid #d9d9d9", color: "#AFAFAF" }}>編輯地址</Button>
-                                        <IconButton>
-                                            <DeleteIcon />
-                                        </IconButton>
-
-                                    </Stack>
-
-                                    <Button variant='outlined' sx={{ width: "135px" }}>設為預設地址</Button>
-
-                                </Stack>
-
-
-
-                            </Grid>
-
-
-
-                        </Grid>
-
-
-
-                    </Paper>
-
+                    
                 </Stack>
 
 
 
             </Paper>
 
-            <Modal open={open} onClose={handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{ timeout: 500 }}>
+            <Modal open={open} onClose={handleClose} disableScrollLock closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{ timeout: 500 }}>
                 <Fade in={open} >
                     <Box sx={style}>
 
@@ -293,3 +144,119 @@ const ItemWrapper = styled(Box)({
     paddingLeft: "30px",
     paddingRight: "30px"
 })
+
+
+
+interface RecieverInfoProps{
+    handleOpen: () => void;
+    changeDefaultAddress:(e:React.MouseEvent,i:number) => void;
+    content:AddressInfo;
+}
+
+const addressContent=new Map([
+    ["收件人","王大明"],
+    ["連絡電話","0945864315"],
+    ["信箱","Laopigu@gmail.com"],
+    ["取件地址","台中市南區三民西路377號西川一路1號"],
+])
+
+const addressTitle=new Map([
+    ["name","收件人"],
+    ["phoneNumber","連絡電話"],
+    ["mail","信箱"],
+    ["recieverAddress","取件地址"],
+])
+
+type AddressInfo={
+    id:number;
+    name:string;
+    phoneNumber:string;
+    mail:string;
+    recieverAddress:string;
+    isDefaultAddress:boolean;
+}
+
+const aContent:AddressInfo={
+    id:1,
+    name:"王大明",
+    phoneNumber:"0945864315",
+    mail:"Laopigu@gmail.com",
+    recieverAddress:"台中市南區三民西路377號西川一路1號",
+    isDefaultAddress:false
+}
+
+const recieverInfoList:AddressInfo[]=[
+    aContent,
+    {...aContent,id:2},
+    {...aContent,id:3},
+    {...aContent,id:4},
+]
+
+const RecieverInfo = ({handleOpen,changeDefaultAddress,content}:RecieverInfoProps) => {
+    return (
+        <Paper sx={{ mt: 2, boxShadow: "none", border: `1px solid ${content.isDefaultAddress?"#61D1BD":"#d9d9d9"}` }}>
+
+            <Grid container columns={12} sx={{ p: 4 }} >
+                <Grid item xs={9} >
+                    <Grid container columns={12} spacing={1}>
+                        {
+                            Object.getOwnPropertyNames(content).map((n,index)=>{
+
+                                if(n==="isDefaultAddress"){
+                                    return null
+                                }
+
+                                return(
+                                    <React.Fragment key={n}>
+                                        <Grid item xs={2} >
+                                            <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >{addressTitle.get(n)}</Typography>
+                                        </Grid>
+                                        <Grid item xs={10} >
+                                            <Typography sx={{ minWidth: "30px" }} variant='subtitle2'  >{content[n as keyof AddressInfo]}</Typography>
+                                        </Grid>
+                                    </React.Fragment>
+                                )
+                                
+                            })
+                            
+                            
+                        }                    
+                    </Grid>
+                </Grid>
+
+                <Grid item xs={3} sx={{ border: "0px solid #d9d9d9" }}>
+                    <Stack spacing={0.5} alignItems={"end"} justifyContent={"space-between"} sx={{ border: "0px solid", height: "100%", width: "100%" }}>
+                        <Stack spacing={0.5} sx={{ border: "0px solid" }} direction={"row"}>
+                            <Button onClick={handleOpen} variant='outlined' sx={{ border: "1px solid #d9d9d9", color: "#AFAFAF" }}>編輯地址</Button>
+                            <IconButton>
+                                <DeleteIcon />
+                            </IconButton>
+
+                        </Stack>
+                        {
+                            content.isDefaultAddress
+                            ?
+                            <Stack justifyContent={"center"} alignItems={"center"} sx={{ height: "40px", width: "135px", backgroundColor: "#61D1BD", borderRadius: "4px" }}>
+                                <Typography variant='button' sx={{ color: "white" }}>預設地址</Typography>
+                            </Stack>
+                            :
+                            <Button variant='outlined' onClick={(e)=>{changeDefaultAddress(e,content.id)}} sx={{ width: "135px" }}>設為預設地址</Button>
+                        }
+                        
+
+
+                    </Stack>
+
+
+
+                </Grid>
+
+
+
+            </Grid>
+
+
+
+        </Paper>
+    )
+}
