@@ -11,8 +11,8 @@ import TextField from '@mui/material/TextField';
 export default function ModifyPassword() {
     return (
         <Container sx={{ border: "0px solid" }} maxWidth='xl'>
-            <Stack spacing={"10px"} sx={{ minHeight: "500px", marginLeft: "10px", marginRight: "10px", marginTop: "20px", border: "1px solid #D9D9D9", borderRadius: "4px", backgroundColor: "white" }}>
-                <ItemWrapper sx={{ marginTop: "30px" }}>
+            <Stack spacing={1} sx={{ minHeight: "500px", mx:1, mt: 2.5, border: "1px solid #D9D9D9", borderRadius: "4px", backgroundColor: "white" }}>
+                <ItemWrapper sx={{ mt: 4 }}>
                     <Typography variant='h6' sx={{ fontWeight: "bold" }}>更改密碼</Typography>
                 </ItemWrapper>
 

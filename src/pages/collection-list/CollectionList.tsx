@@ -46,7 +46,7 @@ export default function CollectionList() {
     return (
         <Container sx={{ border: "0px solid" }} maxWidth='xl'>
             <Grid container columns={8} sx={{ border: "0px solid" }} spacing={3}>
-                <Grid item xs={8} sx={{ mt: "15px" }}>
+                <Grid item xs={8} sx={{ mt: 2 }}>
                     <Typography variant='h6' sx={{ fontWeight: "bold" }}>願望清單</Typography>
 
                 </Grid>
