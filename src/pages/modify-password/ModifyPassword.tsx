@@ -16,22 +16,12 @@ export default function ModifyPassword() {
                     <Typography variant='h6' sx={{ fontWeight: "bold" }}>更改密碼</Typography>
                 </ItemWrapper>
 
-                <ItemWrapper >
-                    <Typography variant='caption' >舊密碼</Typography>
-                    <TextField placeholder='請輸入舊密碼' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
-                </ItemWrapper>
+                <InputSet label='舊密碼' placeholder='請輸入舊密碼' />
+                <InputSet label='新密碼' placeholder='請輸入新密碼' helperText="請輸入8個字元以上的英文字母及數字，不可使用特殊符號。" />
+                <InputSet label='新密碼確認' placeholder='請再次確認輸入新密碼' />
 
-                <ItemWrapper >
-                    <Typography variant='caption' >新密碼</Typography>
-                    <TextField helperText="請輸入8個字元以上的英文字母及數字，不可使用特殊符號。" placeholder='請輸入新密碼' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
-                </ItemWrapper>
-
-                <ItemWrapper >
-                    <Typography variant='caption' >新密碼確認</Typography>
-                    <TextField placeholder='請再次確認輸入新密碼' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
-                </ItemWrapper>
-                <ItemWrapper sx={{ paddingTop: "40px" }}>
-                    <Button variant="contained" sx={{ color: "white"}}>確認修改</Button>
+                <ItemWrapper sx={{ pt: 5 }}>
+                    <Button variant="contained" sx={{ color: "white" }}>確認修改</Button>
                 </ItemWrapper>
             </Stack>
         </Container>
@@ -39,7 +29,25 @@ export default function ModifyPassword() {
 }
 
 const ItemWrapper = styled(Box)({
-    paddingTop: "5px",
-    paddingLeft: "30px",
-    paddingRight: "30px"
+    paddingTop: "8px",
+    paddingLeft: "32px",
+    paddingRight: "32px"
 })
+
+interface InputSetProps {
+    label: string;
+    placeholder: string;
+    helperText?: string;
+}
+
+const InputSet = ({ label, placeholder, helperText }: InputSetProps) => {
+
+
+    return (
+        <Stack spacing={1} sx={{ pt: 1, px: 4 }}>
+            <Typography variant='caption' >{label}</Typography>
+            <TextField helperText={helperText} placeholder={placeholder} inputProps={{ sx: { height: "15px" } }} size='small' />
+        </Stack>
+    )
+
+}
