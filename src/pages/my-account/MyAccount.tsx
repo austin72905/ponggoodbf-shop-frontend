@@ -16,31 +16,21 @@ import MenuItem from '@mui/material/MenuItem';
 export default function MyAccount() {
   return (
     <Container sx={{ border: "0px solid" }} maxWidth='xl'>
-      <Stack spacing={"10px"} sx={{ minHeight: "700px", marginLeft: "10px", marginRight: "10px", marginTop: "20px", border: "1px solid #D9D9D9", borderRadius: "4px",backgroundColor:"white" }}>
+      <Stack spacing={1} sx={{ minHeight: "700px", mx: 1, mt: 2.5, border: "1px solid #D9D9D9", borderRadius: "4px",backgroundColor:"white" }}>
 
-        <ItemWrapper sx={{ marginTop: "30px" }}>
+        <ItemWrapper sx={{ mt: 4 }}>
           <Typography variant='h6' sx={{ fontWeight: "bold" }}>我的帳戶</Typography>
         </ItemWrapper>
 
-
-        <ItemWrapper >
-          <Typography variant='caption' >姓名</Typography>
-          <TextField placeholder='不得包含特殊符號 / $ . @ & # @...' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
-        </ItemWrapper>
-
-        <ItemWrapper>
-          <Typography variant='caption' >電話</Typography>
-          <TextField placeholder='ex: 09xxxxxxxx' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
-        </ItemWrapper>
-        <ItemWrapper>
-          <Typography variant='caption' >信箱</Typography>
-          <TextField placeholder='ex: asbc@gmail.com' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
-        </ItemWrapper>
+        <InputSet label='姓名' placeholder='不得包含特殊符號 / $ . @ & # @...'/>
+        <InputSet label='電話' placeholder='ex: 09xxxxxxxx'/>
+        <InputSet label='信箱' placeholder='ex: asbc@gmail.com'/>
+        
 
         <ItemWrapper>
           <Typography variant='caption' >生日</Typography>
-          <Stack direction={"row"} spacing={3} sx={{marginTop: "15px" }}>
-            <TextField defaultValue={1} select label="日" inputProps={{ sx: { height: "15px" } }} sx={{ width: "33%" }} size='small'>
+          <Stack direction={"row"} spacing={3} sx={{mt: 2 }}>
+            <TextField defaultValue={1} select label="日"inputProps={{ sx: { height: "15px" } }} sx={{ width: "33%" }} size='small'>
               {
                 dateList(31).map(item => (
                   <MenuItem key={item} value={item}>
@@ -70,6 +60,7 @@ export default function MyAccount() {
           </Stack>
 
         </ItemWrapper>
+
         <ItemWrapper>
           <FormControl>
             <Typography variant='caption' >性別</Typography>
@@ -81,7 +72,7 @@ export default function MyAccount() {
           </FormControl>
         </ItemWrapper>
 
-        <ItemWrapper sx={{paddingTop:"25px"}}>
+        <ItemWrapper sx={{pt:3}}>
         <Button variant="contained" sx={{"& .MuiButton-text":{color:"white"}}}>儲存變更</Button>
         </ItemWrapper>
       </Stack>
@@ -90,10 +81,27 @@ export default function MyAccount() {
 }
 
 
+interface InputSetProps{
+  label:string;
+  placeholder:string;
+}
+
+const InputSet=({label,placeholder}:InputSetProps)=>{
+
+
+  return(
+  <Stack spacing={1} sx={{pt:1,px:4}}>
+    <Typography variant='caption' >{label}</Typography>
+    <TextField placeholder={placeholder} inputProps={{ sx: { height: "15px" } }}  size='small'  />
+  </Stack>
+  )
+  
+}
+
 const ItemWrapper = styled(Box)({
-  paddingTop: "5px",
-  paddingLeft: "30px",
-  paddingRight: "30px"
+  paddingTop: "8px",
+  paddingLeft: "32px",
+  paddingRight: "32px"
 })
 
 const dateList = (n:number) => {
