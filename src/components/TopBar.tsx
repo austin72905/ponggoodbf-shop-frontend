@@ -27,6 +27,12 @@ import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import Avatar from '@mui/material/Avatar';
 import Paper from '@mui/material/Paper';
 
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+
 import InputBase from '@mui/material/InputBase';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
@@ -54,7 +60,10 @@ export default function TopBar() {
   //這邊不給型別 e.currentTarget 會抱錯
   const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null)
 
+
+
   const open = Boolean(anchorElement)
+
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorElement(e.currentTarget)
@@ -62,6 +71,27 @@ export default function TopBar() {
 
   const handleClose = () => {
     setAnchorElement(null)
+  }
+
+  const handleSearchBarFocus: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => {
+    //console.log(e.currentTarget.offsetHeight)
+    setSearchInputFocus(true)
+
+  }
+
+  const handleSearchBarFocusOut: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => {
+    //console.log(e.currentTarget.offsetHeight)
+    setSearchInputFocus(false)
+
+  }
+
+  const [searchInputFocus, setSearchInputFocus] = useState(false)
+
+  const [searchContent, setSearchContent] = useState<string>("")
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //console.log(e.target.value)
+    setSearchContent(e.target.value)
   }
 
   const redirectToInstgram = () => {
@@ -118,18 +148,72 @@ export default function TopBar() {
 
             <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
               {searchBarOpen ? (
-                <Stack direction={"row"} sx={{ justifyContent: "end" }}>
-                  <Paper sx={{ border: "1px solid #d9d9d9", boxShadow: "none", display: 'flex', alignItems: 'center', width: 250, height: 35 }}>
-                    <IconButton onClick={handlesearchBar} type="button" sx={{ p: '10px', width: 35, height: 35, borderRadius: "0px", '&:hover': { background: "white" } }} aria-label="search">
-                      <SearchIcon />
-                    </IconButton>
-                    <InputBase
-                      sx={{ ml: 1, flex: 1 }}
-                      placeholder="搜尋商品"
-                      inputProps={{ 'aria-label': '搜尋商品' }}
-                    />
+                <Stack>
+                  <Stack direction={"row"} sx={{ justifyContent: "end" }}>
+                    <Paper sx={{ border: "1px solid #d9d9d9", boxShadow: "none", display: 'flex', alignItems: 'center', width: 300, height: 35 }}>
+                      <IconButton onClick={handlesearchBar} type="button" sx={{ p: '10px', width: 35, height: 35, borderRadius: "0px", '&:hover': { background: "white" } }} aria-label="search">
+                        <SearchIcon />
+                      </IconButton>
+                      <InputBase
+                        sx={{ ml: 1, flex: 1 }}
+                        placeholder="搜尋商品"
+                        inputProps={{ 'aria-label': '搜尋商品', maxLength: 10 }}
+                        value={searchContent}
+                        onFocus={handleSearchBarFocus}
+                        onBlur={handleSearchBarFocusOut}
+                        onChange={handleInput}
+                      />
+
+
+                    </Paper>
+
+                  </Stack>
+
+                  {/*搜尋欄 */}
+                  <Paper sx={{ position: "absolute", top: "51px", width: 301, display: searchInputFocus &&searchContent!="" ? "block" : "none" }}>
+                    <List sx={{py:0.5}}>
+                      {
+                        searchRecordList.map((result, index) => {
+
+
+                          if (result.includes(searchContent) && searchContent != "") {
+                            return (
+                              <ListItem disablePadding key={index}>
+
+                                <ListItemButton sx={{ border: "0px solid", px: 1, py: 0.5 }} onMouseDown={() => { setSearchContent(result)}}>
+
+                                  <SearchIcon sx={{ color: "#a9a9a9" }} />
+
+                                  <ListItemText primary={result} sx={{ ml: 1.5, border: "0px solid" }} />
+                                </ListItemButton>
+                              </ListItem>
+                            )
+                          }
+
+                          return null
+
+
+                        })
+                      }
+
+                      
+                      <ListItem disablePadding>
+
+                        <ListItemButton sx={{ border: "0px solid", px: 1, py: 0.5 }} onMouseDown={() => { setSearchContent(searchContent) }}>
+
+                          <SearchIcon sx={{ color: "#a9a9a9" }} />
+
+                          <ListItemText primary={searchContent} sx={{ ml: 1.5, border: "0px solid" }} />
+                        </ListItemButton>
+                      </ListItem>
+                        
+
+
+                    </List>
                   </Paper>
-                </Stack>)
+
+                </Stack>
+              )
                 :
                 <IconButton onClick={handlesearchBar}>
                   <SearchIcon />
@@ -141,7 +225,7 @@ export default function TopBar() {
                   <TopNavButton onClick={handleClick}>
                     <AccountCircleOutlinedIcon />
                   </TopNavButton>
-                  
+
                   :
                   null
               }
@@ -164,13 +248,13 @@ export default function TopBar() {
             </Box>
           </Toolbar>
         </Container>
-        
+
 
       </AppBar>
 
       {/*他是黏著 帳戶icon 鈕的 */}
-      
-      <Menu disableScrollLock sx={{border:"0px solid"}} anchorEl={anchorElement} open={open} onClick={handleClose} onClose={handleClose}>
+
+      <Menu disableScrollLock sx={{ border: "0px solid" }} anchorEl={anchorElement} open={open} onClick={handleClose} onClose={handleClose}>
         <MenuItem component={RouterLink} to="/user/account">
           <PersonOutlineIcon sx={{ color: "orange" }} />
           <Typography sx={{ marginLeft: 1 }} variant='body2'>我的帳戶</Typography>
@@ -192,10 +276,10 @@ export default function TopBar() {
           <Typography sx={{ marginLeft: 1 }} variant='body2'>常用地址</Typography>
         </MenuItem>
       </Menu>
-      
-      
 
-      
+      {/*搜尋欄 */}
+
+
     </Box>
   )
 }
@@ -230,3 +314,22 @@ const AvatarButton = styled(Avatar)({
 }
 
 )
+
+
+
+const searchRecordList = [
+  'apple',
+  'banana',
+  'come',
+  'juice',
+  'lobby',
+  'size of penis',
+  'chatgpt',
+  'sizelll',
+  'running',
+  'flower',
+  'jizz',
+  'joke',
+  'tommy',
+  'asiagotone',
+]
