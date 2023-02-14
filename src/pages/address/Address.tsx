@@ -202,7 +202,7 @@ const RecieverInfo = ({handleOpen,changeDefaultAddress,content}:RecieverInfoProp
                         {
                             Object.getOwnPropertyNames(content).map((n,index)=>{
 
-                                if(n==="isDefaultAddress"){
+                                if(n==="isDefaultAddress" || n ==="id"){
                                     return null
                                 }
 
