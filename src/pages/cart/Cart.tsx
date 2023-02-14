@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
@@ -23,6 +23,8 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
+import { ProductInfomation } from '../product/Product'
+
 
 import ProductImage from '../../assets/朋朋衛生紙商品圖.jpg'
 
@@ -33,6 +35,8 @@ export default function Cart() {
     const toCheckout = () => {
         navigate("/checkout")
     }
+
+    
 
     return (
         <Container sx={{ border: "0px solid" }} maxWidth='xl'>
@@ -170,9 +174,13 @@ export default function Cart() {
     )
 }
 
-interface ProductData {
+export interface ProductData {
     name: string;
     price: number;
+}
+
+export interface ProductInfomationCount extends ProductInfomation{
+    count:number
 }
 
 const fakeData: ProductData = {

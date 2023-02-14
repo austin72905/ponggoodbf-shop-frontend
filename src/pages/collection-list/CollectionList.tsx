@@ -50,10 +50,10 @@ export default function CollectionList() {
                     <Typography variant='h6' sx={{ fontWeight: "bold" }}>願望清單</Typography>
 
                 </Grid>
-                <Grid item xs={8} sx={{ my: "0px" }}>
-                    <Stack direction={"row"} sx={{ justifyContent: "end", my: "0px" }}>
+                <Grid item xs={8} sx={{ my: 0 }}>
+                    <Stack direction={"row"} sx={{ justifyContent: "end", my: 0 }}>
                         <Paper sx={{ border: "1px solid #d9d9d9", boxShadow: "none", display: 'flex', alignItems: 'center', width: 350, height: 35 }}>
-                            <IconButton type="button" sx={{ p: '10px', width: 35, height: 35, borderRadius: "0px", '&:hover': { background: "white" } }} aria-label="search">
+                            <IconButton type="button" sx={{ p: 1, width: 35, height: 35, borderRadius: "0px", '&:hover': { background: "white" } }} aria-label="search">
                                 <SearchIcon />
                             </IconButton>
                             <InputBase
@@ -104,6 +104,7 @@ export default function CollectionList() {
 const fakeProductInfomation: ProductInfomation =
 {
   title: "好男人需要時我都在衛生紙(10入)",
+  productId:1,
   stock: 60,
   price: 100,
   image: ProductImage

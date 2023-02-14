@@ -22,7 +22,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
-import React, { useState, useRef, useEffect } from 'react'
+import { CartContext} from '../../contextStore/context'
+import React, { useState, useRef, useEffect,useContext } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import ProductImage from '../../assets/朋朋衛生紙商品圖.jpg'
 import ProductImage1 from '../../assets/輪播圖1.jpg'
@@ -31,6 +32,7 @@ import ProductImage3 from '../../assets/輪播圖3.jpg'
 import { type } from 'os';
 export default function Product() {
     
+    const {addToCart} =useContext(CartContext)
     //定時器，目的是離開組件時清除
     const timerRef=useRef<NodeJS.Timeout[]>()
 
@@ -286,7 +288,7 @@ export default function Product() {
                         <Grid item xs={4} sx={{ display: "flex", flexDirection: "column", justifyContent: "end" }}>
                            
                             <Stack direction={"row"} sx={{ m: "30px" }} spacing={"10px"}>
-                                <Button variant="outlined">加入購物車</Button>
+                                <Button variant="outlined" onClick={()=>{addToCart(fakeProductInfomation)}}>加入購物車</Button>
                                 <Button variant="contained">直接購買</Button>
                             </Stack>
                             
@@ -351,6 +353,7 @@ export interface ProductInfo {
 }
 
 export interface ProductInfomation {
+    productId:number;
     title: string;
     price: number;
     stock: number;
@@ -385,6 +388,7 @@ const imgList: string[] = [
 const fakeProductInfomation: ProductInfomation =
 {
     title: "好男人需要時我都在衛生紙(10入)",
+    productId:1,
     stock: 60,
     price: 100,
     image: ProductImage

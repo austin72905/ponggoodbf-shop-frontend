@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { RouteInfomation } from '../../routes/routes'
 import Container from '@mui/material/Container';
@@ -32,6 +32,8 @@ import Commercial from '../../components/Commercial'
 import ProductImage from '../../assets/朋朋衛生紙商品圖.jpg'
 
 import Product, { ProductInfomation } from '../product/Product'
+
+import { CartContext} from '../../contextStore/context'
 
 interface MainPageProps {
   title: string,
@@ -90,6 +92,7 @@ const CardWrapper = styled(Card)({
 const fakeProductInfomation: ProductInfomation =
 {
   title: "好男人需要時我都在衛生紙(10入)",
+  productId:1,
   stock: 60,
   price: 100,
   image: ProductImage
@@ -169,6 +172,8 @@ const GridView = ({viewProduct}:ViewProps) => {
 
 const ListView = ({viewProduct}:ViewProps) => {
 
+  const {addToCart} =useContext(CartContext)
+
   var showList:ProductInfomation[]=[]
 
   for (let index = 0; index < 5; index++) {
@@ -180,7 +185,7 @@ const ListView = ({viewProduct}:ViewProps) => {
   return (
     <List >
       {
-        showList.map((info,index)=>
+        showList.map((info:ProductInfomation,index)=>
         (
           <React.Fragment key={index}>
             <ListItem   sx={{ px:0 }}>
@@ -193,7 +198,7 @@ const ListView = ({viewProduct}:ViewProps) => {
                   </CardContent>
                   <CardActions sx={{ mx:2, mb: 1,display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>                 
                       <Checkbox icon={<FavoriteBorderIcon/>} checkedIcon={<FavoriteIcon sx={{ color: "red" }} />}/>
-                      <Button variant="contained">加入購物車</Button>   
+                      <Button variant="contained" onClick={()=>{addToCart(info)}}>加入購物車</Button>   
                   </CardActions>
                 </Box>
               </Card>

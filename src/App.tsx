@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, createContext } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -42,6 +42,13 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
 
+import { CartContext } from './contextStore/context'
+
+import { ProductData } from './pages/cart/Cart'
+import { ProductInfomation } from './pages/product/Product'
+
+import { ProductInfomationCount } from './pages/cart/Cart'
+
 import LogoImage from './assets/朋朋大頭貼.jpg'
 
 const customTheme = createTheme({
@@ -64,23 +71,49 @@ function App() {
 
   const [chatOpen, setChatOpen] = useState(false)
 
+  const [cartContent, setCartContent] = useState<ProductInfomationCount[]>([])
+  console.log("cartContent",cartContent)
+  const addToCart=(product:ProductInfomation)=>{
+    setCartContent(prev=>{
+
+      if(prev.length==0 || !prev.find(ele=>ele.productId===product.productId)){
+        prev.push({...product,count:1})
+      }else{
+        prev.forEach((prod,index)=>{
+          if(prod.productId===product.productId){
+            prod.count+=1
+          }
+
+          return prod
+        })
+      }
+      
+
+      return [...prev]
+    })
+  }
+
 
   return (
     <ThemeProvider theme={customTheme}>
-      <Box sx={{ minHeight: "100vh", border: "0px solid", backgroundColor: "#fefefe" }}>
-        <TopBar />
-        <Toolbar />
-        <ScrollToTop />
-        <Container sx={{ marginTop: "28px", border: "0px solid" }}>
-          <Stack direction="row" spacing={3} divider={(pathname.includes("/login") || pathname.includes("/signup")) ? null : <Divider orientation="vertical" flexItem />}>
-            <SideBar routeList={routeList} routeAccountList={routeAccountList} />
-            <Box sx={{ width: "100%" }}>
-              <RoutesRegister routeList={routeList} routeAccountList={routeAccountList} />
-            </Box>
-          </Stack>
+      <CartContext.Provider value={{cartContent,addToCart}}>
+        <Box sx={{ minHeight: "100vh", border: "0px solid", backgroundColor: "#fefefe" }}>
+          <TopBar />
+          <Toolbar />
+          <ScrollToTop />
+          <Container sx={{ marginTop: "28px", border: "0px solid" }}>
+            <Stack direction="row" spacing={3} divider={(pathname.includes("/login") || pathname.includes("/signup")) ? null : <Divider orientation="vertical" flexItem />}>
+              <SideBar routeList={routeList} routeAccountList={routeAccountList} />
+              <Box sx={{ width: "100%" }}>
+                <RoutesRegister routeList={routeList} routeAccountList={routeAccountList} />
+              </Box>
+            </Stack>
 
-        </Container>
-      </Box>
+          </Container>
+        </Box>
+      </CartContext.Provider>
+
+
       <Box sx={{ mt: "30px", border: "1px solid #fafafa", backgroundColor: "#fafafa" }}>
         <Container sx={{ marginTop: "30px", border: "0px solid" }}>
           <Container sx={{ border: "0px solid" }} maxWidth='xl'>
@@ -114,7 +147,7 @@ function App() {
       </Box>
       {/*聊天室 */}
       <Box sx={{ bottom: "0px", right: "30px", border: "0px solid #9c9c9c", position: "fixed", zIndex: 9999 }} >
-        <Paper sx={{width: "280px"}}>
+        <Paper sx={{ width: "280px" }}>
           {/*聊天室top */}
           <Stack onClick={() => { setChatOpen(s => !s) }} justifyContent={"space-between"} direction={"row"} sx={{ background: "#61D1BD", border: "0px solid #9c9c9c", width: "280px", height: "35px", alignItems: "center" }} >
             <Stack alignItems={"center"} sx={{ border: "0px solid #9c9c9c" }} direction={"row"} >
@@ -161,31 +194,31 @@ function App() {
                       }
                       {
                         chat.isAdmin
-                        ?
-                        <ListItem alignItems="flex-start" sx={{ border: "0px solid #d9d9d9", py: "1px", px: "10px" }}>
-                          <ListItemAvatar sx={{ '&.MuiListItemAvatar-root': { minWidth: "40px" }, border: "0px solid #d9d9d9", mr: "5px" }}>
-                            <Avatar alt="LogoImage" src={LogoImage} />
-                          </ListItemAvatar>
-                          <Stack spacing={"2px"} direction={"row"} sx={{ border: "0px solid #d9d9d9" }}>
+                          ?
+                          <ListItem alignItems="flex-start" sx={{ border: "0px solid #d9d9d9", py: "1px", px: "10px" }}>
+                            <ListItemAvatar sx={{ '&.MuiListItemAvatar-root': { minWidth: "40px" }, border: "0px solid #d9d9d9", mr: "5px" }}>
+                              <Avatar alt="LogoImage" src={LogoImage} />
+                            </ListItemAvatar>
+                            <Stack spacing={"2px"} direction={"row"} sx={{ border: "0px solid #d9d9d9" }}>
 
-                            <ListItemText sx={{ py: "6px", px: "10px", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >{chat.msg}</Typography>} />
+                              <ListItemText sx={{ py: "6px", px: "10px", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >{chat.msg}</Typography>} />
 
-                          </Stack>
-                        </ListItem>
-                        :
-                        <ListItem sx={{ border: "0px solid #d9d9d9", display: "flex", flexDirection: "row", justifyContent: "end", py: "1px", px: "10px" }}>
-                          <Box sx={{ border: "0px solid #d9d9d9" }}>
-                            <ListItemText sx={{ py: "6px", px: "10px", backgroundColor: "#96DB8B", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >{chat.msg}</Typography>} />
-                          </Box>
+                            </Stack>
+                          </ListItem>
+                          :
+                          <ListItem sx={{ border: "0px solid #d9d9d9", display: "flex", flexDirection: "row", justifyContent: "end", py: "1px", px: "10px" }}>
+                            <Box sx={{ border: "0px solid #d9d9d9" }}>
+                              <ListItemText sx={{ py: "6px", px: "10px", backgroundColor: "#96DB8B", border: "1px solid #d9d9d9", borderRadius: "20px" }} primary={<Typography variant='subtitle2' sx={{ border: "0px solid #d9d9d9" }} >{chat.msg}</Typography>} />
+                            </Box>
 
-                        </ListItem>
+                          </ListItem>
                       }
 
                     </React.Fragment>
 
                   ))
                 }
-                
+
               </List>
             </Box>
             {/*訊息輸入框 */}
@@ -218,7 +251,7 @@ interface Chat {
   isAdmin: boolean;
   msg: string;
   date: string;
-  isTodayFirstMsg:boolean;
+  isTodayFirstMsg: boolean;
 }
 
 const chatRecord: Chat[] = [
@@ -226,37 +259,37 @@ const chatRecord: Chat[] = [
     isAdmin: true,
     msg: "請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?請問有下單嗎?",
     date: "2023/2/5 下午06:29",
-    isTodayFirstMsg:true
+    isTodayFirstMsg: true
   },
   {
     isAdmin: false,
     msg: "是的，請問何時出貨?",
     date: "2023/2/5 下午07:29",
-    isTodayFirstMsg:false
+    isTodayFirstMsg: false
   },
   {
     isAdmin: false,
     msg: "一次買10個可以免運嗎?",
     date: "2023/2/5 下午07:30",
-    isTodayFirstMsg:false
+    isTodayFirstMsg: false
   },
   {
     isAdmin: false,
     msg: "??",
     date: "2023/2/6 下午13:30",
-    isTodayFirstMsg:true
+    isTodayFirstMsg: true
   },
   {
     isAdmin: true,
     msg: "付款完就會出貨",
     date: "2023/2/8 下午01:13",
-    isTodayFirstMsg:true
+    isTodayFirstMsg: true
   },
   {
     isAdmin: false,
     msg: "那麼晚才回是不想做生意了?",
     date: "2023/2/8 下午01:30",
-    isTodayFirstMsg:false
+    isTodayFirstMsg: false
   }
 
 

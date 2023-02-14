@@ -45,7 +45,7 @@ export default function Commercial() {
 
 
   const restartBannerTimer = () => {
-    console.log("mouseLeave")
+    //console.log("mouseLeave")
     bannerTimer.current = setInterval(() => {
       handleImageIndexPlus()
     }, 5000)
@@ -53,7 +53,7 @@ export default function Commercial() {
   }
 
   const resetBannerTimer = () => {
-    console.log("mouseEenter")
+    //console.log("mouseEenter")
     clearInterval(bannerTimer.current)
   }
 
@@ -139,8 +139,8 @@ export default function Commercial() {
         s.transitionDelay = ""
         s.transition = "0s"
         s.transform = `translateX(-${distance}px)`
-        console.log("distance", distance)
-        console.log("currentRef跑回原點囉", currentRef.current)
+        //console.log("distance", distance)
+        //console.log("currentRef跑回原點囉", currentRef.current)
 
       } else if (currentRef.current - 1 < 0) {
 
@@ -150,7 +150,7 @@ export default function Commercial() {
         s.transition = "0s"
         s.transform = `translateX(-${distance}px)`
 
-        console.log("currentRef跑回最後面囉", currentRef.current)
+        //console.log("currentRef跑回最後面囉", currentRef.current)
 
       }
 

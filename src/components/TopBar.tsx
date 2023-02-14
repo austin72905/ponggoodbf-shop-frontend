@@ -34,6 +34,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import InputBase from '@mui/material/InputBase';
+import Badge from '@mui/material/Badge';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import LogoImage from '../assets/朋朋大頭貼.jpg'
@@ -41,7 +42,9 @@ import LogoImage from '../assets/朋朋大頭貼.jpg'
 
 import RouterLink from '../routerLink/RouterLink'
 
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
+
+import {CartContext} from '../contextStore/context'
 
 export default function TopBar() {
 
@@ -63,6 +66,8 @@ export default function TopBar() {
 
 
   const open = Boolean(anchorElement)
+
+  const {cartContent} =useContext(CartContext)
 
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -231,7 +236,10 @@ export default function TopBar() {
               }
 
               <TopNavButton onClick={toCart}>
-                <ShoppingCartOutlinedIcon />
+                <Badge badgeContent={cartContent.length} max={99} color='error' >
+                  <ShoppingCartOutlinedIcon />
+                </Badge>
+                
               </TopNavButton>
               <TopNavButton onClick={handleIsLogin} >
                 <NotificationsActiveOutlinedIcon />
