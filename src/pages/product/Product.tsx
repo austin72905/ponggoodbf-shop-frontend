@@ -33,6 +33,30 @@ export default function Product() {
     
     //定時器，目的是離開組件時清除
     const timerRef=useRef<NodeJS.Timeout[]>()
+
+    const [itemCount,setItemCount]=useState<number>(1)
+
+    const handleCountMinus=()=>{
+        setItemCount(i=>
+            {
+                if(i-1<0){
+                    return 0
+                }
+
+                return i-1
+            })
+    }
+
+    const handleCountPlus=()=>{
+        setItemCount(i=>
+            {
+                if(i+1>10){
+                    return 10
+                }
+
+                return i+1
+            })
+    }
     
     useEffect(()=>{
         return ()=>{
@@ -253,9 +277,9 @@ export default function Product() {
                         <Grid item xs={4} sx={{ display: "flex", flexDirection: "column", justifyContent: "end" }}>
                             {/*數量欄 */}
                             <Box sx={{ display: "flex", ml: "30px" }}>
-                                <RemoveIcon sx={{ "&:hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "38px", width: "38px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
-                                <TextFieldWrapper size='small' inputProps={{ style: { textAlign: "center" } }} ></TextFieldWrapper>
-                                <AddIcon sx={{ "&::hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "38px", width: "38px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
+                                <RemoveIcon onClick={handleCountMinus} sx={{ "&:hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "38px", width: "38px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
+                                <TextFieldWrapper  value={itemCount} size='small' inputProps={{ style: { textAlign: "center" } }} ></TextFieldWrapper>
+                                <AddIcon onClick={handleCountPlus} sx={{ "&:hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "38px", width: "38px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
                             </Box>
 
                         </Grid>
@@ -273,7 +297,7 @@ export default function Product() {
                     </Grid>
                 </Grid>
                 <Grid item xs={8}>
-                    
+
                     <TabContext value={viewValue}>
                         <TabList onChange={handleView} >
                             <Tab value="商品介紹" label="商品介紹" sx={{ border: "1px solid #AFAFAF", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }}></Tab>
