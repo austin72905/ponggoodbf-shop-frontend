@@ -22,78 +22,77 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
-import { CartContext} from '../../contextStore/context'
-import React, { useState, useRef, useEffect,useContext } from 'react'
+import { CartContext } from '../../contextStore/context'
+import { ProductInfomationCount } from '../cart/Cart'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import ProductImage from '../../assets/朋朋衛生紙商品圖.jpg'
 import ProductImage1 from '../../assets/輪播圖1.jpg'
 import ProductImage2 from '../../assets/輪播圖2.jpg'
 import ProductImage3 from '../../assets/輪播圖3.jpg'
-import { type } from 'os';
+
 export default function Product() {
-    
-    const {addToCart} =useContext(CartContext)
+
+    const { addToCart } = useContext(CartContext)
     //定時器，目的是離開組件時清除
-    const timerRef=useRef<NodeJS.Timeout[]>()
+    const timerRef = useRef<NodeJS.Timeout[]>()
 
-    const [itemCount,setItemCount]=useState<number>(1)
+    const [itemCount, setItemCount] = useState<number>(1)
 
-    const handleCountMinus=()=>{
-        setItemCount(i=>
-            {
-                if(i-1<0){
-                    return 0
-                }
+    const handleCountMinus = () => {
+        setItemCount(i => {
+            if (i - 1 < 0) {
+                return 0
+            }
 
-                return i-1
-            })
+            return i - 1
+        })
     }
 
-    const handleCountPlus=()=>{
-        setItemCount(i=>
-            {
-                if(i+1>10){
-                    return 10
-                }
+    const handleCountPlus = () => {
+        setItemCount(i => {
+            if (i + 1 > 10) {
+                return 10
+            }
 
-                return i+1
-            })
+            return i + 1
+        })
     }
-    
-    useEffect(()=>{
-        return ()=>{
 
-            timerRef.current?.forEach(ele=>{
+    useEffect(() => {
+        return () => {
+
+            timerRef.current?.forEach(ele => {
                 clearTimeout(ele)
             })
-            
+
         }
-    },[])
+    }, [])
 
     //節流器試做
     // 幾秒內不管呼叫幾次，只會執行一次涵式
-    const throttle=(func:(...args:any[])=>void,wait=500)=>{
+    const throttle = (func: (...args: any[]) => void, wait = 500) => {
 
-        let isWait=false;
-        
-        return (...args:any[])=>{
+        let isWait = false;
+
+        return (...args: any[]) => {
             //console.log("isWait",isWait)
             //只有當 不是等待狀態時
-            if (!isWait){
+            if (!isWait) {
                 //才執行含式
                 func(...args);
-                isWait=true;
-                const timer=setTimeout(() => {
-                    isWait=false
+                isWait = true;
+                const timer = setTimeout(() => {
+                    isWait = false
                 }, wait);
                 timerRef.current?.push(timer)
             }
         }
-        
+
     }
 
-    const throttleHandleImageIndexPlus=useRef(throttle(()=>handleImageIndexPlus()))
-    const throttleHandleImageIndexMinus=useRef(throttle(()=>handleImageIndexMinus()))
+    const throttleHandleImageIndexPlus = useRef(throttle(() => handleImageIndexPlus()))
+    const throttleHandleImageIndexMinus = useRef(throttle(() => handleImageIndexMinus()))
 
     //console.log(fakeProductInfomation)
     const { pathname } = useLocation()
@@ -220,6 +219,9 @@ export default function Product() {
     //  index    0          1          2          3          4          5
     //                    初始
 
+    const [productInfo,setProductInfo]=useState<ProductInfomationCount>({...fakeProductInfomation,count:1})
+    const [selectSize,setSelectSize]=useState("")
+
     return (
 
         <Container maxWidth='xl' >
@@ -265,34 +267,60 @@ export default function Product() {
                     </Grid>
                 </Grid>
                 <Grid item xs={4}>
-                    <Grid container columns={4} sx={{ border:"1px solid #d9d9d9",minHeight: "400px",borderRadius:"4px" }}>
+                    <Grid container columns={4} sx={{ border: "1px solid #d9d9d9", minHeight: "400px", borderRadius: "4px" }}>
                         <Grid item xs={4}>
-                            <Typography variant='h5' sx={{ fontWeight: "bold", margin: "30px" }}>{fakeProductInfomation.title}</Typography>
+                            <Typography variant='h5' sx={{ fontWeight: "bold", margin: "30px" }}>{productInfo.title}</Typography>
                         </Grid>
                         <Grid item xs={4}>
-                            <Box sx={{ fontWeight: "bold", margin: "30px" }}>
-                                <Typography >定價</Typography>
-                                <Typography sx={{ fontWeight: "bold" }}>NT${fakeProductInfomation.price}</Typography>
-                            </Box>
+                            <Stack direction={"row"} alignItems={'center'} spacing={3} sx={{ mx: "30px", mb: "10px" }}>
+                                <Typography variant='body2'>售價</Typography>
+                                <Typography sx={{ fontWeight: "bold", fontSize: "24px" }}>${productInfo.price}</Typography>
+                            </Stack>
+
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Stack direction={"row"} alignItems={'center'} spacing={3} sx={{ mx: "30px", mt: "10px", mb: "20px" }}>
+                                <Typography variant='body2'>規格</Typography>
+                                <Stack direction={"row"} spacing={1}>
+                                    {
+                                        productInfo.size
+                                            ?
+                                            productInfo.size.map((s, index) => (
+                                                <Stack key={s} onClick={()=>{setSelectSize(s)}} alignItems={"center"} sx={{ border: s===selectSize?"1px solid #61D1BD":"1px solid #d9d9d9", width: "40px", p: 0.5, borderRadius: "4px", cursor: "pointer" }}>
+                                                    <Typography >{s}</Typography>
+                                                </Stack>
+                                            ))
+                                            :
+
+                                            <Stack alignItems={"center"} sx={{ border: "1px solid #d9d9d9", width: "40px", p: 0.5, borderRadius: "4px" }}>
+                                                <Typography sx={{ color: "#AFAFAF" }} variant='caption'>標準</Typography>
+                                            </Stack>
+                                    }
+
+                                </Stack>
+                            </Stack>
+                        </Grid>
+                        <Grid item xs={4} sx={{ display: "flex", flexDirection: "column", justifyContent: "end" }}>
+                            <Stack direction={"row"} alignItems={'center'} spacing={3} sx={{mx:"30px"}}>
+                                <Typography variant='body2'>數量</Typography>
+                                {/*數量欄 */}
+                                <Box sx={{ display: "flex", ml: "30px" }}>
+                                    <RemoveIcon onClick={handleCountMinus} sx={{ "&:hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "38px", width: "38px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
+                                    <TextFieldWrapper value={itemCount} size='small' inputProps={{ style: { textAlign: "center" } }} ></TextFieldWrapper>
+                                    <AddIcon onClick={handleCountPlus} sx={{ "&:hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "38px", width: "38px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
+                                </Box>
+                            </Stack>
+
 
                         </Grid>
                         <Grid item xs={4} sx={{ display: "flex", flexDirection: "column", justifyContent: "end" }}>
-                            {/*數量欄 */}
-                            <Box sx={{ display: "flex", ml: "30px" }}>
-                                <RemoveIcon onClick={handleCountMinus} sx={{ "&:hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "38px", width: "38px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
-                                <TextFieldWrapper  value={itemCount} size='small' inputProps={{ style: { textAlign: "center" } }} ></TextFieldWrapper>
-                                <AddIcon onClick={handleCountPlus} sx={{ "&:hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "38px", width: "38px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
-                            </Box>
 
-                        </Grid>
-                        <Grid item xs={4} sx={{ display: "flex", flexDirection: "column", justifyContent: "end" }}>
-                           
                             <Stack direction={"row"} sx={{ m: "30px" }} spacing={"10px"}>
-                                <Button variant="outlined" onClick={()=>{addToCart(fakeProductInfomation)}}>加入購物車</Button>
+                                <Button variant="outlined" onClick={() => { addToCart({...productInfo,count:itemCount,selectSize:selectSize}) }}>加入購物車</Button>
                                 <Button variant="contained">直接購買</Button>
                             </Stack>
-                            
-                            
+
+
 
                         </Grid>
 
@@ -353,11 +381,13 @@ export interface ProductInfo {
 }
 
 export interface ProductInfomation {
-    productId:number;
+    productId: number;
     title: string;
     price: number;
     stock: number;
     image: string;
+    size?: string[];
+    selectSize?:string;
 }
 
 
@@ -388,10 +418,11 @@ const imgList: string[] = [
 const fakeProductInfomation: ProductInfomation =
 {
     title: "好男人需要時我都在衛生紙(10入)",
-    productId:1,
+    productId: 1,
     stock: 60,
     price: 100,
-    image: ProductImage
+    image: ProductImage,
+    size: ["S", "M", "L","XL"]
 }
 
 const TextFieldWrapper = styled(TextField)(

@@ -87,7 +87,7 @@ export default function CollectionList() {
                                                 <IconButton onClick={()=>{removeFromCollectionList(info.productId)}}>
                                                     <DeleteIcon  />
                                                 </IconButton>
-                                                <Button onClick={()=>{addToCart(info)}} variant="contained">加入購物車</Button>
+                                                <Button onClick={()=>{addToCart({...info,count:1})}} variant="contained">加入購物車</Button>
                                             </CardActions>
                                         </Box>
 

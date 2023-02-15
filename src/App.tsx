@@ -75,53 +75,71 @@ function App() {
 
   const [favoriteContent, setFavoriteContent] = useState<ProductInfomation[]>([])
 
-  const addToCart=(product:ProductInfomation)=>{
-    setCartContent(prev=>{
+  const addToCart = (product: ProductInfomationCount) => {
+    setCartContent(prev => {
 
-      if(prev.length==0 || !prev.find(ele=>ele.productId===product.productId)){
-        prev.push({...product,count:1})
-      }else{
-        prev.forEach((prod,index)=>{
-          if(prod.productId===product.productId){
-            prod.count+=1
-          }
+      if (prev.length == 0 || !prev.find(ele => ele.productId === product.productId)) {
+        prev.push({ ...product, count: product.count })
+      } else {
 
-          return prod
-        })
+        //處理同商品不同規格加入購物車的情況
+
+        //先找同樣productId的
+        let temp = prev.filter(ele => ele.productId === product.productId)
+        //如果同樣productId的找到有同樣規格的
+
+        if (temp.find(ele => ele.selectSize === product.selectSize)) {
+          prev.forEach((prod, index) => {
+            if (prod.productId === product.productId && prod.selectSize === product.selectSize) {
+              prod.count += product.count
+              if (prod.count > 10) {
+                prod.count = 10
+              }
+
+            }
+
+            return prod
+          })
+        } else { //如果同樣productId的找不到有同樣規格的
+          prev.push({ ...product, count: product.count })
+        }
+
+
+
       }
-      
+
 
       return [...prev]
     })
   }
 
-  const addToCollectionList=(product:ProductInfomation)=>{
-    setFavoriteContent(prev=>{
+  const addToCollectionList = (product: ProductInfomation) => {
+    setFavoriteContent(prev => {
 
       prev.push(product)
-        
+
       return [...prev]
     })
   }
-  
-  const removeFromCollectionList=(productId:number)=>{
-    
-    setFavoriteContent(prev=>{
 
-      let newList:ProductInfomation[]=prev.filter(ele=>ele.productId!==productId)
-        
+  const removeFromCollectionList = (productId: number) => {
+
+    setFavoriteContent(prev => {
+
+      let newList: ProductInfomation[] = prev.filter(ele => ele.productId !== productId)
+
       return newList
     })
   }
 
-  
+
 
 
 
 
   return (
     <ThemeProvider theme={customTheme}>
-      <CartContext.Provider value={{cartContent,setCartContent,addToCart,favoriteContent,removeFromCollectionList,addToCollectionList}}>
+      <CartContext.Provider value={{ cartContent, setCartContent, addToCart, favoriteContent, removeFromCollectionList, addToCollectionList }}>
         <Box sx={{ minHeight: "100vh", border: "0px solid", backgroundColor: "#fefefe" }}>
           <TopBar />
           <Toolbar />

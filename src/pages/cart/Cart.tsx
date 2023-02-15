@@ -87,20 +87,27 @@ export default function Cart() {
         })
     }
 
-    const countTotalPirce=()=>{
-        let totalPrice:number=0
-        cartContent.forEach((element:ProductInfomationCount) => {
-            totalPrice+=element.price*element.count
+    const countTotalPirce = () => {
+        let totalPrice: number = 0
+        cartContent.forEach((element: ProductInfomationCount) => {
+            totalPrice += element.price * element.count
         });
         return totalPrice
     }
 
-    const removeFromCart=(product: ProductInfomationCount)=>{
-        setCartContent((prev: ProductInfomationCount[])=>{
-            let newList=prev.filter(ele=>ele.productId!==product.productId)
+    const removeFromCart = (product: ProductInfomationCount) => {
+        setCartContent((prev: ProductInfomationCount[]) => {
+            //避免同id 的 商品一起被清理掉，只過濾掉同id 且 同規格的商品
+            let newList = prev.filter(ele => {
+                if(ele.productId===product.productId && ele.selectSize===product.selectSize){
+                    return false
+                }
+                return true
+            })
             return newList
         })
     }
+    //ele.productId !== product.productId ||(ele.productId===product.productId &&ele.selectSize!==product.selectSize)
 
 
     return (
@@ -149,7 +156,7 @@ export default function Cart() {
                                                             {item.title}
                                                         </Typography>
                                                         <Typography variant='caption'>
-                                                            規格 : 標準
+                                                            規格 : {item.selectSize ? item.selectSize : "標準"}
                                                         </Typography>
                                                     </Stack>
 
@@ -170,7 +177,7 @@ export default function Cart() {
                                             <TableCell sx={{ border: "0px solid" }} align='center'>
                                                 <Stack sx={{ border: "0px solid" }} alignItems="center">
                                                     <Checkbox icon={<FavoriteBorderIcon />} checkedIcon={<FavoriteIcon sx={{ color: "red" }} />} />
-                                                    <IconButton onClick={()=>{removeFromCart(item)}}>
+                                                    <IconButton onClick={() => { removeFromCart(item) }}>
                                                         <DeleteOutlineOutlinedIcon />
                                                     </IconButton>
                                                 </Stack>
@@ -221,7 +228,7 @@ export default function Cart() {
                                             :
                                         </Typography>
                                         <Typography variant='h6' sx={{ color: "red", fontWeight: "bold" }} >
-                                            ${countTotalPirce() }
+                                            ${countTotalPirce()}
                                         </Typography>
                                     </Stack>
 
