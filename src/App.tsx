@@ -72,7 +72,9 @@ function App() {
   const [chatOpen, setChatOpen] = useState(false)
 
   const [cartContent, setCartContent] = useState<ProductInfomationCount[]>([])
-  //console.log("cartContent",cartContent)
+
+  const [favoriteContent, setFavoriteContent] = useState<ProductInfomation[]>([])
+
   const addToCart=(product:ProductInfomation)=>{
     setCartContent(prev=>{
 
@@ -93,7 +95,24 @@ function App() {
     })
   }
 
+  const addToCollectionList=(product:ProductInfomation)=>{
+    setFavoriteContent(prev=>{
+
+      prev.push(product)
+        
+      return [...prev]
+    })
+  }
   
+  const removeFromCollectionList=(productId:number)=>{
+    
+    setFavoriteContent(prev=>{
+
+      let newList:ProductInfomation[]=prev.filter(ele=>ele.productId!==productId)
+        
+      return newList
+    })
+  }
 
   
 
@@ -102,7 +121,7 @@ function App() {
 
   return (
     <ThemeProvider theme={customTheme}>
-      <CartContext.Provider value={{cartContent,setCartContent,addToCart}}>
+      <CartContext.Provider value={{cartContent,setCartContent,addToCart,favoriteContent,removeFromCollectionList,addToCollectionList}}>
         <Box sx={{ minHeight: "100vh", border: "0px solid", backgroundColor: "#fefefe" }}>
           <TopBar />
           <Toolbar />

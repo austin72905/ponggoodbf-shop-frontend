@@ -172,9 +172,20 @@ const GridView = ({viewProduct}:ViewProps) => {
 
 const ListView = ({viewProduct}:ViewProps) => {
 
-  const {addToCart} =useContext(CartContext)
+  const {addToCart,addToCollectionList,removeFromCollectionList} =useContext(CartContext)
 
   var showList:ProductInfomation[]=[]
+
+  const handleFavoriteChecked=(event: React.ChangeEvent<HTMLInputElement>,product:ProductInfomation)=>{
+
+  
+      //是打勾的
+      if(event.target.checked){
+        addToCollectionList(product)
+      }else{
+        removeFromCollectionList(product.productId)
+      }
+  }
 
   for (let index = 0; index < 5; index++) {
     showList.push({...fakeProductInfomation,productId:1+index})
@@ -197,7 +208,7 @@ const ListView = ({viewProduct}:ViewProps) => {
                     <Typography>NT${info.price}</Typography>
                   </CardContent>
                   <CardActions sx={{ mx:2, mb: 1,display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>                 
-                      <Checkbox icon={<FavoriteBorderIcon/>} checkedIcon={<FavoriteIcon sx={{ color: "red" }} />}/>
+                      <Checkbox icon={<FavoriteBorderIcon/>} onChange={(e)=>{handleFavoriteChecked(e,info)}} checkedIcon={<FavoriteIcon sx={{ color: "red" }}/>}/>
                       <Button variant="contained" onClick={()=>{addToCart(info)}}>加入購物車</Button>   
                   </CardActions>
                 </Box>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import Container from '@mui/material/Container';
@@ -27,9 +27,13 @@ import ProductImage from '../../assets/朋朋衛生紙商品圖.jpg'
 
 import { ProductInfomation } from '../product/Product'
 
+import { CartContext} from '../../contextStore/context'
+
 export default function CollectionList() {
 
     const navigate = useNavigate();
+
+    const {favoriteContent,addToCart,addToCollectionList,removeFromCollectionList} =useContext(CartContext)
 
     const viewProduct=()=>{
         navigate("/product")
@@ -69,7 +73,7 @@ export default function CollectionList() {
                 <Grid item xs={8} sx={{ my: "0px" }}>
                     <List>
                         {
-                            showList.map((info,index)=>
+                            favoriteContent.map((info:ProductInfomation,index:number)=>
                             (
                                 <ListItem key={index} sx={{ paddingLeft: 0, paddingRight: 0 }}>
                                     <Card sx={{ display: "flex", width: "100%", boxShadow: "none",border:"solid 1px #d9d9d9" }}>
@@ -77,13 +81,13 @@ export default function CollectionList() {
                                         <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                                             <CardContent sx={{ marginLeft: 2, marginRight: 2, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                                                 <Typography onClick={viewProduct}  sx={{ '&:hover': { cursor: "pointer" } }}>{info.title}</Typography>
-                                                <Typography>NT$100</Typography>
+                                                <Typography>NT${info.price}</Typography>
                                             </CardContent>
                                             <CardActions sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>
-                                                <IconButton>
+                                                <IconButton onClick={()=>{removeFromCollectionList(info.productId)}}>
                                                     <DeleteIcon  />
                                                 </IconButton>
-                                                <Button variant="contained">加入購物車</Button>
+                                                <Button onClick={()=>{addToCart(info)}} variant="contained">加入購物車</Button>
                                             </CardActions>
                                         </Box>
 
