@@ -209,7 +209,7 @@ const ListView = ({viewProduct}:ViewProps) => {
                   </CardContent>
                   <CardActions sx={{ mx:2, mb: 1,display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>                 
                       <Checkbox icon={<FavoriteBorderIcon/>} onChange={(e)=>{handleFavoriteChecked(e,info)}} checkedIcon={<FavoriteIcon sx={{ color: "red" }}/>}/>
-                      <Button variant="contained" onClick={()=>{addToCart(info)}}>加入購物車</Button>   
+
                   </CardActions>
                 </Box>
               </Card>
