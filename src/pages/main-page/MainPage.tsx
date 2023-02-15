@@ -177,7 +177,7 @@ const ListView = ({viewProduct}:ViewProps) => {
   var showList:ProductInfomation[]=[]
 
   for (let index = 0; index < 5; index++) {
-    showList.push(fakeProductInfomation)
+    showList.push({...fakeProductInfomation,productId:1+index})
     
   }
 

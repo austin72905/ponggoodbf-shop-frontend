@@ -72,7 +72,7 @@ function App() {
   const [chatOpen, setChatOpen] = useState(false)
 
   const [cartContent, setCartContent] = useState<ProductInfomationCount[]>([])
-  console.log("cartContent",cartContent)
+  //console.log("cartContent",cartContent)
   const addToCart=(product:ProductInfomation)=>{
     setCartContent(prev=>{
 
@@ -93,10 +93,16 @@ function App() {
     })
   }
 
+  
+
+  
+
+
+
 
   return (
     <ThemeProvider theme={customTheme}>
-      <CartContext.Provider value={{cartContent,addToCart}}>
+      <CartContext.Provider value={{cartContent,setCartContent,addToCart}}>
         <Box sx={{ minHeight: "100vh", border: "0px solid", backgroundColor: "#fefefe" }}>
           <TopBar />
           <Toolbar />

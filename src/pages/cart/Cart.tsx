@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState, useContext } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
@@ -24,6 +24,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
 import { ProductInfomation } from '../product/Product'
+import { CartContext } from '../../contextStore/context'
 
 
 import ProductImage from '../../assets/朋朋衛生紙商品圖.jpg'
@@ -36,7 +37,71 @@ export default function Cart() {
         navigate("/checkout")
     }
 
-    
+    const { cartContent, setCartContent } = useContext(CartContext)
+
+
+    const addProductCount = (product: ProductInfomation) => {
+        //console.log("product",product)
+        setCartContent((prev: ProductInfomationCount[]) => {
+
+            let newList = prev.map(ele => {
+
+                if (ele.productId === product.productId) {
+
+                    if (ele.count + 1 > 10) {
+                        ele.count = 10
+                    } else {
+                        ele.count += 1;
+                    }
+
+                }
+                //console.log("ele.count",ele.count)
+                return ele
+            })
+
+            //console.log("prev",prev)
+            return newList
+        })
+    }
+
+    const minusProductCount = (product: ProductInfomation) => {
+        //console.log("product",product)
+        setCartContent((prev: ProductInfomationCount[]) => {
+            prev.forEach(ele => {
+
+                if (ele.productId === product.productId) {
+
+                    if (ele.count - 1 < 1) {
+                        ele.count = 1
+                    } else {
+                        ele.count -= 1
+                    }
+
+
+                }
+                //console.log("ele.count",ele.count)
+                return ele
+            })
+
+            return [...prev]
+        })
+    }
+
+    const countTotalPirce=()=>{
+        let totalPrice:number=0
+        cartContent.forEach((element:ProductInfomationCount) => {
+            totalPrice+=element.price*element.count
+        });
+        return totalPrice
+    }
+
+    const removeFromCart=(product: ProductInfomationCount)=>{
+        setCartContent((prev: ProductInfomationCount[])=>{
+            let newList=prev.filter(ele=>ele.productId!==product.productId)
+            return newList
+        })
+    }
+
 
     return (
         <Container sx={{ border: "0px solid" }} maxWidth='xl'>
@@ -71,7 +136,7 @@ export default function Cart() {
                             </TableHead>
                             <TableBody>
                                 {
-                                    fakeDataList().map((item, index) =>
+                                    cartContent.map((item: ProductInfomationCount, index: number) =>
                                     (
                                         <TableRow key={index}>
                                             <TableCell style={{ width: "50%" }} >
@@ -81,7 +146,7 @@ export default function Cart() {
                                                     </Box>
                                                     <Stack spacing={"2px"}>
                                                         <Typography >
-                                                            {item.name}
+                                                            {item.title}
                                                         </Typography>
                                                         <Typography variant='caption'>
                                                             規格 : 標準
@@ -94,17 +159,18 @@ export default function Cart() {
                                             </TableCell>
                                             <TableCell align='center'>${item.price}</TableCell>
                                             <TableCell align='center'>
+                                                {/*數量框 */}
                                                 <Box sx={{ display: "flex", marginLeft: "30px", border: "0px solid" }}>
-                                                    <RemoveIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
-                                                    <TextFieldWrapper size='small' inputProps={{ style: { textAlign: "center", height: "15px" } }} ></TextFieldWrapper>
-                                                    <AddIcon sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
+                                                    <RemoveIcon onClick={() => { minusProductCount(item) }} sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopLeftRadius: "4px", borderBottomLeftRadius: "4px" }} />
+                                                    <TextFieldWrapper value={item.count} size='small' inputProps={{ style: { textAlign: "center", height: "15px" } }} ></TextFieldWrapper>
+                                                    <AddIcon onClick={() => { addProductCount(item) }} sx={{ ":hover": { cursor: "pointer" }, color: "#AFAFAF", border: "solid 1px", height: "30px", width: "30px", borderTopRightRadius: "4px", borderBottomRightRadius: "4px" }} />
                                                 </Box>
                                             </TableCell>
-                                            <TableCell align='center'>$100</TableCell>
+                                            <TableCell align='center'>${item.price * item.count}</TableCell>
                                             <TableCell sx={{ border: "0px solid" }} align='center'>
                                                 <Stack sx={{ border: "0px solid" }} alignItems="center">
-                                                    <Checkbox icon={<FavoriteBorderIcon/>} checkedIcon={<FavoriteIcon sx={{ color: "red" }} />}/>
-                                                    <IconButton>
+                                                    <Checkbox icon={<FavoriteBorderIcon />} checkedIcon={<FavoriteIcon sx={{ color: "red" }} />} />
+                                                    <IconButton onClick={()=>{removeFromCart(item)}}>
                                                         <DeleteOutlineOutlinedIcon />
                                                     </IconButton>
                                                 </Stack>
@@ -144,7 +210,7 @@ export default function Cart() {
                                                 (
                                             </Typography>
                                             <Typography sx={{ color: "red", fontWeight: "bold" }} >
-                                                3
+                                                {cartContent.length}
                                             </Typography>
                                             <Typography>
                                                 個商品)
@@ -155,7 +221,7 @@ export default function Cart() {
                                             :
                                         </Typography>
                                         <Typography variant='h6' sx={{ color: "red", fontWeight: "bold" }} >
-                                            $300
+                                            ${countTotalPirce() }
                                         </Typography>
                                     </Stack>
 
@@ -179,20 +245,23 @@ export interface ProductData {
     price: number;
 }
 
-export interface ProductInfomationCount extends ProductInfomation{
-    count:number
+export interface ProductInfomationCount extends ProductInfomation {
+    count: number
 }
 
-const fakeData: ProductData = {
-    name: "好男人需要時我都在衛生紙(10入)",
-    price: 100
+const fakeProductInfomation: ProductInfomation = {
+    title: "好男人需要時我都在衛生紙(10入)",
+    productId: 1,
+    stock: 60,
+    price: 100,
+    image: ProductImage
 }
 
-const fakeDataList: () => ProductData[] = () => {
-    let list: ProductData[] = []
+const fakeDataList: () => ProductInfomation[] = () => {
+    let list: ProductInfomation[] = []
     for (let index = 0; index < 5; index++) {
 
-        list.push(fakeData)
+        list.push(fakeProductInfomation)
 
     }
     return list
