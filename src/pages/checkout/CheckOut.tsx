@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { CartContext } from '../../contextStore/context'
 import { ProductInfomationCount } from '../cart/Cart'
 
@@ -33,10 +33,10 @@ export default function CheckOut() {
 
     const { checkOutContent, setCheckOutContent } = useContext(CartContext)
 
-    const removeFromCheckOutContent=(product:ProductInfomationCount)=>{
-        setCheckOutContent((prev:ProductInfomationCount[])=>{
-            let newList=prev.filter(ele=>{
-                if(ele.productId===product.productId && ele.selectSize===product.selectSize){
+    const removeFromCheckOutContent = (product: ProductInfomationCount) => {
+        setCheckOutContent((prev: ProductInfomationCount[]) => {
+            let newList = prev.filter(ele => {
+                if (ele.productId === product.productId && ele.selectSize === product.selectSize) {
                     return false
                 }
 
@@ -46,6 +46,80 @@ export default function CheckOut() {
             return newList
         })
     }
+
+    const initCheckoutInfomation: CheckoutInfomation = { productPrice: 0, cargoPrice: 0, titlePrice: 0, payWay: "銀行付款" }
+
+    const [checkoutInfomation, setCheckoutInfomation] = useState<CheckoutInfomation>(initCheckoutInfomation)
+
+
+    const [orderInfo, setOrderInfo] = useState<RecieverInfo>({ name: "王大明", phoneNumber: "0954678111", mail: "LaoD@gmail.com" })
+
+    const [recieverInfo, setRecieverInfo] = useState<RecieverInfo>({ name: "", phoneNumber: "", mail: "" })
+
+    const [recieveStoreInfo, setRecieveStoreInfo] = useState<RecievePlaceInfo>({ recieveWay: "7-11", recieveStore: "雅典", recieveAddress: "台中市南區三民西路377號西川一路1號" })
+
+    useEffect(() => {
+        setCheckoutInfomation((checkout: CheckoutInfomation) => {
+
+            let productPrice = 0
+
+            checkOutContent.forEach((ele: ProductInfomationCount) => {
+                productPrice += ele.price * ele.count
+            });
+
+            return { ...checkout, productPrice: productPrice, cargoPrice: 39, titlePrice: productPrice + 39 }
+        })
+
+    }, [checkOutContent])
+
+
+    const handleOrderInfo = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+
+        setOrderInfo(o => {
+
+            let newO: RecieverInfo = { ...o }
+
+            Object.getOwnPropertyNames(o).forEach(ele => {
+                if (ele === e.target.name) {
+                    newO[e.target.name as keyof RecieverInfo] = e.target.value
+                }
+            })
+            return newO
+        })
+    }
+
+    const handleRecieverInfo = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setRecieverInfo(o => {
+
+            let newO: RecieverInfo = { ...o }
+
+            Object.getOwnPropertyNames(o).forEach(ele => {
+                if (ele === e.target.name) {
+                    newO[e.target.name as keyof RecieverInfo] = e.target.value
+                }
+            })
+            return newO
+        })
+    }
+
+    const handleCheckRecieverInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.checked) {
+            setRecieverInfo({ ...orderInfo })
+        } else {
+            setRecieverInfo({ ...recieverInfo })
+        }
+    }
+
+    const handleRecieveWay = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+
+        setRecieveStoreInfo(storeInfo => {
+
+            return {...storeInfo,recieveWay:(e.target as HTMLInputElement).value}
+        })
+
+    };
 
     return (
         <Container sx={{ border: "0px solid" }} maxWidth='xl'>
@@ -82,7 +156,7 @@ export default function CheckOut() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {checkOutContent.map((item:ProductInfomationCount, index:number) =>
+                                {checkOutContent.map((item: ProductInfomationCount, index: number) =>
                                 (
                                     <TableRow key={index}>
                                         <TableCell style={{ width: "50%" }} >
@@ -107,10 +181,10 @@ export default function CheckOut() {
                                         <TableCell align='center'>
                                             {item.count}
                                         </TableCell>
-                                        <TableCell align='center'>${item.price*item.count}</TableCell>
+                                        <TableCell align='center'>${item.price * item.count}</TableCell>
                                         <TableCell sx={{ border: "0px solid" }} align='center'>
                                             <Stack sx={{ border: "0px solid" }} alignItems="center">
-                                                <IconButton onClick={()=>{removeFromCheckOutContent(item)}}>
+                                                <IconButton onClick={() => { removeFromCheckOutContent(item) }}>
                                                     <DeleteOutlineOutlinedIcon />
                                                 </IconButton>
                                             </Stack>
@@ -132,9 +206,9 @@ export default function CheckOut() {
                         <Grid container columns={8} sx={{ border: "0px solid red" }}>
                             <Grid item xs={8} >
                                 <FormControl sx={{ border: "0px solid red", width: "100%" }}>
-                                    <RadioGroup sx={{ mx: "0px", my: "0px", border: "0px solid #d9d9d9" }}>
-                                        <FormControlLabel sx={{ backgroundColor: "#d9d9d9", mx: "0px", my: "0px", border: "1px solid #d9d9d9" }} value={"7-11"} control={<Radio sx={{ color: "#D9D9D9" }} />} label="7-11" />
-                                        <FormControlLabel sx={{ mx: "0px", my: "0px", border: "1px solid #d9d9d9" }} value={"全家"} control={<Radio sx={{ color: "#D9D9D9" }} />} label="全家" />
+                                    <RadioGroup value={recieveStoreInfo.recieveWay} onChange={handleRecieveWay} sx={{ mx: "0px", my: "0px", border: "0px solid #d9d9d9" }}>
+                                        <FormControlLabel  sx={{ backgroundColor: "#d9d9d9", mx: "0px", my: "0px", border: "1px solid #d9d9d9" }} value={"7-11"} control={<Radio sx={{ color: "#D9D9D9" }} />} label="7-11" />
+                                        <FormControlLabel  sx={{ mx: "0px", my: "0px", border: "1px solid #d9d9d9" }} value={"全家"} control={<Radio sx={{ color: "#D9D9D9" }} />} label="全家" />
 
                                     </RadioGroup>
                                 </FormControl>
@@ -156,12 +230,12 @@ export default function CheckOut() {
                         <Stack direction={"row"} spacing={"15px"}>
                             <Typography variant='body2' >門市名稱:</Typography>
 
-                            <Typography variant='body2' >雅典</Typography>
+                            <Typography variant='body2' >{recieveStoreInfo.recieveStore}</Typography>
                         </Stack>
                         <Stack direction={"row"} spacing={"15px"}>
                             <Typography variant='body2' >門市地址:</Typography>
 
-                            <Typography variant='body2' >台中市南區三民西路377號西川一路1號</Typography>
+                            <Typography variant='body2' >{recieveStoreInfo.recieveAddress}</Typography>
                         </Stack>
 
                     </Stack>
@@ -199,15 +273,15 @@ export default function CheckOut() {
 
                         <Stack sx={{ m: "30px" }} direction={"row"} spacing={"10px"} alignItems={"center"}>
                             <Typography sx={{ mr: "10px", minWidth: "30px" }} variant='caption' >姓名</Typography>
-                            <TextField placeholder='不得包含特殊符號 / $ . @ & # @...' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
+                            <TextField value={orderInfo.name} name="name" onChange={handleOrderInfo} placeholder='不得包含特殊符號 / $ . @ & # @...' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
                         </Stack>
                         <Stack sx={{ m: "30px" }} direction={"row"} spacing={"10px"} alignItems={"center"}>
                             <Typography sx={{ mr: "10px", minWidth: "30px" }} variant='caption' >電話</Typography>
-                            <TextField placeholder='ex: 09xxxxxxxx' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
+                            <TextField value={orderInfo.phoneNumber} name="phoneNumber" onChange={handleOrderInfo} placeholder='ex: 09xxxxxxxx' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
                         </Stack>
                         <Stack sx={{ m: "30px" }} direction={"row"} spacing={"10px"} alignItems={"center"}>
                             <Typography sx={{ mr: "10px", minWidth: "30px" }} variant='caption' >信箱</Typography>
-                            <TextField placeholder='ex: asbc@gmail.com' inputProps={{ sx: { height: "15px" } }} sx={{ my: "10px" }} size='small' fullWidth />
+                            <TextField value={orderInfo.mail} name="mail" onChange={handleOrderInfo} placeholder='ex: asbc@gmail.com' inputProps={{ sx: { height: "15px" } }} sx={{ my: "10px" }} size='small' fullWidth />
                         </Stack>
 
 
@@ -219,20 +293,20 @@ export default function CheckOut() {
 
                     <Paper sx={{ mt: "15px", boxShadow: "none", border: "1px solid #d9d9d9" }}>
                         <Stack sx={{ m: "30px" }} direction={"row"} spacing={"10px"} alignItems={"center"}>
-                            <FormControlLabel control={<Checkbox />} label="同訂購人資訊" />
+                            <FormControlLabel control={<Checkbox onChange={handleCheckRecieverInfo} />} label="同訂購人資訊" />
                         </Stack>
 
                         <Stack sx={{ m: "30px" }} direction={"row"} spacing={"10px"} alignItems={"center"}>
                             <Typography sx={{ mr: "10px", minWidth: "30px" }} variant='caption' >姓名</Typography>
-                            <TextField placeholder='不得包含特殊符號 / $ . @ & # @...' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
+                            <TextField value={recieverInfo.name} name="name" onChange={handleRecieverInfo} placeholder='不得包含特殊符號 / $ . @ & # @...' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
                         </Stack>
                         <Stack sx={{ m: "30px" }} direction={"row"} spacing={"10px"} alignItems={"center"}>
                             <Typography sx={{ mr: "10px", minWidth: "30px" }} variant='caption' >電話</Typography>
-                            <TextField placeholder='ex: 09xxxxxxxx' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
+                            <TextField value={recieverInfo.phoneNumber} name="phoneNumber" onChange={handleRecieverInfo} placeholder='ex: 09xxxxxxxx' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
                         </Stack>
                         <Stack sx={{ m: "30px" }} direction={"row"} spacing={"10px"} alignItems={"center"}>
                             <Typography sx={{ mr: "10px", minWidth: "30px" }} variant='caption' >信箱</Typography>
-                            <TextField placeholder='ex: asbc@gmail.com' inputProps={{ sx: { height: "15px" } }} sx={{ my: "10px" }} size='small' fullWidth />
+                            <TextField value={recieverInfo.mail} name="mail" onChange={handleRecieverInfo} placeholder='ex: asbc@gmail.com' inputProps={{ sx: { height: "15px" } }} sx={{ my: "10px" }} size='small' fullWidth />
                         </Stack>
 
 
@@ -243,10 +317,48 @@ export default function CheckOut() {
                 <Grid item xs={8} sx={{ mt: "15px" }}>
                     <Typography variant='body1' sx={{ fontWeight: "bold" }}>訂單金額</Typography>
 
-                    <Grid item xs={6}></Grid>
-                    <Grid item xs={2}>
-                        
-                    </Grid>
+
+                    <Paper sx={{ mt: "15px", boxShadow: "none", border: "1px solid #d9d9d9" }}>
+
+                        <Grid container columns={12} sx={{ m: "30px" }} spacing={"30px"}>
+
+                            <Grid item xs={2} >
+                                <Typography sx={{ minWidth: "30px" }}  >商品金額</Typography>
+                            </Grid>
+                            <Grid item xs={10} >
+                                <Typography sx={{ minWidth: "30px" }}  >${checkoutInfomation.productPrice}</Typography>
+                            </Grid>
+
+                            <Grid item xs={2} >
+                                <Typography sx={{ minWidth: "30px" }}  >運費</Typography>
+                            </Grid>
+                            <Grid item xs={10} >
+                                <Typography sx={{ minWidth: "30px" }}  >${checkoutInfomation.cargoPrice}</Typography>
+                            </Grid>
+
+                            <Grid item xs={2} >
+                                <Typography sx={{ minWidth: "30px" }}  >總計</Typography>
+                            </Grid>
+                            <Grid item xs={10} >
+                                <Typography sx={{ minWidth: "30px", color: "red" }}  >${checkoutInfomation.titlePrice}</Typography>
+                            </Grid>
+
+                            <Grid item xs={2} >
+                                <Typography sx={{ minWidth: "30px" }}  >付款方式</Typography>
+                            </Grid>
+                            <Grid item xs={10} >
+                                <Typography sx={{ minWidth: "30px" }}  >{checkoutInfomation.payWay}</Typography>
+                            </Grid>
+
+
+
+
+
+                        </Grid>
+
+                    </Paper>
+
+
                 </Grid>
 
                 <Grid item xs={8} sx={{ mt: "15px" }}>
@@ -259,44 +371,44 @@ export default function CheckOut() {
                                 <Typography sx={{ minWidth: "30px" }}  >寄送方式</Typography>
                             </Grid>
                             <Grid item xs={10} >
-                                <Typography sx={{ minWidth: "30px" }}  >7-11取貨</Typography>
+                                <Typography sx={{ minWidth: "30px" }}  >{recieveStoreInfo.recieveWay}取貨</Typography>
                             </Grid>
                             <Grid item xs={2} >
                                 <Typography sx={{ minWidth: "30px" }}  >付款方式</Typography>
                             </Grid>
                             <Grid item xs={10} >
-                                <Typography sx={{ minWidth: "30px" }}  >銀行匯款</Typography>
+                                <Typography sx={{ minWidth: "30px" }}  >{checkoutInfomation.payWay}</Typography>
                             </Grid>
                             <Grid item xs={2} >
                                 <Typography sx={{ minWidth: "30px" }}  >收件人</Typography>
                             </Grid>
                             <Grid item xs={10} >
-                                <Typography sx={{ minWidth: "30px" }}  >王大明</Typography>
+                                <Typography sx={{ minWidth: "30px" }}  >{recieverInfo.name}</Typography>
                             </Grid>
                             <Grid item xs={2} >
                                 <Typography sx={{ minWidth: "30px" }}  >連絡電話</Typography>
                             </Grid>
                             <Grid item xs={10} >
-                                <Typography sx={{ minWidth: "30px" }}  >0945864315</Typography>
+                                <Typography sx={{ minWidth: "30px" }}  >{recieverInfo.phoneNumber}</Typography>
 
                             </Grid>
                             <Grid item xs={2} >
                                 <Typography sx={{ minWidth: "30px" }}  >信箱</Typography>
                             </Grid>
                             <Grid item xs={10} >
-                                <Typography sx={{ minWidth: "30px" }}  >Laopigu@gmail.com</Typography>
+                                <Typography sx={{ minWidth: "30px" }}  >{recieverInfo.mail}</Typography>
                             </Grid>
                             <Grid item xs={2} >
                                 <Typography sx={{ minWidth: "30px" }}  >取件地址</Typography>
                             </Grid>
                             <Grid item xs={10} >
-                                <Typography sx={{ minWidth: "30px" }}  >雅典門市-台中市南區三民西路377號西川一路1號</Typography>
+                                <Typography sx={{ minWidth: "30px" }}  >{recieveStoreInfo.recieveStore}門市-{recieveStoreInfo.recieveAddress}</Typography>
                             </Grid>
                             <Grid item xs={2} >
                                 <Typography sx={{ minWidth: "30px" }}  >總付款金額</Typography>
                             </Grid>
                             <Grid item xs={10} >
-                                <Typography sx={{ minWidth: "30px",color:"red" }}  >$190</Typography>
+                                <Typography sx={{ minWidth: "30px", color: "red" }}  >${checkoutInfomation.titlePrice}</Typography>
                             </Grid>
 
                         </Grid>
@@ -345,10 +457,28 @@ const ItemWrapper = styled(Box)({
     paddingRight: "30px"
 })
 
+type CheckoutInfomation = {
+    productPrice: number;
+    cargoPrice: number;
+    titlePrice: number;
+    payWay: string;
+}
 
 interface ProductData {
     name: string;
     price: number;
+}
+
+interface RecieverInfo {
+    name: string;
+    phoneNumber: string;
+    mail: string;
+}
+
+interface RecievePlaceInfo {
+    recieveWay: string;
+    recieveStore: string;
+    recieveAddress: string;
 }
 
 const fakeData: ProductData = {
