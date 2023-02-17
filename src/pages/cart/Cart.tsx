@@ -37,8 +37,13 @@ export default function Cart() {
         navigate("/checkout")
     }
 
-    const { cartContent, setCartContent } = useContext(CartContext)
+    const { checkOutContent,setCheckOutContent,cartContent, setCartContent,addToCollectionList,removeFromCollectionList } = useContext(CartContext)
 
+    const addToCheckOutList=()=>{
+        setCheckOutContent([...cartContent])
+        setCartContent([])
+        toCheckout()
+    }
 
     const addProductCount = (product: ProductInfomation) => {
         //console.log("product",product)
@@ -46,7 +51,7 @@ export default function Cart() {
 
             let newList = prev.map(ele => {
 
-                if (ele.productId === product.productId) {
+                if (ele.productId === product.productId && ele.selectSize === product.selectSize) {
 
                     if (ele.count + 1 > 10) {
                         ele.count = 10
@@ -69,7 +74,7 @@ export default function Cart() {
         setCartContent((prev: ProductInfomationCount[]) => {
             prev.forEach(ele => {
 
-                if (ele.productId === product.productId) {
+                if (ele.productId === product.productId && ele.selectSize === product.selectSize) {
 
                     if (ele.count - 1 < 1) {
                         ele.count = 1
@@ -99,7 +104,7 @@ export default function Cart() {
         setCartContent((prev: ProductInfomationCount[]) => {
             //避免同id 的 商品一起被清理掉，只過濾掉同id 且 同規格的商品
             let newList = prev.filter(ele => {
-                if(ele.productId===product.productId && ele.selectSize===product.selectSize){
+                if (ele.productId === product.productId && ele.selectSize === product.selectSize) {
                     return false
                 }
                 return true
@@ -108,6 +113,18 @@ export default function Cart() {
         })
     }
     //ele.productId !== product.productId ||(ele.productId===product.productId &&ele.selectSize!==product.selectSize)
+
+
+    const handleFavoriteChecked=(event: React.ChangeEvent<HTMLInputElement>,product:ProductInfomation)=>{
+
+  
+        //是打勾的
+        if(event.target.checked){
+          addToCollectionList(product)
+        }else{
+          removeFromCollectionList(product.productId)
+        }
+    }
 
 
     return (
@@ -176,7 +193,7 @@ export default function Cart() {
                                             <TableCell align='center'>${item.price * item.count}</TableCell>
                                             <TableCell sx={{ border: "0px solid" }} align='center'>
                                                 <Stack sx={{ border: "0px solid" }} alignItems="center">
-                                                    <Checkbox icon={<FavoriteBorderIcon />} checkedIcon={<FavoriteIcon sx={{ color: "red" }} />} />
+                                                    <Checkbox onChange={(e)=>{handleFavoriteChecked(e,item)}} icon={<FavoriteBorderIcon />} checkedIcon={<FavoriteIcon sx={{ color: "red" }} />} />
                                                     <IconButton onClick={() => { removeFromCart(item) }}>
                                                         <DeleteOutlineOutlinedIcon />
                                                     </IconButton>
@@ -233,7 +250,7 @@ export default function Cart() {
                                     </Stack>
 
 
-                                    <Button onClick={toCheckout} variant='contained' sx={{ marginRight: "30px", my: "5px" }}>
+                                    <Button onClick={addToCheckOutList} variant='contained' sx={{ marginRight: "30px", my: "5px" }}>
                                         前往結帳
                                     </Button>
                                 </Stack>

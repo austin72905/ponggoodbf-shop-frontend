@@ -172,7 +172,7 @@ const GridView = ({viewProduct}:ViewProps) => {
 
 const ListView = ({viewProduct}:ViewProps) => {
 
-  const {addToCart,addToCollectionList,removeFromCollectionList} =useContext(CartContext)
+  const {favoriteContent,addToCart,addToCollectionList,removeFromCollectionList} =useContext(CartContext)
 
   var showList:ProductInfomation[]=[]
 
@@ -208,7 +208,7 @@ const ListView = ({viewProduct}:ViewProps) => {
                     <Typography>NT${info.price}</Typography>
                   </CardContent>
                   <CardActions sx={{ mx:2, mb: 1,display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-end" }}>                 
-                      <Checkbox icon={<FavoriteBorderIcon/>} onChange={(e)=>{handleFavoriteChecked(e,info)}} checkedIcon={<FavoriteIcon sx={{ color: "red" }}/>}/>
+                      <Checkbox  icon={<FavoriteBorderIcon/>} onChange={(e)=>{handleFavoriteChecked(e,info)}} checkedIcon={<FavoriteIcon sx={{ color: "red" }}/>}/>
 
                   </CardActions>
                 </Box>

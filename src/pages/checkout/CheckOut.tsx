@@ -1,5 +1,6 @@
-import React from 'react'
-
+import React, { useContext } from 'react'
+import { CartContext } from '../../contextStore/context'
+import { ProductInfomationCount } from '../cart/Cart'
 
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
@@ -30,7 +31,21 @@ import ProductImage from '../../assets/朋朋衛生紙商品圖.jpg'
 
 export default function CheckOut() {
 
+    const { checkOutContent, setCheckOutContent } = useContext(CartContext)
 
+    const removeFromCheckOutContent=(product:ProductInfomationCount)=>{
+        setCheckOutContent((prev:ProductInfomationCount[])=>{
+            let newList=prev.filter(ele=>{
+                if(ele.productId===product.productId && ele.selectSize===product.selectSize){
+                    return false
+                }
+
+                return true
+            })
+
+            return newList
+        })
+    }
 
     return (
         <Container sx={{ border: "0px solid" }} maxWidth='xl'>
@@ -67,7 +82,7 @@ export default function CheckOut() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {fakeDataList().map((item, index) =>
+                                {checkOutContent.map((item:ProductInfomationCount, index:number) =>
                                 (
                                     <TableRow key={index}>
                                         <TableCell style={{ width: "50%" }} >
@@ -77,10 +92,10 @@ export default function CheckOut() {
                                                 </Box>
                                                 <Stack spacing={"2px"}>
                                                     <Typography >
-                                                        {item.name}
+                                                        {item.title}
                                                     </Typography>
                                                     <Typography variant='caption'>
-                                                        規格 : 標準
+                                                        規格 : {item.selectSize}
                                                     </Typography>
                                                 </Stack>
 
@@ -90,12 +105,12 @@ export default function CheckOut() {
                                         </TableCell>
                                         <TableCell align='center'>${item.price}</TableCell>
                                         <TableCell align='center'>
-                                            1
+                                            {item.count}
                                         </TableCell>
-                                        <TableCell align='center'>$100</TableCell>
+                                        <TableCell align='center'>${item.price*item.count}</TableCell>
                                         <TableCell sx={{ border: "0px solid" }} align='center'>
                                             <Stack sx={{ border: "0px solid" }} alignItems="center">
-                                                <IconButton>
+                                                <IconButton onClick={()=>{removeFromCheckOutContent(item)}}>
                                                     <DeleteOutlineOutlinedIcon />
                                                 </IconButton>
                                             </Stack>
@@ -162,7 +177,7 @@ export default function CheckOut() {
                             <Grid item xs={8} >
                                 <FormControl sx={{ width: "100%" }}>
                                     <RadioGroup sx={{ mx: "0px", my: "0px", border: "0px solid #d9d9d9" }}>
-                                        <FormControlLabel sx={{ backgroundColor: "#d9d9d9", mx: "0px", my: "0px", border: "1px solid #d9d9d9" }} value={"銀行匯款"} control={<Radio sx={{ color: "#D9D9D9" }} />} label="銀行匯款" />
+                                        <FormControlLabel sx={{ backgroundColor: "#d9d9d9", mx: "0px", my: "0px", border: "1px solid #d9d9d9" }} value={"銀行匯款"} control={<Radio disabled checked sx={{ color: "#D9D9D9" }} />} label="銀行匯款" />
 
 
                                     </RadioGroup>
@@ -224,6 +239,16 @@ export default function CheckOut() {
                     </Paper>
 
                 </Grid>
+
+                <Grid item xs={8} sx={{ mt: "15px" }}>
+                    <Typography variant='body1' sx={{ fontWeight: "bold" }}>訂單金額</Typography>
+
+                    <Grid item xs={6}></Grid>
+                    <Grid item xs={2}>
+                        
+                    </Grid>
+                </Grid>
+
                 <Grid item xs={8} sx={{ mt: "15px" }}>
                     <Typography variant='body1' sx={{ fontWeight: "bold" }}>最後確認</Typography>
 
@@ -267,11 +292,17 @@ export default function CheckOut() {
                             <Grid item xs={10} >
                                 <Typography sx={{ minWidth: "30px" }}  >雅典門市-台中市南區三民西路377號西川一路1號</Typography>
                             </Grid>
-                            
+                            <Grid item xs={2} >
+                                <Typography sx={{ minWidth: "30px" }}  >總付款金額</Typography>
+                            </Grid>
+                            <Grid item xs={10} >
+                                <Typography sx={{ minWidth: "30px",color:"red" }}  >$190</Typography>
+                            </Grid>
+
                         </Grid>
 
 
-                        
+
                     </Paper>
 
                 </Grid>
@@ -279,10 +310,10 @@ export default function CheckOut() {
                     <Typography variant='body1' sx={{ fontWeight: "bold" }}>下單須知</Typography>
 
                     <Paper sx={{ mt: "15px", boxShadow: "none", border: "1px solid #d9d9d9" }}>
-                        <Typography sx={{m:"30px"}}>
-                        購買後5天內須要付款，未付款視為取消訂單，付款後會儘快出貨，商品物流情況詳情請在訂單查詢頁面追蹤
+                        <Typography sx={{ m: "30px" }}>
+                            購買後5天內須要付款，未付款視為取消訂單，付款後會儘快出貨，商品物流情況詳情請在訂單查詢頁面追蹤
                         </Typography>
-                    
+
                     </Paper>
 
                 </Grid>

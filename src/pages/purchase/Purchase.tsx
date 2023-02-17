@@ -299,6 +299,7 @@ const OrderDetail = ({ orderInfo }: OrderDetailProps) => {
               <Divider />
               <Grid container columns={12}>
                 <Grid item xs={9}></Grid>
+                {/*靠右 */}
                 <Grid item xs={3}>
                   <Grid container columns={4} sx={{ mt: 4, pr: 4 }}>
                     <Grid item xs={2}>
@@ -348,8 +349,8 @@ const OrderDetail = ({ orderInfo }: OrderDetailProps) => {
 }
 
 const orderAddress: OrderAddress = {
-  receiver: "林駿朋",
-  phoneNumber: "(+886)970588457",
+  receiver: "王大明",
+  phoneNumber: "(+886)964816276",
   cargoAddress: "7-11 雅典門市 台中市南區三民西路377號西川一路1號 店號950963"
 }
 
