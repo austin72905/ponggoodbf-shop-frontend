@@ -141,7 +141,15 @@ function App() {
 
   return (
     <ThemeProvider theme={customTheme}>
-      <CartContext.Provider value={{ checkOutContent,setCheckOutContent,cartContent, setCartContent, addToCart, favoriteContent, removeFromCollectionList, addToCollectionList }}>
+      <CartContext.Provider value={{ 
+                      checkOutContent,
+                      setCheckOutContent,
+                      cartContent, 
+                      setCartContent, 
+                      addToCart, 
+                      favoriteContent, 
+                      removeFromCollectionList, 
+                      addToCollectionList }}>
         <Box sx={{ minHeight: "100vh", border: "0px solid", backgroundColor: "#fefefe" }}>
           <TopBar />
           <Toolbar />
