@@ -135,6 +135,14 @@ function App() {
   }
 
 
+  const navigate=useNavigate()
+
+  useEffect(()=>{
+    if (pathname=="/"){
+      navigate("/new-arrival")
+    }
+  },[])
+  
 
 
 
