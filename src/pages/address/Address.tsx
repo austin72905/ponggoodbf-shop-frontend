@@ -19,29 +19,66 @@ import Backdrop from '@mui/material/Backdrop';
 
 export default function Address() {
 
+    const initAddress: AddressInfo = { id: 0, name: "", phoneNumber: "", mail: "", recieverAddress: "", isDefaultAddress: false }
+
+    const [editedAddress, setEditedAddress] = useState<AddressInfo>(initAddress)
+
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
 
-    const [defaultAddressList,setDefaultAddressList]=useState(recieverInfoList)
+    const handleClose = () => {
+        setEditedAddress(initAddress)
+        setOpen(false)
+    }
 
-    const changeDefaultAddress=(e:React.MouseEvent,i:number)=>{
-        
-        setDefaultAddressList(temp=>
-            {
-                temp.forEach((ele,index)=>
-                {
-                    if (ele.id!=i){
-                        ele.isDefaultAddress=false
-                    }else{
-                        ele.isDefaultAddress=true
-                    }
+    const handleEditModal = (e: React.MouseEvent, content: AddressInfo) => {
+        setEditedAddress(content)
+        setOpen(true)
+    }
 
-                    return ele
-                })
 
-                return [...temp]
+
+
+    // onChange
+    const handleEditedAddress = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+
+        setEditedAddress(o => {
+
+            let newO: any = { ...o }
+
+            Object.getOwnPropertyNames(o).forEach(ele => {
+                if (ele === e.target.name) {
+
+                    newO[e.target.name as keyof any] = e.target.value
+                }
             })
+            //console.log("newO ", newO)
+            return newO
+        })
+    }
+
+    const [defaultAddressList, setDefaultAddressList] = useState(recieverInfoList)
+
+    const changeDefaultAddress = (e: React.MouseEvent, i: number) => {
+
+        setDefaultAddressList(temp => {
+            temp.forEach((ele, index) => {
+                if (ele.id != i) {
+                    ele.isDefaultAddress = false
+                } else {
+                    ele.isDefaultAddress = true
+                }
+
+                return ele
+            })
+
+            return [...temp]
+        })
+    }
+
+    const addNewAddress=()=>{
+        console.log(editedAddress)
     }
 
     return (
@@ -57,14 +94,14 @@ export default function Address() {
                     </Stack>
 
                     {
-                        defaultAddressList.map((c,index)=>
+                        defaultAddressList.map((c, index) =>
                         (
-                            <RecieverInfo key={index} handleOpen={handleOpen} content={c} changeDefaultAddress={changeDefaultAddress}/>
+                            <RecieverInfo key={index} handleEditModal={handleEditModal} content={c} changeDefaultAddress={changeDefaultAddress} />
                         ))
                     }
-                    
 
-                    
+
+
                 </Stack>
 
 
@@ -92,25 +129,25 @@ export default function Address() {
 
                             <ItemWrapper sx={{ pt: "20px" }}>
                                 <Typography variant='subtitle2' >收件人</Typography>
-                                <TextField placeholder='不得包含特殊符號 / $ . @ & # @...' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
+                                <TextField value={editedAddress.name} onChange={handleEditedAddress} name="name" placeholder='不得包含特殊符號 / $ . @ & # @...' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
                             </ItemWrapper>
                             <ItemWrapper >
                                 <Typography variant='subtitle2' >聯絡電話</Typography>
-                                <TextField placeholder='ex: 09xxxxxxxx' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
+                                <TextField value={editedAddress.phoneNumber}  onChange={handleEditedAddress} name="phoneNumber" placeholder='ex: 09xxxxxxxx' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
                             </ItemWrapper>
                             <ItemWrapper >
                                 <Typography variant='subtitle2' >信箱</Typography>
-                                <TextField placeholder='ex: asbc@gmail.com' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
+                                <TextField value={editedAddress.mail}  onChange={handleEditedAddress} name="mail" placeholder='ex: asbc@gmail.com' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
                             </ItemWrapper>
                             <ItemWrapper >
                                 <Typography variant='subtitle2' >收件地址</Typography>
-                                <TextField placeholder='收件地址' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
+                                <TextField value={editedAddress.recieverAddress}  onChange={handleEditedAddress} name="recieverAddress" placeholder='收件地址' inputProps={{ sx: { height: "15px" } }} sx={{ marginTop: "10px" }} size='small' fullWidth />
                             </ItemWrapper>
 
                             <ItemWrapper sx={{ pt: "40px" }}>
                                 <Stack direction={"row"} justifyContent={"space-around"}>
                                     <Button onClick={handleClose} variant='outlined'>取消</Button>
-                                    <Button variant='contained'>新增</Button>
+                                    <Button variant='contained' onClick={addNewAddress}>新增</Button>
                                 </Stack>
                             </ItemWrapper>
 
@@ -147,66 +184,66 @@ const ItemWrapper = styled(Box)({
 
 
 
-interface RecieverInfoProps{
-    handleOpen: () => void;
-    changeDefaultAddress:(e:React.MouseEvent,i:number) => void;
-    content:AddressInfo;
+interface RecieverInfoProps {
+    handleEditModal: (e: React.MouseEvent, content: AddressInfo) => void;
+    changeDefaultAddress: (e: React.MouseEvent, i: number) => void;
+    content: AddressInfo;
 }
 
-const addressContent=new Map([
-    ["收件人","王大明"],
-    ["連絡電話","0945864315"],
-    ["信箱","Laopigu@gmail.com"],
-    ["取件地址","台中市南區三民西路377號西川一路1號"],
+const addressContent = new Map([
+    ["收件人", "王大明"],
+    ["連絡電話", "0945864315"],
+    ["信箱", "Laopigu@gmail.com"],
+    ["取件地址", "台中市南區三民西路377號西川一路1號"],
 ])
 
-const addressTitle=new Map([
-    ["name","收件人"],
-    ["phoneNumber","連絡電話"],
-    ["mail","信箱"],
-    ["recieverAddress","取件地址"],
+const addressTitle = new Map([
+    ["name", "收件人"],
+    ["phoneNumber", "連絡電話"],
+    ["mail", "信箱"],
+    ["recieverAddress", "取件地址"],
 ])
 
-type AddressInfo={
-    id:number;
-    name:string;
-    phoneNumber:string;
-    mail:string;
-    recieverAddress:string;
-    isDefaultAddress:boolean;
+interface AddressInfo {
+    id: number;
+    name: string;
+    phoneNumber: string;
+    mail: string;
+    recieverAddress: string;
+    isDefaultAddress: boolean;
 }
 
-const aContent:AddressInfo={
-    id:1,
-    name:"王大明",
-    phoneNumber:"0945864315",
-    mail:"Laopigu@gmail.com",
-    recieverAddress:"台中市南區三民西路377號西川一路1號",
-    isDefaultAddress:false
+const aContent: AddressInfo = {
+    id: 1,
+    name: "王大明",
+    phoneNumber: "0945864315",
+    mail: "Laopigu@gmail.com",
+    recieverAddress: "台中市南區三民西路377號西川一路1號",
+    isDefaultAddress: false
 }
 
-const recieverInfoList:AddressInfo[]=[
+const recieverInfoList: AddressInfo[] = [
     aContent,
-    {...aContent,id:2},
-    {...aContent,id:3},
-    {...aContent,id:4},
+    { ...aContent, id: 2 },
+    { ...aContent, id: 3 },
+    { ...aContent, id: 4 },
 ]
 
-const RecieverInfo = ({handleOpen,changeDefaultAddress,content}:RecieverInfoProps) => {
+const RecieverInfo = ({ handleEditModal, changeDefaultAddress, content }: RecieverInfoProps) => {
     return (
-        <Paper sx={{ mt: 2, boxShadow: "none", border: `1px solid ${content.isDefaultAddress?"#61D1BD":"#d9d9d9"}` }}>
+        <Paper sx={{ mt: 2, boxShadow: "none", border: `1px solid ${content.isDefaultAddress ? "#61D1BD" : "#d9d9d9"}` }}>
 
             <Grid container columns={12} sx={{ p: 4 }} >
                 <Grid item xs={9} >
                     <Grid container columns={12} spacing={1}>
                         {
-                            Object.getOwnPropertyNames(content).map((n,index)=>{
+                            Object.getOwnPropertyNames(content).map((n, index) => {
 
-                                if(n==="isDefaultAddress" || n ==="id"){
+                                if (n === "isDefaultAddress" || n === "id") {
                                     return null
                                 }
 
-                                return(
+                                return (
                                     <React.Fragment key={n}>
                                         <Grid item xs={2} >
                                             <Typography sx={{ minWidth: "30px" }} variant='subtitle2' >{addressTitle.get(n)}</Typography>
@@ -216,18 +253,18 @@ const RecieverInfo = ({handleOpen,changeDefaultAddress,content}:RecieverInfoProp
                                         </Grid>
                                     </React.Fragment>
                                 )
-                                
+
                             })
-                            
-                            
-                        }                    
+
+
+                        }
                     </Grid>
                 </Grid>
 
                 <Grid item xs={3} sx={{ border: "0px solid #d9d9d9" }}>
                     <Stack spacing={0.5} alignItems={"end"} justifyContent={"space-between"} sx={{ border: "0px solid", height: "100%", width: "100%" }}>
                         <Stack spacing={0.5} sx={{ border: "0px solid" }} direction={"row"}>
-                            <Button onClick={handleOpen} variant='outlined' sx={{ border: "1px solid #d9d9d9", color: "#AFAFAF" }}>編輯地址</Button>
+                            <Button onClick={(e) => { handleEditModal(e, content) }} variant='outlined' sx={{ border: "1px solid #d9d9d9", color: "#AFAFAF" }}>編輯地址</Button>
                             <IconButton>
                                 <DeleteIcon />
                             </IconButton>
@@ -235,14 +272,14 @@ const RecieverInfo = ({handleOpen,changeDefaultAddress,content}:RecieverInfoProp
                         </Stack>
                         {
                             content.isDefaultAddress
-                            ?
-                            <Stack justifyContent={"center"} alignItems={"center"} sx={{ height: "40px", width: "135px", backgroundColor: "#61D1BD", borderRadius: "4px" }}>
-                                <Typography variant='button' sx={{ color: "white" }}>預設地址</Typography>
-                            </Stack>
-                            :
-                            <Button variant='outlined' onClick={(e)=>{changeDefaultAddress(e,content.id)}} sx={{ width: "135px" }}>設為預設地址</Button>
+                                ?
+                                <Stack justifyContent={"center"} alignItems={"center"} sx={{ height: "40px", width: "135px", backgroundColor: "#61D1BD", borderRadius: "4px" }}>
+                                    <Typography variant='button' sx={{ color: "white" }}>預設地址</Typography>
+                                </Stack>
+                                :
+                                <Button variant='outlined' onClick={(e) => { changeDefaultAddress(e, content.id) }} sx={{ width: "135px" }}>設為預設地址</Button>
                         }
-                        
+
 
 
                     </Stack>
