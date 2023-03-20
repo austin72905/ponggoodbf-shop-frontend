@@ -422,7 +422,8 @@ const orderInfoList: OrderInfomation[] = [
   orderInfo,
   { ...orderInfo, recordCode: "TX20230122063254" },
   { ...orderInfo, status: "4" },
-  { ...orderInfo, status: "2",recordCode: "TX20230122063256" }
+  { ...orderInfo, status: "2",recordCode: "TX20230122063256" },
+  { ...orderInfo, status: "3",recordCode: "TX20230122063257" }
 ]
 
 //訂單頁面
@@ -521,6 +522,7 @@ const PurchaseRecord = ({ setOrderInfoDetail }: PurchaseRecordProps) => {
                             </Stack>
 
                             <CardActions sx={{ pr: 0, ml: 2, pb: 3, display: "flex", flexDirection: "row", justifyContent: "end" }}>
+                              {info.status==="3"?<Button variant="contained" sx={{ backgroundColor: "#EFB878", color: "black", "&:hover": { backgroundColor: "#EFB878" } }}>取消訂單</Button>:null}
                               <Button variant="outlined" onClick={() => { goOrderDetail(info) }}>訂單詳情</Button>
                               <Button variant="contained">重新購買</Button>
                             </CardActions>
